@@ -6,18 +6,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>CEASFind-Login</title>
+    <title>Authentication</title>
     <style>
+        :root {
+            --white: #ffffff;
+            --baby-blue: #a3b8ed;
+            --bg-white: #f0f0f0;
+            --clay: #8b7f71;
+            --night: #1e3a6a;
+            --onyx: #1b1b1b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            background: linear-gradient(180deg,  #ece3da  0%, #d1bda4 10%, #5f81bc 30%);
+            background: var(--night);
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
             overflow: hidden;
             font-family: 'Roboto Condensed', sans-serif;
         }
@@ -28,128 +39,204 @@
             height: 100vh;
             display: flex;
             align-items: center;
-            padding-left: 5%;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 5%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;;
         }
         
         .app-logo {
-        position: absolute;
-        width: 25px;
-        height: auto;
-        z-index: 6;
-        left: 40px;
-        top: 17px;
+            position: relative;
+            width: 25px;
+            height: auto;
+            transform: scaleX(-1);
         }
 
         h4 {
-            position: absolute;
+            position: relative;
             font-size: 20px;
             font-family: 'Poetsen One', sans-serif;
-            color: #ece3da; 
-            margin-bottom: 15px;
-            left: 80px;
-            top: -10px;
+            color: var(--white);
+            margin: 0;
         }
 
         .auth-container {
-            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             z-index: 100;
-            width: 100%;
-            max-height: 700px;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 15px;
-            border: 5px solid #d1bda4;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-left: 150px;
+            width: 500px;
+            margin-top: 130px;
         }
-
-        section { display: none; }
-        section.active { display: block; }
 
         .wave-container {
             position: absolute;
-            bottom: 0;
+            bottom: 0px;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 1;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        .wave {
+        .wave1 {
             position: absolute;
             bottom: 0;
-            width: 110%;
-            animation: move-wave 7s linear infinite;
-        }
-
-        .glass {
-            position: absolute;
-            bottom: 25%;
-            right: 14%;
-            width: 500px;
-            height: 300px;
-            z-index: 4;
-        }
-
-        .magnifying-glass {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+            left: 0;
+            right: 0;
+            width: 110%; 
             height: auto;
-            z-index: 2;
-            animation: floating 7s linear infinite;
+            pointer-events: none;
+            animation: move-wave linear infinite;
+            animation-duration: 28s; 
+            z-index: 1; 
         }
 
-        .oc {
+        .wave2 {
             position: absolute;
-            bottom: 0%;
-            left: 0%;
-            width: 100px;
-            height: 170px;
-            z-index: 4;
-            animation: floating 7s ease-in-out infinite;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 110%; 
+            height: auto;
+            pointer-events: none;
+            animation: move-wave linear infinite;
+            animation-duration: 14s; 
+            z-index: 2; 
         }
 
-        .oc img { position: absolute; height: auto; display: block; } 
-        .body { width: 100%; top: 45%; left: 0%; z-index: 3; }
-        .face { width: 95%; top: 19%; left: 5%; z-index: 4; }
-        .eyes { width: 60%; top: 24%; left: 13%; z-index: 4; animation: movement 3s ease-in-out infinite;}
-        .eyebrow { width: 70%; top: 20%; left: 5%; z-index: 4; }
-        .hair { width: 106%; top: 13%; left: 0%; z-index: 4; }
-        .hat { width: 120%; top: -13%; left: -8%; z-index: 4; }
-
-        h1 { font-family: 'Poetsen One', sans-serif; color: #ece3da; margin-bottom: 40px; font-size: 40px; }
-        label { display: block; text-align: left; color: #8b7f71; font-size: 14px; margin-bottom: 5px; }
-        input { 
-            width: 100%; 
-            padding: 10px; 
-            margin-bottom: 15px; 
-            border: 1px solid #d1bda4; 
-            border-radius: 8px; 
-            box-sizing: border-box;
+        .wave3 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 110%; 
+            height: auto;
+            pointer-events: none;
+            animation: move-wave linear infinite;
+            animation-duration: 7s; 
+            z-index: 3; 
         }
+
+        .wave4 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 110%; 
+            height: auto;
+            pointer-events: none;
+            animation: move-wave linear infinite;
+            animation-duration: 21s; 
+            z-index: 4; 
+        }
+
+        .wave5 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 110%; 
+            height: auto;
+            pointer-events: none;
+            animation: move-wave linear infinite;
+            animation-duration: 14s; 
+            z-index: 5; 
+        }
+
+        .wave6 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 110%; 
+            height: auto;
+            pointer-events: none;
+            animation: move-wave linear infinite;
+            animation-duration: 7s; 
+            z-index: 6; 
+        }
+
+        @keyframes move-wave {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-5%); }
+            100% { transform: translateX(0); }
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Poetsen One', sans-serif; 
+            font-weight: 180;
+            color: var(--white); 
+            margin-bottom: 50px; 
+            font-size: 100px; 
+        }
+
+        label { 
+            display: block; 
+            color: var(--baby-blue); 
+            font-size: 14px; 
+            margin-bottom: 10px; 
+            text-align: center;
+        }
+
+        .p-notice {
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 60px;
+        }
+
+        .p-con {
+            text-align: center;
+            color: var(--night);
+            margin-bottom: 60px;
+        }
+
+        a {
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--night);
+            text-decoration: underline;
+        }
+    
         button { 
             width: 100%; 
             padding: 12px; 
-            background: #1e3a6a; 
-            color: #ece3da; 
+            background: var(--white); 
+            color: var(--night); 
             border: none; 
-            border-radius: 8px; 
+            border-radius: 20px; 
             cursor: pointer; 
+            font-family: 'Poetsen One', sans-serif;
+            margin-bottom: 150px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: rgb(30,58,106,0.3);
+            color: var(--white);
         }
 
         @keyframes move-wave {
             0%, 100% { transform: translateX(0%); }
             50% { transform: translateX(-5%); }
         }
+
         @keyframes floating {
             0%, 100% { transform: translateY(0%); }
             50% { transform: translateY(-3%); }
         }
+
         @keyframes movement {
             0%, 100% { transform: translateX(0%); }
             50% { transform: translateX(2%); }
@@ -167,46 +254,36 @@
         }
     </style>
 </head>
-
 <body>
     <div class="main-container">
-        <img class="app-logo" src="/elements/app-logo.png">
-        <h4>CEAS FIND</h4>
+        <audio src="./music/New Moon." autoplay loop></audio>
         
+        <div class="header">
+            <img class="app-logo" src="/elements/user icon white.png">
+            <h4>CEAS FIND</h4>
+        </div>
+        
+        <div class="wave-container">
+            <img class="wave1" src="/elements/wave 1.png">
+            <img class="wave2" src="/elements/wave 2.png">
+            <img class="wave3" src="/elements/wave 3.png">
+            <img class="wave4" src="/elements/wave 4.png">
+            <img class="wave5" src="/elements/wave 5.png">
+            <img class="wave6" src="/elements/wave 6.png">
+        </div>
+
         <div class="auth-container">
             <section id="login-section" class="active">
-                <h1>Log In</h1>
-                <form id="login-form">
-                    <label>Email</label>
-                    <input type="email" id="login-email" placeholder="studentID@gordoncollege.edu.ph" required>
-                    <label>Password</label>
-                    <input type="password" id="login-pass" placeholder="Password" required>
-                    <button type="submit">Log In</button>
-                </form>
-                <p style="margin-top: 15px; font-size: 14px;">Don't have an account? <a href="#" onclick="showSection('signup-section')" style="font-weight: bold; color: #1e3a6a; text-decoration: none;">Sign up</a></p>
-            </section>
-
-            <section id="signup-section">
-                <h1>Create Account</h1>
-                <form id="signup-form">
-                    <label>First Name</label>
-                    <input type="text" id="reg-first" placeholder="First Name" required>
-                    <label>Last Name</label>
-                    <input type="text" id="reg-last" placeholder="Last Name" required>
-                    <label>Email</label>
-                    <input type="email" id="reg-email" placeholder="studentID@gordoncollege.edu.ph" required>
-                    <label>Password</label>
-                    <input type="password" id="reg-pass" placeholder="Password" required>
-                    <label>Course Code</label>
-                    <input type="text" id="reg-course" placeholder="Any Valid CEAS Course Code" required>
-                    <button type="submit">Sign Up</button>
-                </form>
-                <p style="margin-top: 15px; font-size: 14px;">Already have an account? <a href="#" onclick="showSection('login-section')" style="font-weight: bold; color: #1e3a6a; text-decoration: none;">Log in</a></p>
-            </section>
+                <h1>CEAS FIND</h1>
+                <label>IMPORTANT:</label>
+                <p class="p-notice">Sign in with your Gordon College domain account to access the platform. Only CEAS accounts are to be accepted.</p>
+                <button type="button" id="google-login-btn">Sign Up with Google</button>
+                <p class="p-con">By signing in, you agree to our <a class="conditions" href="/tou.html">Terms of Use</a>  and <a class="conditions" href="/privacy.html">Privacy Policy</a>.</p>
+            </section> 
         </div>
     </div>
 
-    <script type="module" src="../backend/auth.js"></script>
+    <script type="module" src="../BACKEND/auth.js"></script>
     <script>
         function showSection(id) {
             document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
