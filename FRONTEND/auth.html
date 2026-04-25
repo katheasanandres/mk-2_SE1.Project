@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>CEASFind-Login</title>
+    <style>
+
+        body {
+            background: linear-gradient(180deg,  #ece3da  0%, #d1bda4 10%, #5f81bc 30%);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            overflow: hidden;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        .main-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-left: 5%;
+        }
+        
+        .app-logo {
+        position: absolute;
+        width: 25px;
+        height: auto;
+        z-index: 6;
+        left: 40px;
+        top: 17px;
+        }
+
+        h4 {
+            position: absolute;
+            font-size: 20px;
+            font-family: 'Poetsen One', sans-serif;
+            color: #ece3da; 
+            margin-bottom: 15px;
+            left: 80px;
+            top: -10px;
+        }
+
+        .auth-container {
+            position: relative;
+            z-index: 100;
+            width: 100%;
+            max-height: 700px;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 15px;
+            border: 5px solid #d1bda4;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-left: 150px;
+        }
+
+        section { display: none; }
+        section.active { display: block; }
+
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 110%;
+            animation: move-wave 7s linear infinite;
+        }
+
+        .glass {
+            position: absolute;
+            bottom: 25%;
+            right: 14%;
+            width: 500px;
+            height: 300px;
+            z-index: 4;
+        }
+
+        .magnifying-glass {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: auto;
+            z-index: 2;
+            animation: floating 7s linear infinite;
+        }
+
+        .oc {
+            position: absolute;
+            bottom: 0%;
+            left: 0%;
+            width: 100px;
+            height: 170px;
+            z-index: 4;
+            animation: floating 7s ease-in-out infinite;
+        }
+
+        .oc img { position: absolute; height: auto; display: block; } 
+        .body { width: 100%; top: 45%; left: 0%; z-index: 3; }
+        .face { width: 95%; top: 19%; left: 5%; z-index: 4; }
+        .eyes { width: 60%; top: 24%; left: 13%; z-index: 4; animation: movement 3s ease-in-out infinite;}
+        .eyebrow { width: 70%; top: 20%; left: 5%; z-index: 4; }
+        .hair { width: 106%; top: 13%; left: 0%; z-index: 4; }
+        .hat { width: 120%; top: -13%; left: -8%; z-index: 4; }
+
+        h1 { font-family: 'Poetsen One', sans-serif; color: #ece3da; margin-bottom: 40px; font-size: 40px; }
+        label { display: block; text-align: left; color: #8b7f71; font-size: 14px; margin-bottom: 5px; }
+        input { 
+            width: 100%; 
+            padding: 10px; 
+            margin-bottom: 15px; 
+            border: 1px solid #d1bda4; 
+            border-radius: 8px; 
+            box-sizing: border-box;
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background: #1e3a6a; 
+            color: #ece3da; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+        }
+
+        @keyframes move-wave {
+            0%, 100% { transform: translateX(0%); }
+            50% { transform: translateX(-5%); }
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0%); }
+            50% { transform: translateY(-3%); }
+        }
+        @keyframes movement {
+            0%, 100% { transform: translateX(0%); }
+            50% { transform: translateX(2%); }
+        }
+
+        @media (max-width: 1100px) {
+            .glass { transform: scale(0.7); right: -10%; }
+        }
+
+        @media (max-width: 768px) {
+            body { justify-content: center; }
+            .main-container { padding-left: 0; justify-content: center; }
+            .glass { display: none; }
+            .auth-container { width: 95%; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <img class="app-logo" src="/elements/app-logo.png">
+        <h4>CEAS FIND</h4>
+        
+        <div class="auth-container">
+            <section id="login-section" class="active">
+                <h1>Log In</h1>
+                <form id="login-form">
+                    <label>Email</label>
+                    <input type="email" id="login-email" placeholder="studentID@gordoncollege.edu.ph" required>
+                    <label>Password</label>
+                    <input type="password" id="login-pass" placeholder="Password" required>
+                    <button type="submit">Log In</button>
+                </form>
+                <p style="margin-top: 15px; font-size: 14px;">Don't have an account? <a href="#" onclick="showSection('signup-section')" style="font-weight: bold; color: #1e3a6a; text-decoration: none;">Sign up</a></p>
+            </section>
+
+            <section id="signup-section">
+                <h1>Create Account</h1>
+                <form id="signup-form">
+                    <label>First Name</label>
+                    <input type="text" id="reg-first" placeholder="First Name" required>
+                    <label>Last Name</label>
+                    <input type="text" id="reg-last" placeholder="Last Name" required>
+                    <label>Email</label>
+                    <input type="email" id="reg-email" placeholder="studentID@gordoncollege.edu.ph" required>
+                    <label>Password</label>
+                    <input type="password" id="reg-pass" placeholder="Password" required>
+                    <label>Course Code</label>
+                    <input type="text" id="reg-course" placeholder="Any Valid CEAS Course Code" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p style="margin-top: 15px; font-size: 14px;">Already have an account? <a href="#" onclick="showSection('login-section')" style="font-weight: bold; color: #1e3a6a; text-decoration: none;">Log in</a></p>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="../backend/auth.js"></script>
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>landing-page</title>
+
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(180deg,  #ece3da  0%, #d1bda4 30%, #5f81bc 50%);
+        overflow: hidden;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .main-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        margin: 0 auto;
+    }
+    
+    .app-logo {
+        position: absolute;
+        width: 50px;
+        height: auto;
+        z-index: 6;
+        left: 20px;
+        top: 14px;
+    }
+
+    h4 {
+        position: absolute;
+        font-size: 30px;
+        font-family: 'Poetsen One', sans-serif;
+        color: #1e3a6a; 
+        margin-bottom: 15px;
+        left: 80px;
+        top: 20px;
+    }
+
+    .bookmark {
+        position: absolute;
+        width: 250px;
+        height: auto;
+        z-index: 6;
+        margin-left: 80%;
+        margin-top: -10%;
+        z-index: 1;
+    }
+
+    .notif {
+        position: absolute;
+        width: 130px;
+        height: auto;
+        z-index: 7;
+        margin-left: 5%;
+        bottom: 60px;
+    }
+
+    .footer-logos {
+        position: absolute;
+        right: 80px;
+        bottom: 65px;
+        display: flex;
+        align-items: flex-end;
+        gap: 15px;
+        z-index: 5;
+    }
+
+    .gc-logo { width: 120px; height: auto; }
+    .ceas-logo { width: 110px; height: auto; margin-bottom: 20px; }
+
+    .Welcome {
+        position: absolute;
+        top: 45%;
+        left: 5%;
+        transform: translateY(-70%);
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 600px;
+    }
+
+    h1 {
+        font-size: 130px;
+        font-family: 'Poetsen One';
+        color: #1e3a6a;
+        line-height: 0.9;
+        letter-spacing: -2px;
+        margin-top: 150px;
+    }
+
+    h2 {
+        font-size: 42px;
+        font-family: 'Poetsen One', sans-serif;
+        color: #ece3da; 
+        line-height: 1.4;
+        margin-bottom: 15px;
+    }
+
+    h3 {
+        font-size: 22px;
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #ece3da;
+        line-height: 1.4;
+        font-weight: 500;
+        margin-top: -10px;
+    }
+
+    button {
+        font-size: 22px;
+        font-family: 'Poetsen One', sans-serif;
+        color: #ece3da;
+        background-color: #1e3a6a;
+        border: 3px solid #d1bda4;
+        border-radius: 12px;
+        padding: 12px 40px;
+        cursor: pointer;
+        width: fit-content;
+        margin-top: 20px;
+        transition: transform 0.2s ease;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    .wave-container {
+        position: relative;
+        bottom: -20px;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .wave1 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 110%; 
+        height: auto;
+        pointer-events: none;
+        animation: move-wave linear infinite;
+        animation-duration: 28s; 
+        z-index: 1; 
+    }
+
+    .wave2 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 110%; 
+        height: auto;
+        pointer-events: none;
+        animation: move-wave linear infinite;
+        animation-duration: 14s; 
+        z-index: 2; 
+    }
+
+    .wave3 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 110%; 
+        height: auto;
+        pointer-events: none;
+        animation: move-wave linear infinite;
+        animation-duration: 7s; 
+        z-index: 3; 
+    }
+
+    .wave4 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 110%; 
+        height: auto;
+        pointer-events: none;
+        animation: move-wave linear infinite;
+        animation-duration: 21s; 
+        z-index: 4; 
+    }
+
+    .wave5 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 110%; 
+        height: auto;
+        pointer-events: none;
+        animation: move-wave linear infinite;
+        animation-duration: 14s; 
+        z-index: 5; 
+    }
+
+    .wave6 {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 110%; 
+        height: auto;
+        pointer-events: none;
+        animation: move-wave linear infinite;
+        animation-duration: 7s; 
+        z-index: 6; 
+    }
+
+    @keyframes move-wave {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(-5%); }
+        100% { transform: translateX(0); }
+    }
+
+    .oc-container {
+        position: absolute;
+        bottom: 18%;
+        left: 63%;
+        right: 200px;
+        width: 330px;
+        height: 430px;
+        aspect-ratio: 1 / 1.2;
+        z-index: 4;
+        animation: floating 7s ease-in-out infinite;
+    }
+
+    .oc-container img {
+        position: absolute;
+        height: auto;
+        display: block;
+    }
+
+    .back-coat { width: 50%; top: 86%; left: -21%; z-index: 0; }
+    .front-hair { width: 93%; top: -10.5%; left: -2%; z-index: 9; animation: front-hair-sway 7s ease-in-out infinite; }
+    .back-hair { width: 33%; top: 18.5%; left: 67%; z-index: 1; animation: back-hair-sway 7s ease-in-out infinite; }
+    .inner-hair {width: 25%; top: 7%; left: 69%; z-index: 2; animation: inner-hair-sway 7s ease-in-out infinite; }
+    .face      { width: 70%; top: 7%; left: 15%; z-index: 7; animation: head-sway 7s ease-in-out infinite; }
+    .eyes      { width: 43%; top: 22%; left: 19%; z-index: 8; animation: eyes-sway 7s ease-in-out infinite; }
+    .eyebrow { width: 49%; top: 16%; left: 16.7%; z-index: 9; animation: eyebrow-sway 7s ease-in-out infinite; }
+    .eyelashes { width: 49%; top: 21.5%; left: 16.7%; z-index: 9; animation: eyelashes-sway 7s ease-in-out infinite; }
+    .mouth     { width: 7%; top: 40.5%; left: 34%; z-index: 8; animation: mouth-sway 7s ease-in-out infinite; }
+    .blush { width: 50%; top: 32%; left: 16%; z-index: 8; animation: blush-sway 7s ease-in-out infinite; }
+    .hat       { width: 95%; top: -21.8%; left: -1%;  z-index: 10; animation: hat-sway 7s ease-in-out infinite; }
+    .left-leg  { width: 60%; top: 32%; left: -40%; z-index: 5; animation:left-leg-sway 7s ease-in-out infinite; }
+    .right-leg { width: 60%; top: 49%; left: -65%; z-index: 4; animation: right-leg-sway 7s ease-in-out infinite; }
+    .left-arm  { width: 38%; top: 37%; left: 64%; z-index: 12; animation: hand-sway 7s ease-in-out infinite; }
+    .right-arm { width: 57%; top: 13%; left: -27%; z-index: 2; animation: right-arm-sway 7s ease-in-out infinite; }
+    .magnifying-glass { width: 40%; top: 15%; left: 40%; z-index: 11; animation: glass-sway 7s ease-in-out infinite; }
+    .under-shirt { width: 50%; top: 45%; left: 6%; z-index: 2; }
+    .tie         { width: 25%; top: 53%; left: 15%; z-index: 2; }
+    .under-shirt-collar { width: 19%; top: 47%; left: 33%; z-index: 3; }
+    .right-coat { width: 45%; top: 45%; left: -4%;  z-index: 3; }
+    .left-coat { width: 68%; top: 45%; left: 17%;  z-index: 6; }
+
+    @keyframes floating {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0px); }
+    }
+
+    @keyframes hand-sway {
+        0% { transform: translateX(0px) rotate(0deg); }
+        50% { transform: translateX(-15px) rotate(45deg) }
+        100% { transform: translateX(0px) rotate(0deg); }
+    }
+
+    @keyframes glass-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(90px) translateY(-20px) rotate(45deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes head-sway {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(3px) rotate(10deg) }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes hat-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(21px) translateY(3px) rotate(10deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes front-hair-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(10px) translateY(3px) rotate(10deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes back-hair-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(-10px) translateY(18px) rotate(10deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes inner-hair-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(3px) translateY(20px) rotate(10deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes eyebrow-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(5px) translateY(2px) rotate(10deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes eyes-sway {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-5px) rotate(10deg) }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes eyelashes-sway {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-6px) rotate(10deg) }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes mouth-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(-5px) translateY(-5px) rotate(10deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes blush-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(-3px) translateY(-5px) rotate(10deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes right-arm-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(0px) translateY(25px) rotate(-15deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes right-leg-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(10px) translateY(20px) rotate(-5deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes left-leg-sway {
+        0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(13px) translateY(0px) rotate(5deg) }
+        100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+    }
+
+    @media (max-width: 1100px) {
+        .oc { transform: scale(0.8); right: 5%; }
+        h1 { font-size: 80px; }
+        h2 { font-size: 30px; }
+    }
+
+    @media (max-width: 768px) {
+        .Welcome { top: 30%; transform: translateY(-40%); }
+        .oc { bottom: 5%; right: -50px; transform: scale(0.6); }
+        .notif { width: 80px; bottom: 40px; }
+        .footer-logos { bottom: 40px; }
+        .gc-logo, .ceas-logo { width: 70px; }
+    }
+</style>
+</head>
+<body>
+    <div class="main-container">
+        <audio src="./music/New Moon.mp3" autoplay loop></audio>
+        
+        <img class="app-logo" src="/elements/app-logo.png">
+        <h4>CEAS FIND</h4>
+
+        <div class="Welcome">
+            <h1>CEAS FIND</h1>
+            <h2>Lost It? Found It? CEAS Find It.</h2>
+            <h3>Welcome to CEAS Find—a hub for reporting lost items and recovering found property within the Gordon College campus.</h3>
+            <a href="/homepage.html"><button class="gotofeed">Go to Feed</button></a>
+        </div>
+
+        <img class="bookmark" src="/elements/homepage (bookmark).png">
+        <img class="notif" src="/elements/homepage (notification).png">
+
+        <div class="wave-container">
+            <img class="wave1" src="/elements/wave 1.png">
+            <img class="wave2" src="/elements/wave 2.png">
+            <img class="wave3" src="/elements/wave 3.png">
+            <img class="wave4" src="/elements/wave 4.png">
+            <img class="wave5" src="/elements/wave 5.png">
+            <img class="wave6" src="/elements/wave 6.png">
+        </div>
+
+        <div class="oc-container">
+            <img class="under-shirt" src="/elements/homepage (under shirt).png">
+            <img class="tie" src="/elements/homepage (tie).png">
+            <img class="under-shirt-collar" src="/elements/homepage (under shirt collar).png">
+            <img class="right-arm" src="/elements/homepage (right arm).png">
+            <img class="right-coat" src="/elements/homepage (right coat).png">
+            <img class="back-coat" src="/elements/homepage (back coat).png">
+            <img class="right-leg" src="/elements/homepage (right leg).png">
+            <img class="left-leg" src="/elements/homepage (left leg).png">
+            <img class="back-hair" src="/elements/homapage (back hair).png">
+            <img class="left-coat" src="/elements/homepage (left coat).png">
+            <img class="face" src="/elements/homepage (face).png">
+            <img class="blush" src="/elements/homepage (blush).png">
+            <img class="mouth" src="/elements/homepage (mouth).png">
+            <img class="eyes" src="/elements/homepage (eyes).png">
+            <img class="eyelashes" src="/elements/homepage (eyelashes).png">
+            <img class="eyebrow" src="/elements/homepage (eyebrow).png">
+            <img class="front-hair" src="/elements/homapage (front hair).png">
+            <img class="inner-hair" src="/elements/homapage (inner hair).png">
+            <img class="hat" src="/elements/homapage (hat).png">
+            <img class="magnifying-glass" src="/elements/homapage (magnifying glass).png">
+            <img class="left-arm" src="/elements/homepage (left arm).png">
+        </div>
+
+        <div class="footer-logos">
+            <img class="gc-logo" src="/elements/gc-logo.png">
+            <img class="ceas-logo" src="/elements/ceas-logo.png">
+        </div>
+    </div>
+</body>
+</html>
