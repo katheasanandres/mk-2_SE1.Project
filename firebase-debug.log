@@ -1,0 +1,74 @@
+[debug] [2026-04-25T18:38:03.234Z] ----------------------------------------------------------------------
+[debug] [2026-04-25T18:38:03.238Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\kajie\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init functions
+[debug] [2026-04-25T18:38:03.239Z] CLI Version:   15.15.0
+[debug] [2026-04-25T18:38:03.239Z] Platform:      win32
+[debug] [2026-04-25T18:38:03.240Z] Node Version:  v24.15.0
+[debug] [2026-04-25T18:38:03.240Z] Time:          Sun Apr 26 2026 02:38:03 GMT+0800 (Philippine Standard Time)
+[debug] [2026-04-25T18:38:03.240Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\kajie\Desktop\CEASFind\mk-2_SE1.Project
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-04-25T18:38:13.735Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-25T18:38:13.736Z] > authorizing via signed-in user (katheakimsanandresuwu@gmail.com)
+[debug] [2026-04-25T18:38:13.737Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:13.738Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:13.740Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2026-04-25T18:38:14.992Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2026-04-25T18:38:14.992Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] 
+=== Functions Setup
+[debug] [2026-04-25T18:38:18.156Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-25T18:38:18.156Z] > authorizing via signed-in user (katheakimsanandresuwu@gmail.com)
+[debug] [2026-04-25T18:38:18.156Z] [iam] checking project ceasfind for permissions ["firebase.projects.get"]
+[debug] [2026-04-25T18:38:18.157Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:18.158Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:18.158Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ceasfind:testIamPermissions [none]
+[debug] [2026-04-25T18:38:18.158Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ceasfind:testIamPermissions  x-goog-user-project=ceasfind
+[debug] [2026-04-25T18:38:18.158Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ceasfind:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2026-04-25T18:38:19.166Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ceasfind:testIamPermissions 200
+[debug] [2026-04-25T18:38:19.166Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ceasfind:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2026-04-25T18:38:19.168Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:19.168Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:19.169Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:19.169Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:19.169Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-04-25T18:38:19.170Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com  x-goog-user-project=ceasfind
+[debug] [2026-04-25T18:38:19.172Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/runtimeconfig.googleapis.com [none]
+[debug] [2026-04-25T18:38:19.172Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/runtimeconfig.googleapis.com  x-goog-user-project=ceasfind
+[debug] [2026-04-25T18:38:20.581Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/runtimeconfig.googleapis.com 200
+[debug] [2026-04-25T18:38:20.581Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2026-04-25T18:38:20.679Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com 200
+[debug] [2026-04-25T18:38:20.680Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-04-25T18:38:20.681Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:20.681Z] Checked if tokens are valid: true, expires at: 1777145866032
+[debug] [2026-04-25T18:38:20.681Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com:enable [none]
+[debug] [2026-04-25T18:38:20.681Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com:enable  x-goog-user-project=ceasfind
+[debug] [2026-04-25T18:38:22.139Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com:enable 200
+[debug] [2026-04-25T18:38:22.139Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/ceasfind/services/cloudfunctions.googleapis.com:enable [omitted]
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] +  Wrote functions/package.json 
+[info] +  Wrote functions/index.js 
+[info] +  Wrote functions/.gitignore 
