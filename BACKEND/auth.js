@@ -6,7 +6,7 @@ const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const VALID_DOMAIN = "@gordoncollege.edu.ph";
 
-// IMPORTANT: This tells Google to ONLY show accounts with this domain
+// tells Google to ONLY show accounts with this domain
 provider.setCustomParameters({
     hd: 'gordoncollege.edu.ph'
 });
