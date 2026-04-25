@@ -752,9 +752,10 @@
     </div>
 
     <script type="module">
-    import { getFirebasePosts } from "../backend/homepage.js";
-    import { auth } from "../backend/db.js";
-
+    import { getFirebasePosts } from "../BACKEND/homepage.js";
+    import { auth } from "../BACKEND/db.js";
+    import { sendClaimNotification } from '../BACKEND/smtp.js';
+    
     // Update User Name
     auth.onAuthStateChanged((user) => {
         if (user) {
