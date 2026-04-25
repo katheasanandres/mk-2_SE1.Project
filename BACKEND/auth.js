@@ -6,47 +6,72 @@ const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const VALID_DOMAIN = "@gordoncollege.edu.ph";
 
-// tells Google to ONLY show accounts with this domain
-provider.setCustomParameters({
-    hd: 'gordoncollege.edu.ph'
-});
+provider.setCustomParameters({ hd: 'gordoncollege.edu.ph' });
 
-// --- GOOGLE AUTH LOGIC ---
+// UI Elements
 const googleBtn = document.getElementById('google-login-btn');
+const googleRegSection = document.getElementById('google-registration');
+const loginSection = document.getElementById('login-section');
+const submitRegBtn = document.getElementById('submit-google-reg');
+
+let pendingUser = null; // Store the user temporarily
+
 if (googleBtn) {
     googleBtn.addEventListener('click', async () => {
         try {
-            // 1. Trigger Google Sign-In popup
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
 
-            // 2. Double Security Check: Verify domain
+            // Security Check
             if (!user.email.endsWith(VALID_DOMAIN)) {
-                await signOut(auth); // Sign them out immediately
+                await signOut(auth);
                 alert("Access Denied: Only @gordoncollege.edu.ph accounts are allowed.");
                 return;
             }
 
-            // 3. Save user info to Firestore if it's their first time then we check
-            // if user actually exists in Firestore, if not we create a new account for them
+            // Check if user exists in Firestore
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) {
-                await setDoc(userRef, {
-                    firstName: user.displayName ? user.displayName.split(' ')[0] : "User",
-                    lastName: user.displayName ? user.displayName.split(' ').slice(1).join(' ') : "",
-                    email: user.email,
-                    courseCode: "PENDING", // You can update this later
-                });
+                // NEW USER: Stop and show form
+                pendingUser = user;
+                loginSection.style.display = 'none';
+                googleRegSection.style.display = 'block';
+            } else {
+                // EXISTING USER: Go straight to home
+                window.location.href = "../FRONTEND/homepage.html";
             }
-
-            // 4. Redirect to homepage
-            window.location.href = "../FRONTEND/homepage.html";
-
         } catch (err) {
-            console.error("Auth Error:", err);
             alert("Login failed: " + err.message);
+        }
+    });
+}
+
+// Handle the "Finish Registration" button
+if (submitRegBtn) {
+    submitRegBtn.addEventListener('click', async () => {
+        const course = document.getElementById('google-course-code').value;
+        const validCodes = ['123', '456', '321', '654'];
+
+        if (!validCodes.includes(course.toUpperCase())) {
+            alert("Invalid CEAS course code!");
+            return;
+        }
+
+        try {
+            // Now we create the account
+            await setDoc(doc(db, "users", pendingUser.uid), {
+                firstName: pendingUser.displayName ? pendingUser.displayName.split(' ')[0] : "User",
+                lastName: pendingUser.displayName ? pendingUser.displayName.split(' ').slice(1).join(' ') : "",
+                email: pendingUser.email,
+                courseCode: course.toUpperCase(),
+            });
+
+            alert("Registration Successful!");
+            window.location.href = "../FRONTEND/homepage.html";
+        } catch (err) {
+            alert("Error saving profile: " + err.message);
         }
     });
 }
