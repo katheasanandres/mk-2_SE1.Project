@@ -25,8 +25,6 @@
 
         body {
             background: var(--night);
-            margin: 0;
-            padding: 0;
             width: 100%;
             height: 100vh;
             overflow: hidden;
@@ -50,7 +48,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            z-index: 20;;
+            z-index: 20;
         }
         
         .app-logo {
@@ -72,11 +70,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             z-index: 100;
             width: 500px;
             margin-top: 130px;
         }
 
+        /* Waves remain as background */
         .wave-container {
             position: absolute;
             bottom: 0px;
@@ -84,85 +84,25 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
+            pointer-events: none;
         }
 
-        .wave1 {
+        .wave1, .wave2, .wave3, .wave4, .wave5, .wave6 {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             width: 110%; 
             height: auto;
-            pointer-events: none;
             animation: move-wave linear infinite;
-            animation-duration: 28s; 
-            z-index: 1; 
         }
 
-        .wave2 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 14s; 
-            z-index: 2; 
-        }
-
-        .wave3 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 7s; 
-            z-index: 3; 
-        }
-
-        .wave4 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 21s; 
-            z-index: 4; 
-        }
-
-        .wave5 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 14s; 
-            z-index: 5; 
-        }
-
-        .wave6 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 7s; 
-            z-index: 6; 
-        }
+        .wave1 { animation-duration: 28s; z-index: 1; }
+        .wave2 { animation-duration: 14s; z-index: 2; }
+        .wave3 { animation-duration: 7s; z-index: 3; }
+        .wave4 { animation-duration: 21s; z-index: 4; }
+        .wave5 { animation-duration: 14s; z-index: 5; }
+        .wave6 { animation-duration: 7s; z-index: 6; }
 
         @keyframes move-wave {
             0% { transform: translateX(0); }
@@ -176,7 +116,7 @@
             font-weight: 180;
             color: var(--white); 
             margin-bottom: 50px; 
-            font-size: 100px; 
+            font-size: 60px; /* Reduced slightly to fit better */
         }
 
         label { 
@@ -187,27 +127,11 @@
             text-align: center;
         }
 
-        .p-notice {
-            text-align: center;
-            color: var(--white);
-            margin-bottom: 60px;
-        }
+        .p-notice { text-align: center; color: var(--white); margin-bottom: 30px; }
+        .p-con { text-align: center; color: var(--night); margin-top: 20px; }
 
-        .p-con {
-            text-align: center;
-            color: var(--night);
-            margin-bottom: 60px;
-        }
-
-        a {
-            color: var(--white);
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: var(--night);
-            text-decoration: underline;
-        }
+        a { color: var(--white); text-decoration: none; }
+        a:hover { color: var(--baby-blue); text-decoration: underline; }
     
         button { 
             width: 100%; 
@@ -218,39 +142,22 @@
             border-radius: 20px; 
             cursor: pointer; 
             font-family: 'Poetsen One', sans-serif;
-            margin-bottom: 150px;
+            margin-bottom: 20px;
         }
 
         button:hover {
             transform: scale(1.05);
-            background: rgb(30,58,106,0.3);
+            background: var(--baby-blue);
             color: var(--white);
         }
 
-        @keyframes move-wave {
-            0%, 100% { transform: translateX(0%); }
-            50% { transform: translateX(-5%); }
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0%); }
-            50% { transform: translateY(-3%); }
-        }
-
-        @keyframes movement {
-            0%, 100% { transform: translateX(0%); }
-            50% { transform: translateX(2%); }
-        }
-
-        @media (max-width: 1100px) {
-            .glass { transform: scale(0.7); right: -10%; }
-        }
-
-        @media (max-width: 768px) {
-            body { justify-content: center; }
-            .main-container { padding-left: 0; justify-content: center; }
-            .glass { display: none; }
-            .auth-container { width: 95%; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            border: none;
+            text-align: center;
         }
     </style>
 </head>
@@ -276,27 +183,20 @@
             <section id="login-section" class="active">
                 <h1>CEAS FIND</h1>
                 <label>IMPORTANT:</label>
-                <p class="p-notice">Sign in with your Gordon College domain account to access the platform. Only CEAS accounts are to be accepted.</p>
-                <button type="button" id="google-login-btn">Sign Up with Google</button>
-                <p class="p-con">By signing in, you agree to our <a class="conditions" href="/tou.html">Terms of Use</a>  and <a class="conditions" href="/privacy.html">Privacy Policy</a>.</p>
+                <p class="p-notice">Sign in with your Gordon College domain account. Only CEAS accounts are accepted.</p>
+                <button type="button" id="google-login-btn">Sign In with Google</button>
+                <p class="p-con">By signing in, you agree to our <a href="/tou.html">Terms of Use</a> and <a href="/privacy.html">Privacy Policy</a>.</p>
             </section> 
-        </div>
 
             <section id="google-registration" style="display: none;">
                 <h1>Complete Registration</h1>
                 <label>Enter CEAS Course Code:</label>
-                <input type="text" id="google-course-code" placeholder="e.g. 123" style="width: 100%; padding: 10px; margin-bottom: 20px;">
+                <input type="text" id="google-course-code" placeholder="e.g. 123">
                 <button type="button" id="submit-google-reg">Finish Registration</button>
             </section>
-            
+        </div>
     </div>
 
     <script type="module" src="../BACKEND/auth.js"></script>
-    <script>
-        function showSection(id) {
-            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-    </script>
 </body>
 </html>

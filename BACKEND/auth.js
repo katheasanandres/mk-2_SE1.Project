@@ -60,12 +60,50 @@ if (submitRegBtn) {
         }
 
         try {
-            // Now we create the account
+            // create account
             await setDoc(doc(db, "users", pendingUser.uid), {
                 firstName: pendingUser.displayName ? pendingUser.displayName.split(' ')[0] : "User",
                 lastName: pendingUser.displayName ? pendingUser.displayName.split(' ').slice(1).join(' ') : "",
                 email: pendingUser.email,
                 courseCode: course.toUpperCase(),
+            });
+
+            alert("Registration Successful!");
+            window.location.href = "../FRONTEND/homepage.html";
+        } catch (err) {
+            alert("Error saving profile: " + err.message);
+        }
+    });
+}
+
+if (submitRegBtn) {
+    submitRegBtn.addEventListener('click', async () => {
+        const inputCode = document.getElementById('google-course-code').value.toUpperCase();
+
+        try {
+            // 1. Fetch valid codes from Firestore
+            const configRef = doc(db, "config", "codes");
+            const configSnap = await getDoc(configRef);
+
+            if (!configSnap.exists()) {
+                alert("Error: Course code configuration missing.");
+                return;
+            }
+
+            const validCodes = configSnap.data().list; // This is the array from your Firestore
+
+            // 2. Validate
+            if (!validCodes.includes(inputCode)) {
+                alert("Invalid CEAS course code!");
+                return;
+            }
+
+            // 3. Save the new user
+            await setDoc(doc(db, "users", pendingUser.uid), {
+                firstName: pendingUser.displayName ? pendingUser.displayName.split(' ')[0] : "User",
+                lastName: pendingUser.displayName ? pendingUser.displayName.split(' ').slice(1).join(' ') : "",
+                email: pendingUser.email,
+                courseCode: inputCode,
             });
 
             alert("Registration Successful!");
