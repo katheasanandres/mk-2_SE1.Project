@@ -1,32 +1,36 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const nodemailer = require("nodemailer");
 
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
-const logger = require("firebase-functions/logger");
+// 1. Configure the email transporter
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'your-email@gordoncollege.edu.ph', // Your official email
+        pass: 'your-16-character-app-password'   // Use an App Password, NOT your normal password
+    }
+});
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+// 2. The Trigger: This function runs automatically whenever a new 'items' document is created
+exports.sendEmailNotification = onDocumentCreated("items/{itemId}", async (event) => {
+    const snapshot = event.data;
+    const itemData = snapshot.data();
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+    // 3. Define the email content
+    const mailOptions = {
+        from: 'CEAS Find System <no-reply@ceasfind.com>',
+        to: 'admin@gordoncollege.edu.ph', 
+        subject: `New Posting: ${itemData.title || 'Unknown Item'}`,
+        text: `A new item has been posted! 
+               Category: ${itemData.category || 'N/A'}
+               Description: ${itemData.description || 'No description provided.'}
+               Please check the portal to review the listing.`
+    };
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+    // 4. Send the email
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log("Email notification sent successfully!");
+    } catch (error) {
+        console.error("Error sending email:", error);
+    }
+});
