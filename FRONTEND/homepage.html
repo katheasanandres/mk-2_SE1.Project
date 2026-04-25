@@ -755,7 +755,7 @@
     import { getFirebasePosts } from "../BACKEND/homepage.js";
     import { auth } from "../BACKEND/db.js";
     import { sendClaimNotification } from '../BACKEND/smtp.js';
-    
+
     // Update User Name
     auth.onAuthStateChanged((user) => {
         if (user) {
@@ -958,6 +958,19 @@
     updateNotificationPreview();
     updatePendingPreview();
     updateReviewPreview();
+});
+
+document.getElementById('claimButton').addEventListener('click', () => {
+    // 1. Get the data from your page inputs
+    const secretInput = document.getElementById('secretInput').value;
+    
+    // 2. Call the function
+    sendClaimNotification(
+        "Student Name",        // You can get this from auth.currentUser
+        "Lost Item Name",      // Get this from your database object
+        secretInput,           // The secret detail the user typed
+        "reporter@email.com"   // The reporter's email from the DB
+    );
 });
 </script>
 </body>
