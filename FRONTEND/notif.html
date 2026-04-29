@@ -11,10 +11,9 @@
 
     <style>
         :root {
-            --ivory: #ece3da;
+            --white: #ffffff;
             --baby-blue: #a3b8ed;
-            --sand: #d1bda4;
-            --clay: #8b7f71;
+            --bg-white: #e3e3e3;
             --night: #1e3a6a;
             --onyx: #1b1b1b;
         }
@@ -26,15 +25,11 @@
         }
 
         body {
-            background-color: var(--ivory);
+            background-color: var(--white);
             overflow: hidden;
             width: 100%;
             height: 100vh;
             display: flex;
-        }
-
-        #sidebar-check {
-            display: none;
         }
 
         .main-container {
@@ -46,59 +41,113 @@
         }
 
         .side-bar {
-            width: 250px;
+            width: 220px;
             height: 100vh;
             background-color: var(--night);
-            color: var(--ivory);
+            color: var(--white);
             display: flex;
             flex-direction: column;
-            padding: 15px;
+            padding: 10px;
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
             overflow: hidden;
             flex-shrink: 0;
         }
 
-        #sidebar-check:checked ~ .main-container .side-bar {
-            width: 80px;
-        }
-
         .sidebar-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            height: 40px;
-            gap: 12px;
+            margin-bottom: 20px;
+            padding: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 100%;
+            flex-shrink: 0;
         }
 
-        .app-logo { 
-            width: 30px; 
-            height: auto; 
-            flex-shrink: 0; 
+        .app-logo {
+            width: 25px;
+            height: auto;
+            transform: scaleX(-1);
+            flex-shrink: 0;
         }
 
         h4 {
+            font-size: 15px;
             font-family: 'Poetsen One', sans-serif;
-            font-size: 18px;
+            color: var(--white);
+            flex-grow: 1;
+            margin-left: 15px;
             white-space: nowrap;
-            padding-right: 30px;
+            overflow: hidden;
         }
 
-        .menu-toggle { 
-            cursor: pointer; 
-            user-select: none; 
-            min-width: 50px; 
+        .menu-toggle {
+            cursor: pointer;
             display: flex;
             align-items: center;
-            margin-left: 13px;
-            font-size: 30px;
+            justify-content: center;
+            margin-left: auto; 
+            margin-right: -13px;
+        }
+
+        .account {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            transition: 0.3s;
+        }
+
+        .logout-btn {
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        #sidebar-check {
+            display: none;
+        }
+
+        #sidebar-check:checked ~ .main-container .side-bar {
+            width: 61.5px; 
+        }
+
+        #sidebar-check:checked ~ .main-container .side-bar .account {
+            justify-content: center;
+        }
+
+        #sidebar-check:checked ~ .main-container .side-bar .account .logout-btn {
+            margin-right: 0;
+        }
+
+        #sidebar-check:checked ~ .main-container .side-bar .sidebar-header {
+            justify-content: center;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        #sidebar-check:checked ~ .main-container .side-bar .menu-toggle {
+            margin-left: 0;
+        }
+
+        #sidebar-check:checked ~ .main-container .nav-text,
+        #sidebar-check:checked ~ .main-container h4,
+        #sidebar-check:checked ~ .main-container .category-label,
+        #sidebar-check:checked ~ .main-container .account h3,
+        #sidebar-check:checked ~ .main-container .user-welcome,
+        #sidebar-check:checked ~ .main-container .app-logo {
+            display: none;
+        }
+
+        #others-check { 
+            display: none; 
         }
 
         .nav-list { 
-            color: var(--ivory); 
+            color: var(--white); 
             display: flex; 
             flex-direction: column; 
-            gap: 2px;
+            gap: 5px;
             flex: 1;
             font-family: 'Roboto Condensed';
         }
@@ -108,70 +157,34 @@
             align-items: center;
             padding: 5px 12px;
             text-decoration: none;
-            color: var(--ivory);
+            color: var(--white);
             border-radius: 8px; 
             transition: 0.2s;
             white-space: nowrap;
-            font-size: 15px;
-        }
-
-        .nav-item:hover { 
-            background-color: var(--baby-blue); 
-            color: var(--night);
-        }
-
-        .nav-divider {
-            opacity: 0.2; 
-            margin: 10px 0;
-        }
-
-        .material-symbols-outlined { 
-            min-width: 50px; 
-            font-size: 24px; 
-            margin-right: -15px;
-        }
-
-        .category-label {
-            font-size: 17px;
-            font-weight: 700;
-            margin: 5px 0 10px 12px;
-            opacity: 0.8;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        #others-check { 
-            display: none; 
-        }
-
-        .search-category {
-            width: 100%;
-            height: 0;
-            overflow: hidden;
-            background: var(--ivory);
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            transition: height 0.3s ease, margin 0.3s ease;
-        }
-
-        #others-check:checked ~ .search-category { 
-            height: 35px; 
-            margin: 10px 0; 
-        }
-
-        .search-category input {
-            border: none;
-            background: transparent;
-            outline: none;
-            flex: 1;
             font-size: 13px;
         }
 
-        .category-search-icon { 
-            font-size: 18px !important; 
-            color: var(--clay); 
+        .nav-item:hover { 
+            background-color: var(--white); 
+            color: var(--night);
+        }
+
+        .nav-text {
+            left: 100px;
+        }
+
+        .material-symbols-outlined { 
+            min-width: 30px; 
+            font-size: 18px; 
+        }
+
+        .category-label {
+            font-family: 'Poetsen One', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            margin: 5px 0 10px 12px;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .content-area {
@@ -184,28 +197,45 @@
         }
 
         .top-bar {
-            padding: 35px 20px;
+            padding: 20px 10px 10px 10px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: var(--ivory);
-            box-shadow: var(--onyx) 0 0 6px -1px;
-            height: 60px;
             width: 100%;
-            z-index: 95;
+            z-index: 110;
+            gap: 20px;
         }
 
         .page-title {
-            font-family: 'Roboto Condensed';
+            font-family: 'Poetsen One', sans-serif;
+            font-weight: 100;
             color: var(--night);
-            font-size: 24px;
+            font-size: 23px;
+            padding-left: 10px;
+        }
+
+        input::placeholder {
+            color: var(--night);
+            opacity: 10;
+        }
+
+        .search-report-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-report-group a {
+            text-decoration: none;
         }
 
         .search-main {
-            width: 40%;
-            height: 40px;
-            background: var(--sand);
-            border-radius: 50px;
+            width: 250px;
+            height: 35px;
+            background: var(--white);
+            border-radius: 10px;
+            border: 1px solid var(--bg-white);
             display: flex;
             align-items: center;
             padding: 0 15px;
@@ -216,45 +246,50 @@
             background: transparent; 
             outline: none; 
             flex: 1; 
-            color: var(--onyx); 
+            color: var(--night); 
         }
 
         #search-icon { 
-            color: var(--clay); 
-            min-width: 24px; 
+            color: var(--night); 
+            min-width: 10px; 
             font-size: 20px;
         }
 
-        .report-wrapper {
-            width: 45px;
-            height: 45px;
-            position: relative;
-            flex-shrink: 0;
+        .search-icon-btn {
+            background-color: transparent;
+            outline: transparent;
+            border: 0px;
         }
 
-        .report-item { 
-            position: absolute;
-            right: 0;
-            display: flex; 
-            align-items: center; 
-            justify-content: flex-start;
-            cursor: pointer; 
-            background: var(--night);
-            color: var(--ivory);
-            width: 45px; 
-            height: 45px;
+        .report-wrapper {
+            width: auto;
+            height: 30px;
+            position: relative;
+            flex-shrink: 0;
+            margin-right: 16px;
+            top: -3px;
+        }
+
+        .report-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: var(--white);
+            color: var(--night);
+            border: 1px solid var(--bg-white);
+            width: 38px;
+            height: 35px;
             padding: 0 10px;
-            border: 3px solid var(--sand);
-            border-radius: 50px;
+            border-radius: 10px;
             overflow: hidden;
             white-space: nowrap;
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
         }
 
         .report-icon {
-            font-size: 24px !important;
-            max-width: 25px;
-            margin-right: 10px;
+            max-width: 18px;
+            margin-right: 5px;
         }
 
         .report-text {
@@ -265,13 +300,38 @@
         }
 
         .report-item:hover { 
-            width: 130px;
+            width: 113px;
             background: var(--night);
+            color: var(--white);
+            border: 1px solid var(--bg-white);
         }
 
         .report-item:hover .report-text {
             opacity: 1;
             transition-delay: 0.1s;
+        }
+
+        .account { 
+            padding-top: 15px; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .user-welcome { 
+            font-size: 13px; 
+            font-family: 'Roboto Condensed'; 
+        }
+
+        .logout-btn { 
+            font-size: 18px !important; 
+            cursor: pointer; 
+            margin-right: -15px;
         }
 
         .main-scroll-view {
@@ -281,139 +341,94 @@
             grid-template-columns: 1fr 300px;
             gap: 10px;
             overflow-x: hidden;
-            padding: 30px;
+            padding: 10px 20px;
             overflow-y: auto;
             scrollbar-gutter: stable;
         }
 
-        #saved-feed-container { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            margin-top: 0; 
+        .main-scroll-view::-webkit-scrollbar { 
+            width: 6px; 
         }
 
-        .empty-msg { 
-            text-align: center; 
-            color: var(--clay); 
-            margin-top: 200px; 
-            font-style: italic; 
+        .main-scroll-view::-webkit-scrollbar-thumb { 
+            background: var(--night); 
+            border-radius: 10px; 
         }
 
-        .right-panel { 
+        .main-scroll-view::-webkit-scrollbar-track { 
+            background: transparent; 
+        }
+
+        .right-panel {
             display: flex;
             flex-direction: column;
             gap: 10px;
             z-index: 100;
-            margin-top: -100px;
             position: sticky;
-            top: 20px; 
+            top: 0; 
             height: fit-content;
         }
 
         .preview-card {
-            background: white;
+            background: var(--white);
             padding: 20px;
-            border-radius: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--bg-white);
             box-shadow: 0 4px 6px rgba(0,0,0,0.03);
         }
 
         .preview-card h5 { 
             color: var(--night); 
             margin-bottom: 10px; 
-            border-bottom: 1px solid var(--ivory); 
+            border-bottom: 1px solid var(--white); 
             padding-bottom: 5px; 
             font-size: 18px;
         }
 
         .preview-empty { 
             font-size: 12px; 
-            color: var(--clay); 
+            color: var(--night); 
         }
 
-        .account { 
-            padding-top: 15px; 
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
+        .preview-card img {
+            display: block;
+            width: calc(100% + 38px) !important;
+            margin-left: -19px !important;
+            margin-right: -19px !important;
+            background-color: var(--white) !important;
         }
 
-        .user-welcome { 
-            font-size: 13px; 
-            font-family: 'Roboto Condensed'; 
-        }
-
-        .logout-btn { 
-            font-size: 24px !important; 
-            cursor: pointer; 
-        }
-
-        #sidebar-check:checked ~ .main-container .app-logo,
-        #sidebar-check:checked ~ .main-container .nav-text,
-        #sidebar-check:checked ~ .main-container h4,
-        #sidebar-check:checked ~ .main-container .category-label,
-        #sidebar-check:checked ~ .main-container .search-category,
-        #sidebar-check:checked ~ .main-container .user-welcome {
-            display: none;
-        }
-
-        .saved-card {
-            top: 19px;
-            bottom: -20px;
-        }
-
-        #notification-feed-container {
-            min-height: 100%;
+        .empty-msg { 
+            text-align: center; 
+            color: var(--onyx); 
+            margin-top: 200px; 
+            font-style: italic; 
+            font-family: 'Roboto Condensed';
         }
 
         .notif-row {
-            background: white; 
-            padding: 25px; 
-            border-radius: 12px; 
-            margin-top: 20px;
-            margin-bottom: -10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            gap: 15px; 
-            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid var(--bg-white);
+            border-radius: 10px;
+            background-color: var(--white);
+            margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: background-color 0.2s;
         }
-
-        .notif-row:hover {
-            background-color: rgba(255,255,255,0.3);
-        }
-
         .notif-content {
-            flex: 1;
-        }
-
-        .notif-content p {
-            font-size: 16px;
+            font-size: 13px;
             color: var(--onyx);
         }
-
         .notif-username {
-            font-weight: 900;
-            color: var(--onyx);
+            font-weight: bold;
+            color: var(--night);
+            margin-right: 5px;
         }
-
         .notif-bell {
-            color: var(--clay);
-            font-size: 22px !important;
-            margin: 0; 
-            flex-shrink: 0;
-        }
-
-        @media (max-width: 1100px) {
-            .oc { transform: scale(0.8); right: 5%; }
-        }
-
-        @media (max-width: 768px) {
-            .oc { bottom: 5%; right: -50px; transform: scale(0.6); }
-            .gc-logo, .ceas-logo { width: 70px; }
+            font-size: 18px;
+            color: var(--night);
         }
     </style>
 </head>
@@ -424,7 +439,7 @@
     <div class="main-container">
         <div class="side-bar">
             <div class="sidebar-header">
-                <img class="app-logo" src="/elements/app-logo.png">
+                <img class="app-logo" src="/elements/user icon white.png">
                 <h4>CEAS FIND</h4>
                 <label for="sidebar-check" class="menu-toggle">
                     <span class="material-symbols-outlined">menu</span>
@@ -432,13 +447,13 @@
             </div>
 
             <nav class="nav-list">
-                <a href="/homepage.html" class="nav-item">
+                <a href="/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
-                    <span class="nav-text">Saved</span>
+                    <span class="nav-text">Bookmark</span>
                 </a>
                 <a href="/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
@@ -460,69 +475,67 @@
                 <hr style="opacity: 0.2; margin: 10px 0;">
                 <p class="category-label">Categories</p>
 
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
                     <span class="material-symbols-outlined">checkroom</span>
                     <span class="nav-text">Clothing & Personal Gear</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" onclick="filterCategory('#Documents & Cards')">
                     <span class="material-symbols-outlined">style</span>
                     <span class="nav-text">Documents & Cards</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" onclick="filterCategory('#Electronics & Gadgets')">
                     <span class="material-symbols-outlined">devices</span>
                     <span class="nav-text">Electronics & Gadgets</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" onclick="filterCategory('#Keys & Accessories')">
                     <span class="material-symbols-outlined">vpn_key</span>
                     <span class="nav-text">Keys & Accessories</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" onclick="filterCategory('#Stationery & Books')">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="nav-text">Stationery & Books</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" onclick="filterCategory('#Wallets & Bags')">
                     <span class="material-symbols-outlined">account_balance_wallet</span>
                     <span class="nav-text">Wallets & Bags</span>
                 </a>
-                <input type="checkbox" id="others-check">
-                <label for="others-check" class="nav-item" style="cursor:pointer">
-                    <span class="material-symbols-outlined">add_circle</span>
+                <a href="#" class="nav-item" onclick="filterCategory('Others')">
+                    <span class="material-symbols-outlined">more_horiz</span>
                     <span class="nav-text">Others</span>
-                </label>
-                <div class="search-category">
-                    <input type="text" placeholder="Search other categories...">
-                    <span class="material-symbols-outlined" style="font-size:18px; color:var(--clay)">search</span>
-                </div>
+                </a>
             </nav>
 
             <div class="account">
-                <h3 style="font-size: 14px; margin-top: 10px;">
+                <h3 style="font-size: 14px;">
                     <?php echo $successLogin ? "User LOGGED OUT" : "Welcome, " . $user; ?>
                 </h3>
-                <span class="material-symbols-outlined">logout</span>
+                <span class="logout-btn material-symbols-outlined">logout</span>
             </div>
         </div>
 
         <div class="content-area">
-            <header class="top-bar">
-                <h1 class="page-title">Bookmark</h1>
-                <div class="search-main">
-                    <input class="search-box" type="text" placeholder="Search…">
-                    <span class="material-symbols-outlined" id="search-icon">search</span>
-                </div>
-                <a href="/posting-page.html">
-                    <div class="report-wrapper">
-                        <div class="report-item">
-                            <img class="report-icon" src="/elements/report-icon.png">
-                            <h5 class="report-text">Report Item!</h5>
-                        </div>
+           <header class="top-bar">
+                <h1 class="page-title">Notification</h1>
+                
+                <div class="search-report-group">
+                    <div class="search-main">
+                        <input class="search-box" type="text" placeholder="Search…">
+                        <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
-                </a>
+                    
+                    <a href="/posting-page.html">
+                        <div class="report-wrapper">
+                            <div class="report-item">
+                                <span class="material-symbols-outlined">post_add</span>
+                                <h5 class="report-text">Report Item!</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </header>
             
             <div class="main-scroll-view">
                 <div id="notification-feed-container"></div>
-
                 <div class="right-panel">
                     <div class="preview-card" id="pending-card">
                         <h5>Pending Claim</h5>
@@ -537,48 +550,80 @@
         </div>
     </div>
 
-<script>
-    if(!localStorage.getItem('app_notifications')){
-        const demoNotifs = [
-            { type: 'upload', user: 'Internal Security Unit', message: 'just posted', time: '1 min ago' },
-            { type: 'claim_attempt', user: '202410084', message: 'is trying to claim the Purple Tumbler!', time: '5 mins ago' },
-            { type: 'sync', user: 'System', message: 'Purple Tumbler with stickers has been claimed!', time: '10 mins ago' },
-            { type: 'email_proof', user: 'User_99', message: 'sent proof via email for your posted item.', time: '1 hour ago' }
-        ];
-        localStorage.setItem('app_notifications', JSON.stringify(demoNotifs));
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+                const sidebarCheck = document.getElementById('sidebar-check');
 
-    function renderNotifications() {
-        const container = document.getElementById('notification-feed-container');
-        const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+                const savedState = localStorage.getItem('sidebarCollapsed');
+                const isCollapsed = (savedState !== 'false'); 
 
-        if (logs.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:50px; color:var(--clay);">No notifications yet.</div>`;
-            return;
+                sidebarCheck.checked = isCollapsed;
+
+                sidebarCheck.addEventListener('change', () => {
+                    localStorage.setItem('sidebarCollapsed', sidebarCheck.checked);
+                });
+            });
+
+        function renderNotifications() {
+            const container = document.getElementById('notification-feed-container');
+            if (!container) return;
+
+            const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+
+            if (logs.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:#999;">No notifications.</div>`;
+                return;
+            }
+
+            container.innerHTML = logs.map(notif => `
+                <div class="notif-row">
+                    <div class="notif-content">
+                        <span class="notif-username">${notif.user}</span> ${notif.message}
+                    </div>
+                    <span class="material-symbols-outlined notif-bell">notifications</span>
+                </div>
+            `).join('');
         }
 
-        container.innerHTML = logs.map(notif => `
-            <div class="notif-row">
-                <div class="notif-content">
-                    <p><span class="notif-username">${notif.user}</span> ${notif.message}</p>
-                </div>
-                <span class="material-symbols-outlined notif-bell">notifications</span>
-            </div>
-        `).join('');
-    }
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'app_notifications') {
+                renderNotifications();
+            }
+        });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const updatePreviews = () => {
+        function addNotification(user, message) {
+            const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+
+            const newNotif = { user, message, time: new Date().toISOString() };
+            logs.unshift(newNotif); 
+
+            localStorage.setItem('app_notifications', JSON.stringify(logs));
+
+            renderNotifications();
+        }
+
+        document.addEventListener('DOMContentLoaded', renderNotifications);
+
+        document.querySelectorAll('.preview-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.onclick = () => {
+                const title = card.querySelector('h5').innerText;
+                if(title.includes('Pending')) window.location.href = 'pending.html';
+                if(title.includes('Review')) window.location.href = 'review.html';
+            };
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
             const updatePendingPreview = () => {
                 const pendingBox = document.getElementById('pending-preview');
                 if (!pendingBox) return;
 
                 const pending = JSON.parse(localStorage.getItem('user_claims')) || [];
                 if (pending.length === 0) {
-                    pendingBox.innerHTML = '<p style="font-size:12px; color:var(--clay);">No pending claims.</p>';
+                    pendingBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">No pending claims.</p>';
                 } else {
                     pendingBox.innerHTML = pending.slice(0, 2).map(p => `
-                        <p style="font-size:12px; color:var(--onyx);">• ${p.itemName || 'Item Claim'}</p>
+                        <p style="font-size:13px; color:var(--onyx);">• ${p.itemName || 'Item Claim'}</p>
                     `).join('');
                 }
             };
@@ -591,19 +636,15 @@
                 const reviews = logs.filter(n => n.type === 'email_proof' || n.type === 'claim_attempt');
 
                 if (reviews.length === 0) {
-                    reviewBox.innerHTML = '<p style="font-size:12px; color:var(--clay);">Nothing to review.</p>';
+                    reviewBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">Nothing to review.</p>';
                 } else {
-                    reviewBox.innerHTML = `<p style="font-size:12px; color:var(--night); font-weight:bold;">• ${reviews.length} new proof(s) to check</p>`;
+                    reviewBox.innerHTML = `<p style="font-size:13px; color:var(--onyx); font-weight:bold;">• ${reviews.length} new proof(s) to check</p>`;
                 }
             };
-        }
 
-        document.getElementById('pending-card').onclick = () => window.location.href = 'pending.html';
-        document.getElementById('review-card').onclick = () => window.location.href = 'review.html';
-
-        updatePreviews();
-        renderNotifications();
-    });
-</script>
+            updatePendingPreview();
+            updateReviewPreview(); 
+        });
+    </script>
 </body>
 </html>
