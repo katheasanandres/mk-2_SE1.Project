@@ -407,7 +407,6 @@
         #feed-container { 
             display: flex; 
             flex-direction: column; 
-
             margin-top: 0;
             z-index: 100;
         }
@@ -447,7 +446,7 @@
         }
 
         .preview-empty { 
-            font-size: 12px; 
+            font-size: 15px; 
             color: var(--night); 
         }
 
@@ -461,10 +460,10 @@
 
         .post-card {
             background: var(--white);
-            padding: 30px;
             border-radius: 10px;
             border: 1px solid var(--bg-white);
             box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            padding: 20px;
         }
 
         .post-actions {
@@ -681,21 +680,24 @@
                     postCard.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
                             <div>
-                                <strong style="color: var(--night); font-size: 20px;">${post.user}</strong>
-                                <p style="font-size: 12px; color: var(--onyx);">${post.timestamp} | ${post.category}</p>
+                                <a href="pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 20px; text-decoration: none;">
+                                    <strong>${post.user}</strong>
+                                </a>
+                                <p style="font-size: 13px; color: var(--onyx);">${post.timestamp} | ${post.category}</p>
                             </div>
-                            <span id="status-${post.id}" style="background: ${sColor}; color: white; padding: 10px 30px; border-radius: 20px; font-size: 13px; font-weight: 600;">
+                            <span id="status-${post.id}" style="background: ${sColor}; color: white; padding: 10px 30px; border-radius: 10px; font-size: 15px; font-weight: 600;">
                                 ${displayStatus}
                             </span>
                         </div>
-                        <div style="margin-bottom: 10px; font-size: 13px;">
+                        <div style="margin-bottom: 10px; font-size: 15px;">
                             <p><strong>Lost:</strong> ${post.lostItem}</p>
                             <p><strong>Found:</strong> ${post.foundItem}</p>
                             <p style="margin-top: 5px; color: #444;">${post.description}</p>
                         </div>
-                        ${post.image && post.image !== window.location.href ? 
-                            `<img src="${post.image}" style="max-height: 400px; object-fit: contain; margin-top: 10px; justify-self: center;">` : ''}
-                        
+                        <div style="width: 100%; margin-top: 10px; display: flex; justify-content: center;">
+                            ${post.image && post.image !== window.location.href ? 
+                            `<img src="${post.image}" style="width: 100%; height: auto; object-fit: contain; border-radius: 10px;">` : ''}
+                        </div> 
                         <div class="post-actions">
                             <button class="action-btn ${isPermanentlyClaimed ? 'active' : ''}" 
                                     onclick="handleClaim(${post.id})" 
@@ -828,7 +830,7 @@
                 } else {
                     const latest = logs.slice(0, 3);
                     notifBox.innerHTML = latest.map(n => `
-                        <div style="font-size:13px; margin-bottom:8px; border-left:3px solid var(--onyx); padding-left:8px;">
+                        <div style="font-size: 13px; margin-bottom:8px; border-left:3px solid var(--onyx); padding-left:8px;">
                             <p style="margin:0; color:var(--onyx); font-weight:500;">${n.message}</p>
                             <small style="color:var(--onyx); font-size:13px;">${n.time || 'Just now'}</small>
                         </div>

@@ -385,7 +385,7 @@
                 const sColor = statusColors[post.status] || '#8e8e8e';
                 
                 const previewHtml = `  
-                    <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Replying to:</p>
+                    <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Syncing to:</p>
                     <div class="proof-send-card">
                         <div style="width: 50px; height: 50px; flex-shrink: 0;">
                             ${post.image ? 
@@ -398,7 +398,7 @@
                             <p style="font-size: 13px; color: #333;"><strong>Item:</strong> ${post.lostItem || post.foundItem || 'Item'}</p>
                             <p style="font-size: 12px; color: #8e8e8e;">${post.timestamp || ''}</p>
                         </div>
-                        <span style="background: ${sColor}; color: white; padding: 8px 8px; border-radius: 6px; font-size: 11px;">${post.status}</span>
+                        <span style="background: ${sColor}; color: white; padding: 8px 8px; border-radius: 10px; font-size: 11px;">${post.status}</span>
                     </div>
                 `;
                 document.getElementById('originalPostPreview').innerHTML = previewHtml;

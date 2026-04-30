@@ -598,7 +598,9 @@
                 </div>
 
                 <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
-                    <strong style="color: #1e3a6a; font-size: 13px; line-height: 1.2;">${livePost.user || 'Unknown'}</strong>
+                    <a href="pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 15px; text-decoration: none;">
+                        <strong>${post.user}</strong>
+                    </a>
                     <p style="font-size: 13px; color: #333; margin: 0;">
                         <strong>Lost:</strong> ${livePost.lostItem || 'Unknown'} 
                         <span style="color: #8e8e8e; margin-left: 1px;">|| Found: ${livePost.foundItem || 'Unknown'}</span>
@@ -609,7 +611,7 @@
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 120px;">
-                    <span id="status-${livePost.id}" style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
+                    <span id="status-${livePost.id}" style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
                         ${currentStatus}
                     </span>
                     

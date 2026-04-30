@@ -570,7 +570,7 @@
                 pendingContainer.innerHTML = '';
 
                 if (pendingToVerify.length === 0) {
-                    pendingContainer.innerHTML = `<p style="text-align:center; color:gray; margin-top:50px;">Nothing to review at the moment.</p>`;
+                    pendingContainer.innerHTML = `<p class="empty-msg">Nothing to review at the moment.</p>`;
                     return;
                 }
 
@@ -603,7 +603,7 @@
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 8px; min-width: 180px; padding-top: 18px;">
                                 <div style="display: flex; width: 100%;">        
-                                    <span style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
+                                    <span style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
                                         ${currentStatus}
                                     </span>
                                 </div> 
