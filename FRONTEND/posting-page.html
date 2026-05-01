@@ -406,97 +406,94 @@
             </div>
         </div>
 
-        <script>
-            const currentUser = { name: "$userName", role: "$role" };
-            document.getElementById('displayUserName').innerText = currentUser.name;
-            document.getElementById('displayUserRole').innerText = currentUser.role;
+        <script type="module">
+    // 1. Import your Firebase tools and the upload function
+    import { auth } from "./BACKEND/db.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { uploadPost } from "./BACKEND/postingpage.js";
 
-            const categories = ["Clothing & Personal Gear", "Documents & Cards", "Electronics & Gadgets", "Keys & Accessories", "Stationery & Books", "Wallets & Bags"];
-            const catInput = document.getElementById('categoryInput');
-            const sugBox = document.getElementById('suggestionBox');
+    // 2. Handle User Display (Wait for Firebase to load the user)
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('displayUserName').innerText = user.displayName || "User";
+            // Note: Role is usually handled via Firestore, but for now we'll keep it static
+            document.getElementById('displayUserRole').innerText = "Student"; 
+        } else {
+            // If not logged in, kick them back to login page
+            window.location.href = "auth.html";
+        }
+    });
 
-            catInput.addEventListener('input', (e) => {
-                const val = e.target.value;
-                if (val.includes('#')) {
-                    const query = val.split('#').pop().toLowerCase();
-                    const matches = categories.filter(c => c.toLowerCase().includes(query));
-                    if (matches.length > 0) {
-                        sugBox.innerHTML = matches.map(m => `<div onclick="setCat('${m}')">#${m}</div>`).join('');
-                        sugBox.style.display = 'block';
-                    } else { sugBox.style.display = 'none'; }
-                } else { sugBox.style.display = 'none'; }
-            });
+    // 3. Category Suggestion Logic (Keep this as is, it's great!)
+    const categories = ["Clothing & Personal Gear", "Documents & Cards", "Electronics & Gadgets", "Keys & Accessories", "Stationery & Books", "Wallets & Bags"];
+    const catInput = document.getElementById('categoryInput');
+    const sugBox = document.getElementById('suggestionBox');
 
-            function setCat(name) {
-                catInput.value = "#" + name;
-                sugBox.style.display = 'none';
-            }
-
-            document.querySelectorAll('.inputs-area textarea').forEach(textarea => {
-                textarea.addEventListener('input', function() {
-                    this.style.height = 'auto';
-                    this.style.height = (this.scrollHeight) + 'px';
+    catInput.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val.includes('#')) {
+            const query = val.split('#').pop().toLowerCase();
+            const matches = categories.filter(c => c.toLowerCase().includes(query));
+            if (matches.length > 0) {
+                sugBox.innerHTML = matches.map(m => `<div class="sug-item">#${m}</div>`).join('');
+                sugBox.style.display = 'block';
+                
+                // Add click listeners to new suggestions
+                document.querySelectorAll('.sug-item').forEach(item => {
+                    item.onclick = () => {
+                        catInput.value = item.innerText;
+                        sugBox.style.display = 'none';
+                    };
                 });
-            });
+            } else { sugBox.style.display = 'none'; }
+        } else { sugBox.style.display = 'none'; }
+    });
 
-            document.getElementById('imageInput').addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        const img = document.getElementById('previewImg');
-                        img.src = event.target.result;
-                        img.style.display = 'block';
-                        document.getElementById('uploadPlaceholder').style.display = 'none';
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
+    // 4. UI Textarea Auto-expand
+    document.querySelectorAll('.inputs-area textarea').forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    });
 
-            function changeStatusColor(select) {
-                const colors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e', 'Synced': '#1e3a6a' };
-                select.style.backgroundColor = colors[select.value];
+    // 5. Image Preview Logic
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = document.getElementById('previewImg');
+                img.src = event.target.result;
+                img.style.display = 'block';
+                document.getElementById('uploadPlaceholder').style.display = 'none';
             }
+            reader.readAsDataURL(file);
+        }
+    });
 
-            function handlePostSubmit() {
-                const lostItem = document.querySelectorAll('.inputs-area textarea')[0].value;
-                const foundItem = document.querySelectorAll('.inputs-area textarea')[1].value;
-                const category = document.getElementById('categoryInput').value;
-                const description = document.getElementById('descTextarea').value;
-                const status = document.getElementById('statusSelect').value;
-                const imageData = document.getElementById('previewImg').src;
+    // 6. Status Color Change
+    window.changeStatusColor = function(select) {
+        const colors = { 'Unclaimed': '#1e3a6a', 'claimed': '#a3b8ed', 'Pending': '#8a853e' };
+        select.style.backgroundColor = colors[select.value];
+    };
 
-                if (!lostItem || !foundItem || !category) {
-                    alert("Please fill in the item name, location, and category!");
-                    return;
-                }
-
-                if (!imageData || imageData === window.location.href) {
-                    alert("Please upload a photo first!");
-                    return;
-                }
-
-                const newPost = {
-                    id: Date.now(),
-                    user: currentUser.name, 
-                    lostItem,
-                    foundItem,
-                    category,
-                    description,
-                    status,
-                    image: imageData,
-                    timestamp: new Date().toLocaleString()
-                };
-
-                const existingPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
-
-                existingPosts.unshift(newPost);
-
-                localStorage.setItem('ceas_posts', JSON.stringify(existingPosts));
-
-                alert("Post shared successfully!");
-                window.location.href = "homepage.html";
-            }
-        </script>
+    // 7. THE BRIDGE: Connect your button to the Firebase uploadPost function
+    window.handlePostSubmit = async function() {
+        const submitBtn = document.querySelector('.post-btn'); // Assuming your button has this class
+        
+        try {
+            // Disable button to prevent double-posting
+            if(submitBtn) submitBtn.disabled = true;
+            
+            // This calls the export function from your postingpage.js
+            await uploadPost(); 
+            
+        } catch (error) {
+            console.error("Submission failed:", error);
+            if(submitBtn) submitBtn.disabled = false;
+        }
+    };
+</script>
     </body>
 </html>
