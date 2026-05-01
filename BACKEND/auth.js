@@ -51,33 +51,12 @@ if (googleBtn) {
 // Handle the "Finish Registration" button
 if (submitRegBtn) {
     submitRegBtn.addEventListener('click', async () => {
-        const course = document.getElementById('google-course-code').value;
-        const validCodes = ['123', '456', '321', '654'];
-
-        if (!validCodes.includes(course.toUpperCase())) {
-            alert("Invalid CEAS course code!");
+        if (!pendingUser) {
+            alert("Session expired. Please log in again.");
+            location.reload();
             return;
         }
 
-        try {
-            // create account
-            await setDoc(doc(db, "users", pendingUser.uid), {
-                firstName: pendingUser.displayName ? pendingUser.displayName.split(' ')[0] : "User",
-                lastName: pendingUser.displayName ? pendingUser.displayName.split(' ').slice(1).join(' ') : "",
-                email: pendingUser.email,
-                courseCode: course.toUpperCase(),
-            });
-
-            alert("Registration Successful!");
-            window.location.href = "../FRONTEND/homepage.html";
-        } catch (err) {
-            alert("Error saving profile: " + err.message);
-        }
-    });
-}
-
-if (submitRegBtn) {
-    submitRegBtn.addEventListener('click', async () => {
         const inputCode = document.getElementById('google-course-code').value.toUpperCase();
 
         try {
@@ -86,13 +65,13 @@ if (submitRegBtn) {
             const configSnap = await getDoc(configRef);
 
             if (!configSnap.exists()) {
-                alert("Error: Course code configuration missing.");
+                alert("Error: Course code configuration missing in database.");
                 return;
             }
 
-            const validCodes = configSnap.data().list; // This is the array from your Firestore
+            const validCodes = configSnap.data().list; 
 
-            // 2. Validate
+            // 2. Validate input
             if (!validCodes.includes(inputCode)) {
                 alert("Invalid CEAS course code!");
                 return;
@@ -104,12 +83,14 @@ if (submitRegBtn) {
                 lastName: pendingUser.displayName ? pendingUser.displayName.split(' ').slice(1).join(' ') : "",
                 email: pendingUser.email,
                 courseCode: inputCode,
+                createdAt: new Date()
             });
 
             alert("Registration Successful!");
             window.location.href = "../FRONTEND/homepage.html";
         } catch (err) {
-            alert("Error saving profile: " + err.message);
+            console.error(err);
+            alert("Error: " + err.message);
         }
     });
 }
