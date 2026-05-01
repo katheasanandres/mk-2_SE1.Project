@@ -429,43 +429,31 @@
         }
     });
 
-    // NEW EmailJS SEND FUNCTION
+    // Email Sending Logic
     async function sendEmailProof() {
         const post = window.currentPostData;
         const description = document.getElementById('descTextarea').value;
         const currentUser = auth.currentUser;
 
-        // Basic Validations
-        if (!post || !post.uploaderEmail) {
-            alert("Error: Reporter's email address is missing.");
-            return;
-        }
+    try {
+        const name = currentUser.displayName;
+        const email = currentUser.email;
+        const itemName = post.lostItem || post.foundItem || "Item";
 
-        if (!description) {
-            alert("Please provide details/description for your proof.");
-            return;
-        }
+        await sendClaimNotification(
+            name, 
+            email,
+            itemName, 
+            description, 
+            post.uploaderEmail
+        );
 
-        try {
-            const claimantName = currentUser ? currentUser.email : "A student";
-            const itemName = post.lostItem || post.foundItem || "Item";
-
-            // Calls the SMTP Utility from BACKEND/smtp.js
-            await sendClaimNotification(
-                claimantName, 
-                itemName, 
-                description, 
-                post.uploaderEmail
-            );
-
-            alert("Success! Your proof has been sent to the reporter!");
-            window.location.href = "../FRONTEND/homepage.html";
-
-        } catch (error) {
-            console.error("EmailJS Error:", error);
-            alert("Failed to send notification.");
-        }
+        alert("Proof sent successfully!");
+        window.location.href = "../FRONTEND/homepage.html";
+    } catch (error) {
+        alert("Error: " + error.message);
     }
+                                }
 
     window.sendEmailProof = sendEmailProof;
     window.autoExpand = autoExpand;
