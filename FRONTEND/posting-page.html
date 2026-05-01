@@ -407,16 +407,14 @@
         </div>
 
         <script type="module">
-    // 1. Import your Firebase tools and the upload function
     import { auth } from "./BACKEND/db.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
     import { uploadPost } from "./BACKEND/postingpage.js";
 
-    // 2. Handle User Display (Wait for Firebase to load the user)
+    // Handles User Display
     onAuthStateChanged(auth, (user) => {
         if (user) {
             document.getElementById('displayUserName').innerText = user.displayName || "User";
-            // Note: Role is usually handled via Firestore, but for now we'll keep it static
             document.getElementById('displayUserRole').innerText = "Student"; 
         } else {
             // If not logged in, kick them back to login page
@@ -424,7 +422,6 @@
         }
     });
 
-    // 3. Category Suggestion Logic (Keep this as is, it's great!)
     const categories = ["Clothing & Personal Gear", "Documents & Cards", "Electronics & Gadgets", "Keys & Accessories", "Stationery & Books", "Wallets & Bags"];
     const catInput = document.getElementById('categoryInput');
     const sugBox = document.getElementById('suggestionBox');
@@ -438,7 +435,6 @@
                 sugBox.innerHTML = matches.map(m => `<div class="sug-item">#${m}</div>`).join('');
                 sugBox.style.display = 'block';
                 
-                // Add click listeners to new suggestions
                 document.querySelectorAll('.sug-item').forEach(item => {
                     item.onclick = () => {
                         catInput.value = item.innerText;
@@ -449,7 +445,6 @@
         } else { sugBox.style.display = 'none'; }
     });
 
-    // 4. UI Textarea Auto-expand
     document.querySelectorAll('.inputs-area textarea').forEach(textarea => {
         textarea.addEventListener('input', function() {
             this.style.height = 'auto';
@@ -457,7 +452,6 @@
         });
     });
 
-    // 5. Image Preview Logic
     document.getElementById('imageInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -472,21 +466,20 @@
         }
     });
 
-    // 6. Status Color Change
     window.changeStatusColor = function(select) {
         const colors = { 'Unclaimed': '#1e3a6a', 'claimed': '#a3b8ed', 'Pending': '#8a853e' };
         select.style.backgroundColor = colors[select.value];
     };
 
-    // 7. THE BRIDGE: Connect your button to the Firebase uploadPost function
+    // Firebase uploadPost function
     window.handlePostSubmit = async function() {
-        const submitBtn = document.querySelector('.post-btn'); // Assuming your button has this class
+        const submitBtn = document.querySelector('.post-btn');
         
         try {
             // Disable button to prevent double-posting
             if(submitBtn) submitBtn.disabled = true;
             
-            // This calls the export function from your postingpage.js
+            // Calls the export function from the posting-page.js
             await uploadPost(); 
             
         } catch (error) {
