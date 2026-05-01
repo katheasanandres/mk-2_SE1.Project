@@ -396,6 +396,7 @@
                 const statusColors = { 'Unclaimed': '#1e3a6a', 'claimed': '#a3b8ed', 'Pending': '#8a853e' };
                 const sColor = statusColors[post.status] || '#8e8e8e';
                 
+                // Matches Firestore screenshot: img_url, foundItem, lostItem, reporterName
                 const previewHtml = `   
                     <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Syncing to:</p>
                     <div class="proof-send-card">
