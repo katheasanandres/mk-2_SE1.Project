@@ -363,95 +363,112 @@
             </div>
         </div>
 
-    <script>
-        function autoExpand(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
+   <script type="module">
+    // 1. Import the SMTP tool and your Auth/DB
+    import { sendClaimNotification } from "../BACKEND/smtp.js";
+    import { auth } from "../BACKEND/db.js";
+
+    function autoExpand(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    window.onload = function() {
+        // Handle User Display
+        const currentUser = auth.currentUser;
+        if(document.getElementById('displayUserName') && currentUser) {
+            document.getElementById('displayUserName').innerText = currentUser.displayName || "User";
         }
 
-        window.onload = function() {
-            if(document.getElementById('displayUserName')) {
-                document.getElementById('displayUserName').innerText = currentUser.name;
-                document.getElementById('displayUserRole').innerText = currentUser.role;
-            }
+        // Fetch Post Data from LocalStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('postId');
+        const allPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
+        const post = allPosts.find(p => String(p.id) === String(postId));
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('postId');
-            const allPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
-            const post = allPosts.find(p => String(p.id) === String(postId));
-
-            if (post) {
-                const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e' };
-                const sColor = statusColors[post.status] || '#8e8e8e';
-                
-                const previewHtml = `  
-                    <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Syncing to:</p>
-                    <div class="proof-send-card">
-                        <div style="width: 50px; height: 50px; flex-shrink: 0;">
-                            ${post.image ? 
-                                `<img src="${post.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` : 
-                                `<div style="width: 100%; height: 100%; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="color: #ccc;">image</span></div>`
-                            }
-                        </div>
-                        <div style="flex-grow: 1;">
-                            <strong style="color: #1e3a6a; font-size: 15px;">${post.user || 'Unknown'}</strong>
-                            <p style="font-size: 13px; color: #333;"><strong>Item:</strong> ${post.lostItem || post.foundItem || 'Item'}</p>
-                            <p style="font-size: 12px; color: #8e8e8e;">${post.timestamp || ''}</p>
-                        </div>
-                        <span style="background: ${sColor}; color: white; padding: 8px 8px; border-radius: 10px; font-size: 11px;">${post.status}</span>
+        if (post) {
+            const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e' };
+            const sColor = statusColors[post.status] || '#8e8e8e';
+            
+            const previewHtml = `   
+                <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Syncing to:</p>
+                <div class="proof-send-card">
+                    <div style="width: 50px; height: 50px; flex-shrink: 0;">
+                        ${post.image ? 
+                            `<img src="${post.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` : 
+                            `<div style="width: 100%; height: 100%; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="color: #ccc;">image</span></div>`
+                        }
                     </div>
-                `;
-                document.getElementById('originalPostPreview').innerHTML = previewHtml;
+                    <div style="flex-grow: 1;">
+                        <strong style="color: #1e3a6a; font-size: 15px;">${post.user || 'Unknown'}</strong>
+                        <p style="font-size: 13px; color: #333;"><strong>Item:</strong> ${post.lostItem || post.foundItem || 'Item'}</p>
+                        <p style="font-size: 12px; color: #8e8e8e;">${post.timestamp || ''}</p>
+                    </div>
+                    <span style="background: ${sColor}; color: white; padding: 8px 8px; border-radius: 10px; font-size: 11px;">${post.status}</span>
+                </div>
+            `;
+            document.getElementById('originalPostPreview').innerHTML = previewHtml;
 
-                window.currentPostData = post;
-            }
-        };
-
-        document.getElementById('imageInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const img = document.getElementById('previewImg');
-                    img.src = event.target.result;
-                    img.style.display = 'block';
-                    document.getElementById('uploadPlaceholder').style.display = 'none';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function sendEmailProof() {
-            const post = window.currentPostData;
-            const description = document.getElementById('descTextarea').value;
-            const fileInput = document.getElementById('imageInput');
-
-            if (!post || !post.uploaderEmail) {
-                alert("Error: Uploader email not found.");
-                return;
-            }
-
-            if (!description) {
-                alert("Please add a description for your proof.");
-                return;
-            }
-
-            const subject = encodeURIComponent(`Proof of Ownership: ${post.lostItem || post.foundItem}`);
-
-            let bodyText = `Hello ${post.user},\n\n`;
-            bodyText += `I am sending proof regarding the item post: "${post.lostItem || post.foundItem}".\n\n`;
-            bodyText += `MY DESCRIPTION:\n${description}\n\n`;
-            
-            if (fileInput.files.length > 0) {
-                bodyText += `(Note: I have selected an image as proof. Please ensure it is attached to this email before sending.)\n`;
-            }
-
-            const body = encodeURIComponent(bodyText);
-
-            window.location.href = `mailto:${post.uploaderEmail}?subject=${subject}&body=${body}`;
-            
-            alert("Redirecting to your email app. Please verify the details and send the email.");
+            // Store post data globally for the send function
+            window.currentPostData = post;
         }
-    </script>
+    };
+
+    // Image Preview Logic
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = document.getElementById('previewImg');
+                img.src = event.target.result;
+                img.style.display = 'block';
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // NEW EmailJS SEND FUNCTION
+    async function sendEmailProof() {
+        const post = window.currentPostData;
+        const description = document.getElementById('descTextarea').value;
+        const currentUser = auth.currentUser;
+
+        // Basic Validations
+        if (!post || !post.uploaderEmail) {
+            alert("Error: Reporter's email address is missing.");
+            return;
+        }
+
+        if (!description) {
+            alert("Please provide details/description for your proof.");
+            return;
+        }
+
+        try {
+            const claimantName = currentUser ? currentUser.email : "A student";
+            const itemName = post.lostItem || post.foundItem || "Item";
+
+            // Calls the SMTP Utility from BACKEND/smtp.js
+            await sendClaimNotification(
+                claimantName, 
+                itemName, 
+                description, 
+                post.uploaderEmail
+            );
+
+            alert("Success! Your proof has been sent to the reporter!");
+            window.location.href = "../FRONTEND/homepage.html";
+
+        } catch (error) {
+            console.error("EmailJS Error:", error);
+            alert("Failed to send notification.");
+        }
+    }
+
+    window.sendEmailProof = sendEmailProof;
+    window.autoExpand = autoExpand;
+</script>
 </body>
 </html>
