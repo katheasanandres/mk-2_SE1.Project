@@ -28,7 +28,7 @@ export async function uploadPost() {
 
         console.log("Saving to Firestore...");
         await addDoc(collection(db, "items"), {
-            // Updated to include reporterEmail for SMTP logic
+            // SMTP logic
             reporterName: auth.currentUser ? auth.currentUser.displayName : "Anonymous",
             reporterEmail: auth.currentUser ? auth.currentUser.email : "", 
             lostItem: lostItem,
@@ -36,8 +36,8 @@ export async function uploadPost() {
             category: category,
             description: description,
             status: "Unclaimed",
-            img_url: imageUrl, // Matched to your Firestore screenshot
-            createdAt: serverTimestamp() // Better for cross-device consistency
+            img_url: imageUrl, 
+            createdAt: serverTimestamp()
         });
 
         alert("Item shared successfully!");

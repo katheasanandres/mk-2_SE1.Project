@@ -364,96 +364,87 @@
         </div>
 
    <script type="module">
-    // 1. Import the SMTP tool and your Auth/DB
     import { sendClaimNotification } from "../BACKEND/smtp.js";
-    import { auth } from "../BACKEND/db.js";
+    import { auth, db } from "../BACKEND/db.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // Wait for Auth to load to display current user's name
+    onAuthStateChanged(auth, (user) => {
+        if (user && document.getElementById('displayUserName')) {
+            document.getElementById('displayUserName').innerText = user.displayName || "User";
+        }
+    });
 
     function autoExpand(textarea) {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     }
 
-    window.onload = function() {
-        // Handle User Display
-        const currentUser = auth.currentUser;
-        if(document.getElementById('displayUserName') && currentUser) {
-            document.getElementById('displayUserName').innerText = currentUser.displayName || "User";
-        }
-
-        // Fetch Post Data from LocalStorage
+    window.onload = async function() {
         const urlParams = new URLSearchParams(window.location.search);
         const postId = urlParams.get('postId');
-        const allPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
-        const post = allPosts.find(p => String(p.id) === String(postId));
 
-        if (post) {
-            const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e' };
-            const sColor = statusColors[post.status] || '#8e8e8e';
-            
-            const previewHtml = `   
-                <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Syncing to:</p>
-                <div class="proof-send-card">
-                    <div style="width: 50px; height: 50px; flex-shrink: 0;">
-                        ${post.image ? 
-                            `<img src="${post.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` : 
-                            `<div style="width: 100%; height: 100%; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="color: #ccc;">image</span></div>`
-                        }
-                    </div>
-                    <div style="flex-grow: 1;">
-                        <strong style="color: #1e3a6a; font-size: 15px;">${post.user || 'Unknown'}</strong>
-                        <p style="font-size: 13px; color: #333;"><strong>Item:</strong> ${post.lostItem || post.foundItem || 'Item'}</p>
-                        <p style="font-size: 12px; color: #8e8e8e;">${post.timestamp || ''}</p>
-                    </div>
-                    <span style="background: ${sColor}; color: white; padding: 8px 8px; border-radius: 10px; font-size: 11px;">${post.status}</span>
-                </div>
-            `;
-            document.getElementById('originalPostPreview').innerHTML = previewHtml;
+        if (!postId) return;
 
-            // Store post data globally for the send function
-            window.currentPostData = post;
+        try {
+            const itemRef = doc(db, "items", postId);
+            const itemSnap = await getDoc(itemRef);
+
+            if (itemSnap.exists()) {
+                const post = itemSnap.data();
+                const statusColors = { 'Unclaimed': '#1e3a6a', 'claimed': '#a3b8ed', 'Pending': '#8a853e' };
+                const sColor = statusColors[post.status] || '#8e8e8e';
+                
+                const previewHtml = `   
+                    <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Syncing to:</p>
+                    <div class="proof-send-card">
+                        <div style="width: 50px; height: 50px; flex-shrink: 0;">
+                            ${post.img_url ? 
+                                `<img src="${post.img_url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` : 
+                                `<div style="width: 100%; height: 100%; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="color: #ccc;">image</span></div>`
+                            }
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <strong style="color: #1e3a6a; font-size: 15px;">${post.reporterName || 'Unknown'}</strong>
+                            <p style="font-size: 13px; color: #333;"><strong>Item:</strong> ${post.foundItem || post.lostItem || 'Item'}</p>
+                        </div>
+                        <span style="background: ${sColor}; color: white; padding: 8px 8px; border-radius: 10px; font-size: 11px;">${post.status}</span>
+                    </div>
+                `;
+                document.getElementById('originalPostPreview').innerHTML = previewHtml;
+                window.currentPostData = post;
+            }
+        } catch (err) {
+            console.error("Firestore retrieval failed:", err);
         }
     };
 
-    // Image Preview Logic
-    document.getElementById('imageInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = document.getElementById('previewImg');
-                img.src = event.target.result;
-                img.style.display = 'block';
-                document.getElementById('uploadPlaceholder').style.display = 'none';
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // Email Sending Logic
     async function sendEmailProof() {
         const post = window.currentPostData;
         const description = document.getElementById('descTextarea').value;
         const currentUser = auth.currentUser;
 
-    try {
-        const name = currentUser.displayName;
-        const email = currentUser.email;
-        const itemName = post.lostItem || post.foundItem || "Item";
+        if (!currentUser || !post || !post.reporterEmail) {
+            alert("Error: Missing session or reporter contact data.");
+            return;
+        }
 
-        await sendClaimNotification(
-            name, 
-            email,
-            itemName, 
-            description, 
-            post.uploaderEmail
-        );
+        try {
+            await sendClaimNotification(
+                currentUser.displayName || "GC Student", 
+                currentUser.email,
+                post.foundItem || post.lostItem || "Item", 
+                description, 
+                post.reporterEmail
+            );
 
-        alert("Proof sent successfully!");
-        window.location.href = "../FRONTEND/homepage.html";
-    } catch (error) {
-        alert("Error: " + error.message);
+            alert("Proof sent successfully!");
+            window.location.href = "../FRONTEND/homepage.html";
+        } catch (error) {
+            alert("SMTP Error: " + error.message);
+        }
     }
-                                }
 
     window.sendEmailProof = sendEmailProof;
     window.autoExpand = autoExpand;
