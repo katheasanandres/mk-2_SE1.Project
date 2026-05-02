@@ -1,1 +1,3 @@
 BACKEND/db.js
+BACKEND/node_modules
+BACKEND/.env
