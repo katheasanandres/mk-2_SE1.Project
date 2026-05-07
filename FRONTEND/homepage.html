@@ -809,14 +809,19 @@
         };
 
         document.querySelectorAll('.preview-card').forEach(card => {
-            card.style.cursor = 'pointer';
-            card.onclick = () => {
-                const title = card.querySelector('h5').innerText;
-                if(title.includes('Notifications')) window.location.href = 'notif.html';
-                if(title.includes('Pending')) window.location.href = 'pending.html';
-                if(title.includes('Review')) window.location.href = 'review.html';
-            };
-        });
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+        const title = card.querySelector('h5').innerText.toLowerCase();
+        
+        if (title.includes('notifications')) {
+            window.location.href = 'notif.html';
+        } else if (title.includes('pending')) {
+            window.location.href = 'pending.html';
+        } else if (title.includes('review')) {
+            window.location.href = 'review.html';
+        }
+    });
+});
 
         document.addEventListener('DOMContentLoaded', () => {
             const updateNotificationPreview = () => {
