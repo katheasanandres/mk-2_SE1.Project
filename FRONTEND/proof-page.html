@@ -369,10 +369,17 @@
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // Wait for Auth to load to display current user's name
     onAuthStateChanged(auth, (user) => {
-        if (user && document.getElementById('displayUserName')) {
-            document.getElementById('displayUserName').innerText = user.displayName || "User";
+        if (user) {
+            const name = user.displayName || "User";
+            const role = user.email || "";
+
+            if (document.getElementById('displayUserName'))
+                document.getElementById('displayUserName').innerText = name;
+            if (document.getElementById('currentUserName'))
+                document.getElementById('currentUserName').innerText = name;
+            if (document.getElementById('currentUserRole'))
+                document.getElementById('currentUserRole').innerText = role;
         }
     });
 
@@ -395,8 +402,7 @@
                 const post = itemSnap.data();
                 const statusColors = { 'Unclaimed': '#1e3a6a', 'claimed': '#a3b8ed', 'Pending': '#8a853e' };
                 const sColor = statusColors[post.status] || '#8e8e8e';
-                
-                // Matches Firestore screenshot: img_url, foundItem, lostItem, reporterName
+
                 const previewHtml = `   
                     <p style="font-size: 13px; color: #666; margin-bottom: 5px; font-weight: bold;">Syncing to:</p>
                     <div class="proof-send-card">
@@ -423,7 +429,7 @@
 
     async function sendEmailProof() {
         const post = window.currentPostData;
-        const description = document.getElementById('descTextarea').value;
+        const description = document.getElementById('descTextarea').value.trim();
         const currentUser = auth.currentUser;
 
         if (!currentUser || !post || !post.reporterEmail) {
@@ -431,18 +437,32 @@
             return;
         }
 
+        // guard against empty proof description
+        if (!description) {
+            alert("Please add a description as your proof of ownership.");
+            return;
+        }
+
+        // disable button while sending to prevent double-submit
+        const btn = document.querySelector('.btn-submit');
+        btn.disabled = true;
+        btn.textContent = "Sending...";
+
         try {
             await sendClaimNotification(
-                currentUser.displayName || "GC Student", 
+                currentUser.displayName || "GC Student",
                 currentUser.email,
-                post.foundItem || post.lostItem || "Item", 
-                description, 
+                post.foundItem || post.lostItem || "Item",
+                description,
                 post.reporterEmail
             );
 
             alert("Proof sent successfully!");
             window.location.href = "../FRONTEND/homepage.html";
         } catch (error) {
+            // restore button on failure
+            btn.disabled = false;
+            btn.textContent = "Send to Email";
             alert("SMTP Error: " + error.message);
         }
     }

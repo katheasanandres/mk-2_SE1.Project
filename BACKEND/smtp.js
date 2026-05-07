@@ -1,16 +1,37 @@
-export function sendClaimNotification(claimantName, claimantEmail, itemName, secretDetail, reporterEmail) {
-    
-    const templateParams = {
-        claimant_name: claimantName,
-        claimant_email: claimantEmail,
-        item_name: itemName,
-        secret_detail: secretDetail,
-        to_email: reporterEmail 
-    };
+const EMAILJS_SERVICE_ID  = "service_4e5rf77";   // replace
+const EMAILJS_TEMPLATE_ID = "template_t8kx3lc";  // replace
+const EMAILJS_PUBLIC_KEY  = "yx44_aLwNAioaVDdM";   // replace
 
-    const SERVICE_ID = "YOUR_SERVICE_ID"; 
-    const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-    const PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+/**
+ * Sends a claim notification email to the item reporter.
+ *
+ * @param {string} claimantName   - Full name of the person claiming the item
+ * @param {string} claimantEmail  - Email of the claimant (used for Reply-To)
+ * @param {string} itemName       - Name/title of the item being claimed
+ * @param {string} secretDetail   - The proof of ownership description
+ * @param {string} toEmail        - Reporter's email (recipient)
+ * @returns {Promise}
+ */
 
-    return emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+export async function sendClaimNotification(
+  claimantName,
+  claimantEmail,
+  itemName,
+  secretDetail,
+  toEmail
+) {
+  const templateParams = {
+    to_email:       toEmail,
+    claimant_name:  claimantName,
+    claimant_email: claimantEmail,
+    item_name:      itemName,
+    secret_detail:  secretDetail,
+  };
+
+  return emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID,
+    templateParams,
+    EMAILJS_PUBLIC_KEY
+  );
 }
