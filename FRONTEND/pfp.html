@@ -41,7 +41,7 @@
             }
 
             .side-bar {
-                width: 220px;
+                width: 250px;
                 height: 100vh;
                 background-color: var(--night);
                 color: var(--white);
@@ -55,137 +55,89 @@
             }
 
             .sidebar-header {
-                display: flex;
-                align-items: center;
-                margin-bottom: 20px;
-                padding: 10px;
-                padding-left: 10px;
-                padding-right: 10px;
-                width: 100%;
-                flex-shrink: 0;
-            }
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 10px;
+            width: 100%;
+            flex-shrink: 0;
+        }
 
-            .app-logo {
-                width: 25px;
-                height: auto;
-                transform: scaleX(-1);
-                flex-shrink: 0;
-            }
+        .app-logo {
+            width: 25px;
+            height: auto;
+            transform: scaleX(-1);
+            flex-shrink: 0;
+        }
 
-            h4 {
-                font-size: 15px;
-                font-family: 'Poetsen One', sans-serif;
-                color: var(--white);
-                flex-grow: 1;
-                margin-left: 15px;
-                white-space: nowrap;
-                overflow: hidden;
-            }
+        h4 {
+            font-size: 15px;
+            font-family: 'Poetsen One', sans-serif;
+            color: var(--white);
+            flex-grow: 1;
+            margin-left: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
 
-            .menu-toggle {
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-left: auto; 
-                margin-right: -13px;
-            }
+        .account {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            transition: 0.3s;
+        }
 
-            .account {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 10px;
-                transition: 0.3s;
-            }
+        .logout-btn {
+            cursor: pointer;
+            margin-left: 15px;
+        }
 
-            .logout-btn {
-                cursor: pointer;
-                margin-left: 15px;
-            }
+        .nav-list { 
+            color: var(--white); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 5px;
+            flex: 1;
+            font-family: 'Roboto Condensed';
+        }
 
-            #sidebar-check {
-                display: none;
-            }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 20px;
+            text-decoration: none;
+            color: var(--white);
+            border-radius: 8px; 
+            transition: 0.2s;
+            white-space: nowrap;
+            font-size: 13px;
+        }
 
-            #sidebar-check:checked ~ .main-container .side-bar {
-                width: 61.5px; 
-            }
+        .nav-item:hover { 
+            background-color: var(--white); 
+            color: var(--night);
+        }
 
-            #sidebar-check:checked ~ .main-container .side-bar .account {
-                justify-content: center;
-            }
+        .nav-text {
+            left: 100px;
+        }
 
-            #sidebar-check:checked ~ .main-container .side-bar .account .logout-btn {
-                margin-right: 0;
-            }
+        .material-symbols-outlined { 
+            min-width: 30px; 
+            font-size: 18px; 
+        }
 
-            #sidebar-check:checked ~ .main-container .side-bar .sidebar-header {
-                justify-content: center;
-                padding-right: 10px;
-                padding-left: 10px;
-            }
-
-            #sidebar-check:checked ~ .main-container .side-bar .menu-toggle {
-                margin-left: 0;
-            }
-
-            #sidebar-check:checked ~ .main-container .nav-text,
-            #sidebar-check:checked ~ .main-container h4,
-            #sidebar-check:checked ~ .main-container .category-label,
-            #sidebar-check:checked ~ .main-container .account h3,
-            #sidebar-check:checked ~ .main-container .user-welcome,
-            #sidebar-check:checked ~ .main-container .app-logo {
-                display: none;
-            }
-
-            #others-check { 
-                display: none; 
-            }
-
-            .nav-list { 
-                color: var(--white); 
-                display: flex; 
-                flex-direction: column; 
-                gap: 5px;
-                flex: 1;
-                font-family: 'Roboto Condensed';
-            }
-
-            .nav-item {
-                display: flex;
-                align-items: center;
-                padding: 5px 12px;
-                text-decoration: none;
-                color: var(--white);
-                border-radius: 8px; 
-                transition: 0.2s;
-                white-space: nowrap;
-                font-size: 13px;
-            }
-
-            .nav-item:hover { 
-                background-color: var(--white); 
-                color: var(--night);
-            }
-
-            .nav-text {
-                left: 100px;
-            }
-
-            .material-symbols-outlined { 
-                min-width: 30px; 
-                font-size: 18px; 
-            }
-
-            .category-label {
-                font-family: 'Poetsen One', sans-serif;
-                font-size: 17px;
-                font-weight: 700;
-                margin: 5px 0 10px 12px;
-                text-transform: uppercase;
-                white-space: nowrap;
-            }
+        .category-label {
+            font-family: 'Poetsen One', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin: 5px 0 10px 20px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
 
             .content-area {
                 flex: 1;
@@ -613,84 +565,79 @@
         </style>
     </head>
     <body>
-        <input type="checkbox" id="sidebar-check">
-
         <div class="main-container">
-            <div class="side-bar">
-                <div class="sidebar-header">
-                    <img class="app-logo" src="/elements/user icon white.png">
-                    <h4>CEAS FIND</h4>
-                    <label for="sidebar-check" class="menu-toggle">
-                        <span class="material-symbols-outlined">menu</span>
-                    </label>
-                </div>
-
-                <nav class="nav-list">
-                    <a href="homepage.html" class="nav-item" onclick="filterCategory('all')">
-                        <span class="material-symbols-outlined">home</span>
-                        <span class="nav-text">Home</span>
-                    </a>
-                    <a href="saved.html" class="nav-item">
-                        <span class="material-symbols-outlined">bookmark</span>
-                        <span class="nav-text">Bookmark</span>
-                    </a>
-                    <a href="history.html" class="nav-item">
-                        <span class="material-symbols-outlined">history</span>
-                        <span class="nav-text">History</span>
-                    </a>
-                    <a href="notif.html" class="nav-item">
-                        <span class="material-symbols-outlined">notifications</span>
-                        <span class="nav-text">Notifications</span>
-                    </a>
-                    <a href="pending.html" class="nav-item">
-                        <span class="material-symbols-outlined">schedule</span>
-                        <span class="nav-text">Pending Sync</span>
-                    </a>
-                    <a href="review.html" class="nav-item">
-                        <span class="material-symbols-outlined">assignment</span>
-                        <span class="nav-text">Review</span>
-                    </a>
-
-                    <hr style="opacity: 0.2; margin: 10px 0;">
-                    <p class="category-label">Categories</p>
-
-                    <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
-                        <span class="material-symbols-outlined">checkroom</span>
-                        <span class="nav-text">Clothing & Personal Gear</span>
-                    </a>
-                    <a href="#" class="nav-item" onclick="filterCategory('#Documents & Cards')">
-                        <span class="material-symbols-outlined">style</span>
-                        <span class="nav-text">Documents & Cards</span>
-                    </a>
-                    <a href="#" class="nav-item" onclick="filterCategory('#Electronics & Gadgets')">
-                        <span class="material-symbols-outlined">devices</span>
-                        <span class="nav-text">Electronics & Gadgets</span>
-                    </a>
-                    <a href="#" class="nav-item" onclick="filterCategory('#Keys & Accessories')">
-                        <span class="material-symbols-outlined">vpn_key</span>
-                        <span class="nav-text">Keys & Accessories</span>
-                    </a>
-                    <a href="#" class="nav-item" onclick="filterCategory('#Stationery & Books')">
-                        <span class="material-symbols-outlined">menu_book</span>
-                        <span class="nav-text">Stationery & Books</span>
-                    </a>
-                    <a href="#" class="nav-item" onclick="filterCategory('#Wallets & Bags')">
-                        <span class="material-symbols-outlined">account_balance_wallet</span>
-                        <span class="nav-text">Wallets & Bags</span>
-                    </a>
-                    <a href="#" class="nav-item" onclick="filterCategory('Others')">
-                        <span class="material-symbols-outlined">more_horiz</span>
-                        <span class="nav-text">Others</span>
-                    </a>
-                </nav>
-
-                <div class="account">
-                    <h3 style="font-size: 14px;">
-                        <?php echo $successLogin ? "User LOGGED OUT" : "Welcome, " . $user; ?>
-                    </h3>
-                    <span class="logout-btn material-symbols-outlined">logout</span>
-                </div>
+        <div class="side-bar">
+            <div class="sidebar-header">
+                <img class="app-logo" src="/elements/user icon white.png">
+                <h4>CEAS FIND</h4>
             </div>
+
+            <nav class="nav-list">
+                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="/FRONTEND/saved.html" class="nav-item">
+                    <span class="material-symbols-outlined">bookmark</span>
+                    <span class="nav-text">Bookmark</span>
+                </a>
+                <a href="/FRONTEND/history.html" class="nav-item">
+                    <span class="material-symbols-outlined">history</span>
+                    <span class="nav-text">History</span>
+                </a>
+                <a href="/FRONTEND/notif.html" class="nav-item">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="nav-text">Notifications</span>
+                </a>
+                <a href="/FRONTEND/pending.html" class="nav-item">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span class="nav-text">Pending Sync</span>
+                </a>
+                <a href="/FRONTEND/review.html" class="nav-item">
+                    <span class="material-symbols-outlined">assignment</span>
+                    <span class="nav-text">Review</span>
+                </a>
+
+                <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
+                <p class="category-label">Categories</p>
+
+                <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
+                    <span class="material-symbols-outlined">checkroom</span>
+                    <span class="nav-text">Clothing & Personal Gear</span>
+                </a>
+                <a href="#" class="nav-item" onclick="filterCategory('#Documents & Cards')">
+                    <span class="material-symbols-outlined">style</span>
+                    <span class="nav-text">Documents & Cards</span>
+                </a>
+                <a href="#" class="nav-item" onclick="filterCategory('#Electronics & Gadgets')">
+                    <span class="material-symbols-outlined">devices</span>
+                    <span class="nav-text">Electronics & Gadgets</span>
+                </a>
+                <a href="#" class="nav-item" onclick="filterCategory('#Keys & Accessories')">
+                    <span class="material-symbols-outlined">vpn_key</span>
+                    <span class="nav-text">Keys & Accessories</span>
+                </a>
+                <a href="#" class="nav-item" onclick="filterCategory('#Stationery & Books')">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="nav-text">Stationery & Books</span>
+                </a>
+                <a href="#" class="nav-item" onclick="filterCategory('#Wallets & Bags')">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                    <span class="nav-text">Wallets & Bags</span>
+                </a>
+                <a href="#" class="nav-item" onclick="filterCategory('Others')">
+                    <span class="material-symbols-outlined">more_horiz</span>
+                    <span class="nav-text">Others</span>
+                </a>
+            </nav>
+
+            <div class="account" id="sidebar-user-section">
+                <div style="display: flex; flex-direction: column; overflow: hidden; flex: 1;">
+                    <span style="font-size: 13px; color: white;">Loading...</span>
+                </div>
+                <span class="logout-btn material-symbols-outlined" id="logout-trigger" style="cursor: pointer;">logout</span>
+            </div>
+        </div>
 
             <div class="content-area">
             <header class="top-bar">
@@ -702,7 +649,7 @@
                             <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                         </div>
                         
-                        <a href="/posting-page.html">
+                        <a href="/FRONTEND/posting-page.html">
                             <div class="report-wrapper">
                                 <div class="report-item">
                                     <span class="material-symbols-outlined">post_add</span>
@@ -732,23 +679,59 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const sidebarCheck = document.getElementById('sidebar-check');
-
-                const savedState = localStorage.getItem('sidebarCollapsed');
-                const isCollapsed = (savedState !== 'false'); 
-
-                sidebarCheck.checked = isCollapsed;
-
-                sidebarCheck.addEventListener('change', () => {
-                    localStorage.setItem('sidebarCollapsed', sidebarCheck.checked);
-                });
-            });
-
-            document.addEventListener('DOMContentLoaded', () => {
                 const posts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
                 const urlParams = new URLSearchParams(window.location.search);
                 const viewUser = urlParams.get('user') || "Unknown";
-                const userRole = "Unidentified"; 
+
+                // --- SIDEBAR USER & ADMIN BADGE LOGIC ---
+                const initSidebar = () => {
+        const footer = document.getElementById('sidebar-user-footer');
+        const logoutBtn = document.getElementById('logout-trigger');
+
+        // Function to update Sidebar UI
+        const updateSidebarUI = (user) => {
+            if (!footer) return;
+            const isAdmin = user.role === 'admin';
+            
+            footer.querySelector('div').innerHTML = `
+                <span title="${user.name}" style="font-size: 14px; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; display: block;">
+                    ${user.name}
+                </span>
+                ${isAdmin ? `
+                <span style="font-size: 9px; background: #FFD700; color: #000; padding: 1px 6px; border-radius: 4px; width: fit-content; font-weight: 800; letter-spacing: 0.5px; margin-top: 2px;">
+                    ADMIN
+                </span>` : ''}
+            `;
+        };
+
+        // Logout functionality
+        if (logoutBtn) {
+            logoutBtn.onclick = () => {
+                localStorage.removeItem('ceas_user_session'); // Or your specific session key
+                sessionStorage.clear();
+                window.location.href = '/FRONTEND/auth.html'; 
+            };
+        }
+
+        // Wait for secret.js to load the global user object
+        let attempts = 0;
+        const checkUser = setInterval(() => {
+            if (window.CEAS_USER) {
+                updateSidebarUI(window.CEAS_USER);
+                clearInterval(checkUser);
+            }
+            if (attempts > 50) clearInterval(checkUser); 
+            attempts++;
+        }, 100);
+    };
+
+                // Poll briefly to wait for secret.js module to load global user object
+                const userInterval = setInterval(() => {
+                    if (window.CEAS_USER) {
+                        updateSidebar();
+                        clearInterval(userInterval);
+                    }
+                }, 100);
 
                 const feedContainer = document.getElementById('feed-container');
                 const headerContainer = document.getElementById('profile-header-container');
@@ -763,7 +746,7 @@
                         <div class="profile-header-card">
                             <div class="profile-info">
                                 <h2>${viewUser}</h2>
-                                <p>${userRole}</p>
+                                <p>Verified User</p>
                             </div>
                             <div class="profile-stats-group">
                                 <div class="post-count-badge">
@@ -771,8 +754,7 @@
                                     <span style="font-weight: normal;">Posts</span>
                                 </div>
                                 <button class="share-profile-btn" onclick="shareProfile('${viewUser}')">
-                                    <span class="material-symbols-outlined">share</span>
-                                    Share Profile
+                                    <span class="material-symbols-outlined">share</span> Share Profile
                                 </button>
                             </div>
                         </div>
@@ -813,14 +795,19 @@
 
                             const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${post.id}`) === 'true';
                             const isSaved = localStorage.getItem(`saved_status_${post.id}`) === 'true';
-                            const displayStatus = isPermanentlyClaimed ? 'Synced' : post.status;
-                            const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e' };
+                            let displayStatus = isPermanentlyClaimed ? 'Synced' : post.status;
+                            const statusColors = { 
+                                'Unclaimed': '#4f46e5', // Indigo
+                                'Claimed': '#0ea5e9',   // Sky Blue
+                                'Pending': '#f59e0b',   // Amber
+                                'Synced': '#10b981'     // Green
+                            };
                             const sColor = statusColors[displayStatus] || '#8e8e8e';
 
                             postCard.innerHTML = `
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
                                     <div>
-                                        <a href="pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 20px; text-decoration: none;">
+                                        <a href="/FRONTEND/pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 20px; text-decoration: none;">
                                             <strong>${post.user}</strong>
                                         </a>
                                         <p style="font-size: 13px; color: var(--onyx);">${post.timestamp} | ${post.category}</p>
@@ -907,7 +894,7 @@
 
             sessionStorage.setItem(`claiming_${id}`, 'true');
             
-            window.location.href = `proof-page.html?postId=${id}`;
+            window.location.href = `/FRONTEND/proof-page.html?postId=${id}`;
         };
 
         window.toggleSave = (btn, id) => {
@@ -958,5 +945,6 @@
         };
 
     </script>
+    <script type="module" src="/FRONTEND/secret.js"></script>
     </body>
 </html>

@@ -41,7 +41,7 @@
         }
 
         .side-bar {
-            width: 220px;
+            width: 250px;
             height: 100vh;
             background-color: var(--night);
             color: var(--white);
@@ -59,7 +59,7 @@
             align-items: center;
             margin-bottom: 20px;
             padding: 10px;
-            padding-left: 10px;
+            padding-left: 20px;
             padding-right: 10px;
             width: 100%;
             flex-shrink: 0;
@@ -82,15 +82,6 @@
             overflow: hidden;
         }
 
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto; 
-            margin-right: -13px;
-        }
-
         .account {
             display: flex;
             align-items: center;
@@ -102,45 +93,6 @@
         .logout-btn {
             cursor: pointer;
             margin-left: 15px;
-        }
-
-        #sidebar-check {
-            display: none;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar {
-            width: 61.5px; 
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account {
-            justify-content: center;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account .logout-btn {
-            margin-right: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .sidebar-header {
-            justify-content: center;
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .menu-toggle {
-            margin-left: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .nav-text,
-        #sidebar-check:checked ~ .main-container h4,
-        #sidebar-check:checked ~ .main-container .category-label,
-        #sidebar-check:checked ~ .main-container .account h3,
-        #sidebar-check:checked ~ .main-container .user-welcome,
-        #sidebar-check:checked ~ .main-container .app-logo {
-            display: none;
-        }
-
-        #others-check { 
-            display: none; 
         }
 
         .nav-list { 
@@ -155,7 +107,7 @@
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 5px 12px;
+            padding: 5px 20px;
             text-decoration: none;
             color: var(--white);
             border-radius: 8px; 
@@ -180,9 +132,9 @@
 
         .category-label {
             font-family: 'Poetsen One', sans-serif;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
-            margin: 5px 0 10px 12px;
+            margin: 5px 0 10px 20px;
             text-transform: uppercase;
             white-space: nowrap;
         }
@@ -421,45 +373,40 @@
 </head>
 <body>
 
-    <input type="checkbox" id="sidebar-check">
-
     <div class="main-container">
         <div class="side-bar">
             <div class="sidebar-header">
                 <img class="app-logo" src="/elements/user icon white.png">
                 <h4>CEAS FIND</h4>
-                <label for="sidebar-check" class="menu-toggle">
-                    <span class="material-symbols-outlined">menu</span>
-                </label>
             </div>
 
             <nav class="nav-list">
-                <a href="homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="saved.html" class="nav-item">
+                <a href="/FRONTEND/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="history.html" class="nav-item">
+                <a href="/FRONTEND/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="notif.html" class="nav-item">
+                <a href="/FRONTEND/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="pending.html" class="nav-item">
+                <a href="/FRONTEND/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="review.html" class="nav-item">
+                <a href="/FRONTEND/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
 
-                <hr style="opacity: 0.2; margin: 10px 0;">
+                <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
                 <p class="category-label">Categories</p>
 
                 <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
@@ -492,11 +439,8 @@
                 </a>
             </nav>
 
-            <div class="account">
-                <h3 style="font-size: 14px;">
-                    <?php echo $successLogin ? "User LOGGED OUT" : "Welcome, " . $user; ?>
-                </h3>
-                <span class="logout-btn material-symbols-outlined">logout</span>
+            <div class="account" id="sidebar-user-section">
+                <span style="font-size: 13px;">Loading user...</span>
             </div>
         </div>
 
@@ -510,7 +454,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="posting-page.html">
+                    <a href="/FRONTEND/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -543,25 +487,37 @@
         </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebarCheck = document.getElementById('sidebar-check');
-            const savedState = localStorage.getItem('sidebarCollapsed');
-            const isCollapsed = (savedState !== 'false'); 
-
-            sidebarCheck.checked = isCollapsed;
-
-            sidebarCheck.addEventListener('change', () => {
-                localStorage.setItem('sidebarCollapsed', sidebarCheck.checked);
-            });
-        });
 
         document.addEventListener('DOMContentLoaded', () => {
+            // 1. SIDEBAR USERNAME & ADMIN BADGE LOGIC
+            const checkUser = setInterval(() => {
+                if (window.CEAS_USER && window.CEAS_USER.name) {
+                    clearInterval(checkUser);
+                    const accountDiv = document.getElementById('sidebar-user-section');
+                    if (!accountDiv) return;
+
+                    const isAdmin = window.CEAS_USER.role === 'admin';
+                    
+                    accountDiv.innerHTML = `
+                        <div style="display: flex; flex-direction: column; overflow: hidden; flex: 1;">
+                            <span title="${window.CEAS_USER.name}" style="font-size: 13px; font-weight: bold; color: white; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+                                ${window.CEAS_USER.name}
+                            </span>
+                            ${isAdmin ? '<span style="font-size: 9px; background: #FFD700; color: #000; padding: 1px 5px; border-radius: 3px; width: fit-content; margin-top: 2px; font-weight: bold;">ADMIN</span>' : ''}
+                        </div>
+                        <span class="logout-btn material-symbols-outlined" id="logout-trigger" style="color: white; cursor: pointer; margin-left: 10px;">logout</span>
+                    `;
+
+                    document.getElementById('logout-trigger').onclick = () => {
+                        if(confirm("Logout?")) window.location.href = "/FRONTEND/auth.html";
+                    };
+                }
+            }, 200);
+
+            // 2. COLOR-CODED BADGE LOGIC (Inside renderReviews)
             const renderReviews = () => {
                 const pendingContainer = document.getElementById('pending-container');
-                if (!pendingContainer) {
-                    console.error("Target container not found!");
-                    return;
-                }
+                if (!pendingContainer) return;
 
                 const masterPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
                 const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
@@ -574,45 +530,47 @@
                     return;
                 }
 
-                pendingToVerify.forEach((item, index) => {
+                pendingToVerify.forEach((item) => {
                     const livePost = masterPosts.find(p => Number(p.id) === Number(item.postId)) || {};
                     const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${livePost.id}`) === 'true';
-                    const currentStatus = isPermanentlyClaimed ? 'Synced' : (livePost.status || 'Unclaimed');
                     
-                    const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e', 'Synced': '#1e3a6a' };
+                    // Logic for status determination
+                    let currentStatus = livePost.status || 'Unclaimed';
+                    if (isPermanentlyClaimed) currentStatus = 'Synced';
+
+                    // COLOR MAPPING PER YOUR REQUIREMENTS
+                    const statusColors = { 
+                        'Unclaimed': '#4f46e5', // Indigo
+                        'Claimed': '#0ea5e9',   // Sky Blue
+                        'Pending': '#f59e0b',   // Amber
+                        'Synced': '#10b981'     // Green
+                    };
                     const sColor = statusColors[currentStatus] || '#8e8e8e';
 
                     const card = document.createElement('div');
                     card.className = 'pending-post-card';
-                    card.style.cssText = "display: flex; flex-direction: row; gap: 15px; align-items: center; margin-bottom: 15px; padding: 15px 15px; background: white; border-radius: 12px;";
+                    card.style.cssText = "display: flex; flex-direction: row; gap: 15px; align-items: center; margin-bottom: 15px; padding: 15px; background: white; border-radius: 12px; border: 1px solid var(--bg-white);";
 
                     card.innerHTML = `
                         <div style="display: flex; gap: 15px; align-items: flex-start; width: 100%;">
                             <div style="flex-grow: 1;">
                                 <div style="color: var(--night); font-size: 15px; font-weight: bold; margin-bottom: 8px;">
-                                    <span style="font-weight: normal; color: var(--onyx);">You sent a proof of ownership to</span> ${item.username}!
+                                    Proof of ownership for <span style="color: var(--onyx);">${item.itemName}</span>
                                 </div>
                                 <div style="display: flex; gap: 10px; align-items: center;">
-                                    <img src="${item.itemImage}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                                    <img src="${item.itemImage}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; background: #eee;">
                                     <div style="display: flex; flex-direction: column; gap: 2px;">
-                                        <div style="font-size: 14px; color: var(--night); font-weight: 600;">Lost: ${item.itemName}</div>
-                                        <div style="font-size: 13px; color: var(--night);">Found: ${item.location}</div>
-                                        <div style="font-size: 12px; color: #8e8e8e;">#${item.category}</div>
+                                        <div style="font-size: 14px; color: var(--night); font-weight: 600;">Sender: ${item.username}</div>
+                                        <div style="font-size: 12px; color: #8e8e8e;">Location: ${item.location}</div>
                                     </div>
                                 </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 180px; padding-top: 18px;">
-                                <div style="display: flex; width: 100%;">        
-                                    <span style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
-                                        ${currentStatus}
-                                    </span>
-                                </div> 
-                                <a href="mailto:${item.senderEmail || ''}?subject=Regarding%20your%20proof%20of%20ownership" 
-                                    onmouseover="this.style.background='var(--night)'; this.style.color='var(--white)';" 
-                                    onmouseout="this.style.background='var(--bg-white)'; this.style.color='var(--night)';"
-                                    style="text-decoration: none; background:var(--bg-white); color: var(--night); width: 100%; padding: 6px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'Roboto Condensed'; font-size: 12px; font-weight: bold;">
-                                    <span class="material-symbols-outlined" style="font-size: 16px;">mail</span>
-                                    Connect with ${item.username}
+                            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 150px; padding-top: 5px;">
+                                <span style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; text-align: center; text-transform: uppercase;">
+                                    ${currentStatus}
+                                </span>
+                                <a href="mailto:${item.senderEmail || ''}" style="text-decoration: none; background: var(--bg-white); color: var(--night); padding: 6px; border-radius: 6px; font-size: 11px; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                    <span class="material-symbols-outlined" style="font-size: 14px;">mail</span> Contact
                                 </a>
                             </div>
                         </div>
@@ -628,8 +586,8 @@
             card.style.cursor = 'pointer';
             card.onclick = () => {
                 const title = card.querySelector('h5').innerText;
-                if(title.includes('Notifications')) window.location.href = 'notif.html';
-                if(title.includes('Review')) window.location.href = 'review.html';
+                if(title.includes('Notifications')) window.location.href = '/FRONTEND/notif.html';
+                if(title.includes('Review')) window.location.href = '/FRONTEND/review.html';
             };
         });
 
@@ -671,5 +629,6 @@
             updateReviewPreview();
         });
     </script>
+    <script type="module" src="/FRONTEND/secret.js"></script>
 </body>
 </html>

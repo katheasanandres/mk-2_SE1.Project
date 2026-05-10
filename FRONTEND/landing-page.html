@@ -6,260 +6,204 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>landing-page</title>
-
+    <title>CEAS FIND — Gordon College</title>
     <style>
-
-    :root {
+        :root {
             --white: #ffffff;
             --baby-blue: #a3b8ed;
-            --bg-white: #f0f0f0;
-            --clay: #8b7f71;
             --night: #1e3a6a;
+            --night-light: #2d5299;
             --onyx: #1b1b1b;
+            --border: #dde3f0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background: var(--night);
+            width: 100%;
+            height: 100vh;
             overflow: hidden;
-            width: 100%;
-            height: 100vh;
-        }
-
-        .main-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            margin: 0 auto;
+            font-family: 'Roboto Condensed', sans-serif;
         }
 
         .header {
             position: absolute;
-            top: 40px;
+            top: 5%;
             left: 5%;
+            right: 5%;
             display: flex;
             align-items: center;
-            gap: 15px;
-            z-index: 20;;
+            justify-content: space-between;
+            z-index: 20;
         }
-        
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .app-logo {
-            position: relative;
-            width: 25px;
+            width: 24px;
             height: auto;
             transform: scaleX(-1);
         }
 
-        h4 {
-            position: relative;
-            font-size: 20px;
+        .brand-name {
             font-family: 'Poetsen One', sans-serif;
+            font-size: 18px;
             color: var(--white);
-            margin: 0;
+            letter-spacing: 0.5px;
         }
 
-        .bookmark {
-            position: absolute;
-            width: 250px;
-            height: auto;
-            z-index: 6;
-            margin-left: 80%;
-            margin-top: -10%;
-            z-index: 1;
-        }
-
-        .notif {
-            position: absolute;
-            width: 130px;
-            height: auto;
-            z-index: 7;
-            margin-left: 5%;
-            bottom: 60px;
-        }
-
-        .footer-logos {
-            position: absolute;
-            right: 80px;
-            bottom: 65px;
-            display: flex;
-            align-items: flex-end;
-            gap: 15px;
-            z-index: 5;
-        }
-
-        .content-wrapper {
-            position: absolute;
-            top: 45%;
-            left: 5%;
-            right: 5%;
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            z-index: 20;
-            transform: translateY(-40%);
-        }
-
-        .Welcome {
-            position: relative;
-            top: 0;
-            left: 0;
-            transform: none;
-            max-width: 600px;
-        }
-
-        h1 {
-            font-size: 130px;
-            font-family: 'Poetsen One';
-            font-weight: 150;
-            color: var(--white);
-            line-height: 0.9;
-            letter-spacing: -2px;
-        }
-
-        h2 {
-            font-size: 42px;
+        .header-cta {
             font-family: 'Poetsen One', sans-serif;
-            font-weight: 100;
-            color: var(--white); 
-            line-height: 1.4;
-            margin-bottom: 15px;
-        }
-
-        h3 {
-            font-size: 22px;
-            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 14px;
             color: var(--white);
-            line-height: 1.4;
-            font-weight: 300;
-            margin-top: -10px;
-        }
-
-        button {
-            font-size: 22px;
-            font-family: 'Poetsen One', sans-serif;
-            color: var(--night);
-            background-color: var(--white);
-            border: none;
+            background: rgba(163, 184, 237, 0.12);
+            border: 1px solid rgba(163, 184, 237, 0.3);
             border-radius: 100px;
-            padding: 12px 40px;
+            padding: 8px 25px;
             cursor: pointer;
-            width: fit-content;
-            margin-top: 20px;
-            transition: transform 0.2s ease;
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
 
-        button:hover {
-            transform: scale(1.05);
-            background: rgb(30,58,106,0.3);
+        .header-cta:hover {
+            background: transparent;
             color: var(--white);
         }
 
         .wave-container {
-            position: relative;
-            bottom: 0px;
+            position: absolute;
+            bottom: 0;
             left: 0;
             width: 100%;
             height: 100vh;
             overflow: hidden;
+            pointer-events: none;
         }
 
-        .wave1 {
+        .wave1, .wave2, .wave3, .wave4, .wave5, .wave6 {
             position: absolute;
             bottom: 0;
             left: 0;
-            right: 0;
-            width: 110%; 
+            width: 110%;
             height: auto;
-            pointer-events: none;
             animation: move-wave linear infinite;
-            animation-duration: 28s; 
-            z-index: 1; 
         }
 
-        .wave2 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 14s; 
-            z-index: 2; 
-        }
-
-        .wave3 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 7s; 
-            z-index: 3; 
-        }
-
-        .wave4 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 21s; 
-            z-index: 4; 
-        }
-
-        .wave5 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 14s; 
-            z-index: 5; 
-        }
-
-        .wave6 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            pointer-events: none;
-            animation: move-wave linear infinite;
-            animation-duration: 7s; 
-            z-index: 6; 
-        }
+        .wave1 { animation-duration: 28s; z-index: 1; }
+        .wave2 { animation-duration: 14s; z-index: 2; }
+        .wave3 { animation-duration: 7s;  z-index: 3; }
+        .wave4 { animation-duration: 21s; z-index: 4; }
+        .wave5 { animation-duration: 14s; z-index: 5; }
+        .wave6 { animation-duration: 7s;  z-index: 6; }
 
         @keyframes move-wave {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(-5%); }
-            100% { transform: translateX(0); }
+            0%, 100% { transform: translateX(0); }
+            50%       { transform: translateX(-5%); }
+        }
+
+        .content-wrapper {
+            position: absolute;
+            top: 25%;
+            left: 10%;
+            right: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 15;
+            gap: 40px;
+        }
+
+        .hero-text { max-width: 600px;}
+
+        .tag-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(163, 184, 237, 0.15);
+            border: 1px solid rgba(163, 184, 237, 0.35);
+            border-radius: 100px;
+            padding: 6px 16px;
+            margin-bottom: 24px;
+        }
+
+        .tag-line span {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--baby-blue);
+        }
+
+        .tag-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--baby-blue);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.4; }
+        }
+
+        h1 {
+            font-family: 'Poetsen One', sans-serif;
+            font-size: clamp(64px, 8vw, 120px);
+            color: var(--white);
+            line-height: 0.9;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        h1 .accent { color: var(--baby-blue); }
+
+        .subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--white);
+            line-height: 1.5;
+            font-weight: 300;
+            margin-bottom: 36px;
+            max-width: 500px;
+        }
+
+        .cta-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            font-family: 'Poetsen One', sans-serif;
+            font-size: 18px;
+            color: var(--night);
+            background: var(--white);
+            border: none;
+            border-radius: 100px;
+            padding: 14px 40px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            transform: scale(1.04);
+            color: var(--white);
         }
 
         .oc-container {
             position: relative;
-            bottom: 0;
-            left: 0;
-            right: 0;
             width: 290px;
             height: 370px;
+            flex-shrink: 0;
         }
 
         .oc-container img {
@@ -268,186 +212,119 @@
             display: block;
         }
 
-        .back-coat { width: 50%; top: 87%; left: -21%; z-index: 0; }
-        .front-hair { width: 93%; top: -10.5%; left: -2%; z-index: 9; animation: front-hair-sway 7s ease-in-out infinite; }
-        .back-hair { width: 33%; top: 18.5%; left: 67%; z-index: 1; animation: back-hair-sway 7s ease-in-out infinite; }
-        .inner-hair {width: 25%; top: 7%; left: 69%; z-index: 2; animation: inner-hair-sway 7s ease-in-out infinite; }
-        .face      { width: 70%; top: 7%; left: 15%; z-index: 7; animation: head-sway 7s ease-in-out infinite; }
-        .eyes      { width: 43%; top: 22%; left: 19%; z-index: 8; animation: eyes-sway 7s ease-in-out infinite; }
-        .eyebrow { width: 49%; top: 16%; left: 16.7%; z-index: 9; animation: eyebrow-sway 7s ease-in-out infinite; }
-        .eyelashes { width: 49%; top: 21.5%; left: 16.7%; z-index: 9; animation: eyelashes-sway 7s ease-in-out infinite; }
-        .mouth     { width: 7%; top: 40.5%; left: 34%; z-index: 8; animation: mouth-sway 7s ease-in-out infinite; }
-        .blush { width: 50%; top: 32%; left: 16%; z-index: 8; animation: blush-sway 7s ease-in-out infinite; }
-        .hat       { width: 95%; top: -21.8%; left: -1%;  z-index: 10; animation: hat-sway 7s ease-in-out infinite; }
-        .left-leg  { width: 60%; top: 32%; left: -40%; z-index: 5; animation:left-leg-sway 7s ease-in-out infinite; }
-        .right-leg { width: 60%; top: 49%; left: -65%; z-index: 4; animation: right-leg-sway 7s ease-in-out infinite; }
-        .left-arm  { width: 38%; top: 37%; left: 64%; z-index: 12; animation: hand-sway 7s ease-in-out infinite; }
-        .right-arm { width: 57%; top: 13%; left: -27%; z-index: 2; animation: right-arm-sway 7s ease-in-out infinite; }
-        .magnifying-glass { width: 40%; top: 13%; left: 38%; z-index: 11; animation: glass-sway 7s ease-in-out infinite; }
-        .under-shirt { width: 50%; top: 45%; left: 6%; z-index: 2; }
-        .tie         { width: 25%; top: 53%; left: 15%; z-index: 2; }
-        .under-shirt-collar { width: 19%; top: 47%; left: 33%; z-index: 3; }
-        .right-coat { width: 45%; top: 45%; left: -4%;  z-index: 3; }
-        .left-coat { width: 68%; top: 45%; left: 17%;  z-index: 6; }
+        .back-coat       { width: 50%;  top: 87%;    left: -21%;  z-index: 0; }
+        .front-hair      { width: 93%;  top: -10.5%; left: -2%;   z-index: 9; animation: front-hair-sway 7s ease-in-out infinite; }
+        .back-hair       { width: 33%;  top: 18.5%;  left: 67%;   z-index: 1; animation: back-hair-sway 7s ease-in-out infinite; }
+        .inner-hair      { width: 25%;  top: 7%;     left: 69%;   z-index: 2; animation: inner-hair-sway 7s ease-in-out infinite; }
+        .face            { width: 70%;  top: 7%;     left: 15%;   z-index: 7; animation: head-sway 7s ease-in-out infinite; }
+        .eyes            { width: 43%;  top: 22%;    left: 19%;   z-index: 8; animation: eyes-sway 7s ease-in-out infinite; }
+        .eyebrow         { width: 49%;  top: 16%;    left: 16.7%; z-index: 9; animation: eyebrow-sway 7s ease-in-out infinite; }
+        .eyelashes       { width: 49%;  top: 21.5%;  left: 16.7%; z-index: 9; animation: eyelashes-sway 7s ease-in-out infinite; }
+        .mouth           { width: 7%;   top: 40.5%;  left: 34%;   z-index: 8; animation: mouth-sway 7s ease-in-out infinite; }
+        .blush           { width: 50%;  top: 32%;    left: 16%;   z-index: 8; animation: blush-sway 7s ease-in-out infinite; }
+        .hat             { width: 95%;  top: -21.8%; left: -1%;   z-index: 10; animation: hat-sway 7s ease-in-out infinite; }
+        .left-leg        { width: 60%;  top: 32%;    left: -40%;  z-index: 5; animation: left-leg-sway 7s ease-in-out infinite; }
+        .right-leg       { width: 60%;  top: 49%;    left: -65%;  z-index: 4; animation: right-leg-sway 7s ease-in-out infinite; }
+        .left-arm        { width: 38%;  top: 37%;    left: 64%;   z-index: 12; animation: hand-sway 7s ease-in-out infinite; }
+        .right-arm       { width: 57%;  top: 13%;    left: -27%;  z-index: 2; animation: right-arm-sway 7s ease-in-out infinite; }
+        .magnifying-glass{ width: 40%;  top: 13%;    left: 38%;   z-index: 11; animation: glass-sway 7s ease-in-out infinite; }
+        .under-shirt     { width: 50%;  top: 45%;    left: 6%;    z-index: 2; }
+        .tie             { width: 25%;  top: 53%;    left: 15%;   z-index: 2; }
+        .under-shirt-collar { width: 19%; top: 47%;  left: 33%;   z-index: 3; }
+        .right-coat      { width: 45%;  top: 45%;    left: -4%;   z-index: 3; }
+        .left-coat       { width: 68%;  top: 45%;    left: 17%;   z-index: 6; }
 
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
+        @keyframes hand-sway       { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(-5px) translateY(10px) rotate(45deg)} }
+        @keyframes glass-sway      { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(80px) translateY(0) rotate(45deg)} }
+        @keyframes head-sway       { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(3px) rotate(10deg)} }
+        @keyframes hat-sway        { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(21px) translateY(3px) rotate(10deg)} }
+        @keyframes front-hair-sway { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(10px) translateY(3px) rotate(10deg)} }
+        @keyframes back-hair-sway  { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(-10px) translateY(18px) rotate(10deg)} }
+        @keyframes inner-hair-sway { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(3px) translateY(20px) rotate(10deg)} }
+        @keyframes eyebrow-sway    { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(5px) translateY(2px) rotate(10deg)} }
+        @keyframes eyes-sway       { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-5px) rotate(10deg)} }
+        @keyframes eyelashes-sway  { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-6px) rotate(10deg)} }
+        @keyframes mouth-sway      { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(-5px) translateY(-5px) rotate(10deg)} }
+        @keyframes blush-sway      { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(-3px) translateY(-5px) rotate(10deg)} }
+        @keyframes right-arm-sway  { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(0) translateY(25px) rotate(-15deg)} }
+        @keyframes right-leg-sway  { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(10px) translateY(20px) rotate(-5deg)} }
+        @keyframes left-leg-sway   { 0%,100%{transform:translateX(0) translateY(0) rotate(0deg)} 50%{transform:translateX(13px) translateY(0) rotate(5deg)} }
 
-        @keyframes hand-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(-5px) translateY(10px) rotate(45deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes glass-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(80px) translateY(0px) rotate(45deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes head-sway {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(3px) rotate(10deg) }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes hat-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(21px) translateY(3px) rotate(10deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes front-hair-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(10px) translateY(3px) rotate(10deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes back-hair-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(-10px) translateY(18px) rotate(10deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes inner-hair-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(3px) translateY(20px) rotate(10deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes eyebrow-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(5px) translateY(2px) rotate(10deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes eyes-sway {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(10deg) }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes eyelashes-sway {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-6px) rotate(10deg) }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes mouth-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(-5px) translateY(-5px) rotate(10deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes blush-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(-3px) translateY(-5px) rotate(10deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes right-arm-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(0px) translateY(25px) rotate(-15deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes right-leg-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(10px) translateY(20px) rotate(-5deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes left-leg-sway {
-            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
-            50% { transform: translateX(13px) translateY(0px) rotate(5deg) }
-            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        .footer-logos {
+            position: absolute;
+            right: 5%;
+            bottom: 36px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            z-index: 15;
         }
 
         @media (max-width: 1100px) {
-            .oc { transform: scale(0.8); right: 5%; }
-            h1 { font-size: 80px; }
-            h2 { font-size: 30px; }
+            .oc-container { transform: scale(0.8); }
+            h1 { font-size: 70px; }
         }
 
         @media (max-width: 768px) {
-            .Welcome { top: 30%; transform: translateY(-40%); }
-            .oc { bottom: 5%; right: -50px; transform: scale(0.6); }
-            .notif { width: 80px; bottom: 40px; }
-            .footer-logos { bottom: 40px; }
-            .gc-logo, .ceas-logo { width: 70px; }
+            .content-wrapper { flex-direction: column; top: 40%; gap: 20px; }
+            .oc-container { width: 180px; height: 230px; transform: scale(1); }
+            .footer-logos { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <div class="header">
-            <img class="app-logo" src="/elements/user icon white.png">
-            <h4>CEAS FIND</h4>
+    <div class="header">
+        <div class="brand">
+            <img class="app-logo" src="/elements/user icon white.png" alt="CEAS FIND logo">
+            <span class="brand-name">CEAS FIND</span>
+        </div>
+        <a href="/FRONTEND/auth.html" class="header-cta">Sign In</a>
+    </div>
+
+    <div class="wave-container">
+        <img class="wave1" src="/elements/wave 1.png" alt="">
+        <img class="wave2" src="/elements/wave 2.png" alt="">
+        <img class="wave3" src="/elements/wave 3.png" alt="">
+        <img class="wave4" src="/elements/wave 4.png" alt="">
+        <img class="wave5" src="/elements/wave 5.png" alt="">
+        <img class="wave6" src="/elements/wave 6.png" alt="">
+    </div>
+
+    <div class="content-wrapper">
+        <div class="hero-text">
+            <div class="tag-line">
+                <div class="tag-dot"></div>
+                <span>Gordon College · CEAS</span>
+            </div>
+            <h1>CEAS <span class="accent">FIND</span></h1>
+            <p class="subtitle">Lost it? Found it? CEAS Find it. A campus hub for reporting lost items and recovering found property within Gordon College.</p>
+            <div class="cta-group">
+                <a href="/FRONTEND/auth.html" class="btn-primary">Go to Feed</a>
+            </div>
         </div>
 
-        <div class="wave-container">
-            <img class="wave1" src="/elements/wave 1.png">
-            <img class="wave2" src="/elements/wave 2.png">
-            <img class="wave3" src="/elements/wave 3.png">
-            <img class="wave4" src="/elements/wave 4.png">
-            <img class="wave5" src="/elements/wave 5.png">
-            <img class="wave6" src="/elements/wave 6.png">
-        </div>
-
-        <div class="content-wrapper">
-            <div class="Welcome">
-                <h1>CEAS FIND</h1>
-                <h2>Lost It? Found It? CEAS Find It.</h2>
-                <h3>Welcome to CEAS Find—a hub for reporting lost items and recovering found property within the Gordon College campus.</h3>
-                <a href="/auth.html"><button class="gotofeed">Go to Feed</button></a>
-            </div>
-
-            <div class="oc-container">
-                <img class="under-shirt" src="/elements/homepage (under shirt).png">
-                <img class="tie" src="/elements/homepage (tie).png">
-                <img class="under-shirt-collar" src="/elements/homepage (under shirt collar).png">
-                <img class="right-arm" src="/elements/homepage (right arm).png">
-                <img class="right-coat" src="/elements/homepage (right coat).png">
-                <img class="back-coat" src="/elements/homepage (back coat).png">
-                <img class="right-leg" src="/elements/homepage (right leg).png">
-                <img class="left-leg" src="/elements/homepage (left leg).png">
-                <img class="back-hair" src="/elements/homapage (back hair).png">
-                <img class="left-coat" src="/elements/homepage (left coat).png">
-                <img class="face" src="/elements/homepage (face).png">
-                <img class="blush" src="/elements/homepage (blush).png">
-                <img class="mouth" src="/elements/homepage (mouth).png">
-                <img class="eyes" src="/elements/homepage (eyes).png">
-                <img class="eyelashes" src="/elements/homepage (eyelashes).png">
-                <img class="eyebrow" src="/elements/homepage (eyebrow).png">
-                <img class="front-hair" src="/elements/homapage (front hair).png">
-                <img class="inner-hair" src="/elements/homapage (inner hair).png">
-                <img class="hat" src="/elements/homapage (hat).png">
-                <img class="magnifying-glass" src="/elements/homapage (magnifying glass).png">
-                <img class="left-arm" src="/elements/homepage (left arm).png">
-            </div>
+        <div class="oc-container">
+            <img class="under-shirt"        src="/elements/homepage (under shirt).png" alt="">
+            <img class="tie"                src="/elements/homepage (tie).png" alt="">
+            <img class="under-shirt-collar" src="/elements/homepage (under shirt collar).png" alt="">
+            <img class="right-arm"          src="/elements/homepage (right arm).png" alt="">
+            <img class="right-coat"         src="/elements/homepage (right coat).png" alt="">
+            <img class="back-coat"          src="/elements/homepage (back coat).png" alt="">
+            <img class="right-leg"          src="/elements/homepage (right leg).png" alt="">
+            <img class="left-leg"           src="/elements/homepage (left leg).png" alt="">
+            <img class="back-hair"          src="/elements/homapage (back hair).png" alt="">
+            <img class="left-coat"          src="/elements/homepage (left coat).png" alt="">
+            <img class="face"               src="/elements/homepage (face).png" alt="">
+            <img class="blush"              src="/elements/homepage (blush).png" alt="">
+            <img class="mouth"              src="/elements/homepage (mouth).png" alt="">
+            <img class="eyes"               src="/elements/homepage (eyes).png" alt="">
+            <img class="eyelashes"          src="/elements/homepage (eyelashes).png" alt="">
+            <img class="eyebrow"            src="/elements/homepage (eyebrow).png" alt="">
+            <img class="front-hair"         src="/elements/homapage (front hair).png" alt="">
+            <img class="inner-hair"         src="/elements/homapage (inner hair).png" alt="">
+            <img class="hat"                src="/elements/homapage (hat).png" alt="">
+            <img class="magnifying-glass"   src="/elements/homapage (magnifying glass).png" alt="">
+            <img class="left-arm"           src="/elements/homepage (left arm).png" alt="">
         </div>
     </div>
 </body>

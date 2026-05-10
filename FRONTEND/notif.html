@@ -41,7 +41,7 @@
         }
 
         .side-bar {
-            width: 220px;
+            width: 250px;
             height: 100vh;
             background-color: var(--night);
             color: var(--white);
@@ -59,7 +59,7 @@
             align-items: center;
             margin-bottom: 20px;
             padding: 10px;
-            padding-left: 10px;
+            padding-left: 20px;
             padding-right: 10px;
             width: 100%;
             flex-shrink: 0;
@@ -82,15 +82,6 @@
             overflow: hidden;
         }
 
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto; 
-            margin-right: -13px;
-        }
-
         .account {
             display: flex;
             align-items: center;
@@ -102,45 +93,6 @@
         .logout-btn {
             cursor: pointer;
             margin-left: 15px;
-        }
-
-        #sidebar-check {
-            display: none;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar {
-            width: 61.5px; 
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account {
-            justify-content: center;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account .logout-btn {
-            margin-right: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .sidebar-header {
-            justify-content: center;
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .menu-toggle {
-            margin-left: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .nav-text,
-        #sidebar-check:checked ~ .main-container h4,
-        #sidebar-check:checked ~ .main-container .category-label,
-        #sidebar-check:checked ~ .main-container .account h3,
-        #sidebar-check:checked ~ .main-container .user-welcome,
-        #sidebar-check:checked ~ .main-container .app-logo {
-            display: none;
-        }
-
-        #others-check { 
-            display: none; 
         }
 
         .nav-list { 
@@ -155,7 +107,7 @@
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 5px 12px;
+            padding: 5px 20px;
             text-decoration: none;
             color: var(--white);
             border-radius: 8px; 
@@ -180,9 +132,9 @@
 
         .category-label {
             font-family: 'Poetsen One', sans-serif;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
-            margin: 5px 0 10px 12px;
+            margin: 5px 0 10px 20px;
             text-transform: uppercase;
             white-space: nowrap;
         }
@@ -433,46 +385,40 @@
     </style>
 </head>
 <body>
-
-    <input type="checkbox" id="sidebar-check">
-
     <div class="main-container">
         <div class="side-bar">
             <div class="sidebar-header">
                 <img class="app-logo" src="/elements/user icon white.png">
                 <h4>CEAS FIND</h4>
-                <label for="sidebar-check" class="menu-toggle">
-                    <span class="material-symbols-outlined">menu</span>
-                </label>
             </div>
 
             <nav class="nav-list">
-                <a href="homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="saved.html" class="nav-item">
+                <a href="/FRONTEND/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="history.html" class="nav-item">
+                <a href="/FRONTEND/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="notif.html" class="nav-item">
+                <a href="/FRONTEND/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="pending.html" class="nav-item">
+                <a href="/FRONTEND/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="review.html" class="nav-item">
+                <a href="/FRONTEND/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
 
-                <hr style="opacity: 0.2; margin: 10px 0;">
+                <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
                 <p class="category-label">Categories</p>
 
                 <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
@@ -505,11 +451,8 @@
                 </a>
             </nav>
 
-            <div class="account">
-                <h3 style="font-size: 14px;">
-                    <?php echo $successLogin ? "User LOGGED OUT" : "Welcome, " . $user; ?>
-                </h3>
-                <span class="logout-btn material-symbols-outlined">logout</span>
+            <div class="account" id="sidebar-user-section">
+                <span style="font-size: 13px;">Loading user...</span>
             </div>
         </div>
 
@@ -523,7 +466,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="posting-page.html">
+                    <a href="/FRONTEND/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -551,100 +494,117 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-                const sidebarCheck = document.getElementById('sidebar-check');
+    // 1. ROLE & USERNAME LOGIC
+    // This waits for secret.js to load the user data into the window object
+    const checkUser = setInterval(() => {
+        if (window.CEAS_USER && window.CEAS_USER.name) {
+            clearInterval(checkUser);
+            
+            const accountDiv = document.querySelector('.account');
+            const isAdmin = window.CEAS_USER.role === 'admin';
+            
+            // Update Sidebar Footer with Name and Admin Badge if applicable
+            accountDiv.innerHTML = `
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 13px; font-weight: bold; color: white;">${window.CEAS_USER.name}</span>
+                    ${isAdmin ? '<span style="font-size: 10px; background: #FFD700; color: #000; padding: 2px 6px; border-radius: 4px; width: fit-content; margin-top: 2px; font-weight: bold;">ADMIN</span>' : ''}
+                </div>
+                <span class="logout-btn material-symbols-outlined" id="logout-trigger" style="color: white; cursor: pointer;">logout</span>
+            `;
 
-                const savedState = localStorage.getItem('sidebarCollapsed');
-                const isCollapsed = (savedState !== 'false'); 
-
-                sidebarCheck.checked = isCollapsed;
-
-                sidebarCheck.addEventListener('change', () => {
-                    localStorage.setItem('sidebarCollapsed', sidebarCheck.checked);
-                });
+            // Handle Logout
+            document.getElementById('logout-trigger').addEventListener('click', () => {
+                if(confirm("Logout?")) {
+                    localStorage.removeItem('ceas_user_session'); // Or however your secret.js handles it
+                    window.location.href = "/FRONTEND/auth.html";
+                }
             });
+        }
+    }, 100);
 
-        function renderNotifications() {
-            const container = document.getElementById('notification-feed-container');
-            if (!container) return;
+    // 2. NOTIFICATION RENDERING
+    function renderNotifications() {
+        const container = document.getElementById('notification-feed-container');
+        if (!container) return;
 
-            const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+        const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
 
-            if (logs.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:20px; color:#999;">No notifications.</div>`;
-                return;
-            }
+        if (logs.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:#999;">No notifications.</div>`;
+            return;
+        }
 
-            container.innerHTML = logs.map(notif => `
-                <div class="notif-row">
+        container.innerHTML = logs.map(notif => {
+            // Logic for status color coding based on message content or type
+            let statusColor = '#3f51b5'; // Default Indigo (Unclaimed)
+            if (notif.message.toLowerCase().includes('claimed')) statusColor = '#0ea5e9'; // Sky Blue
+            if (notif.message.toLowerCase().includes('pending')) statusColor = '#f59e0b'; // Amber
+            if (notif.message.toLowerCase().includes('sync')) statusColor = '#22c55e';    // Green
+
+            return `
+                <div class="notif-row" style="border-left: 5px solid ${statusColor};">
                     <div class="notif-content">
                         <span class="notif-username">${notif.user}</span> ${notif.message}
                     </div>
-                    <span class="material-symbols-outlined notif-bell">notifications</span>
+                    <span class="material-symbols-outlined notif-bell" style="color: ${statusColor}">notifications</span>
                 </div>
+            `;
+        }).join('');
+    }
+
+    // 3. STORAGE & PREVIEWS
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'app_notifications' || event.key === 'user_claims') {
+            renderNotifications();
+            updatePendingPreview();
+        }
+    });
+
+    const updatePendingPreview = () => {
+        const pendingBox = document.getElementById('pending-preview');
+        if (!pendingBox) return;
+
+        const pending = JSON.parse(localStorage.getItem('user_claims')) || [];
+        if (pending.length === 0) {
+            pendingBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">No pending claims.</p>';
+        } else {
+            pendingBox.innerHTML = pending.slice(0, 2).map(p => `
+                <p style="font-size:13px; color:var(--onyx);">• ${p.itemName || 'Item Claim'}</p>
             `).join('');
         }
+    };
 
-        window.addEventListener('storage', (event) => {
-            if (event.key === 'app_notifications') {
-                renderNotifications();
-            }
-        });
+    const updateReviewPreview = () => {
+        const reviewBox = document.getElementById('review-preview');
+        if (!reviewBox) return;
 
-        function addNotification(user, message) {
-            const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+        const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
+        const reviews = logs.filter(n => n.type === 'email_proof' || n.type === 'claim_attempt');
 
-            const newNotif = { user, message, time: new Date().toISOString() };
-            logs.unshift(newNotif); 
-
-            localStorage.setItem('app_notifications', JSON.stringify(logs));
-
-            renderNotifications();
+        if (reviews.length === 0) {
+            reviewBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">Nothing to review.</p>';
+        } else {
+            reviewBox.innerHTML = `<p style="font-size:13px; color:var(--onyx); font-weight:bold;">• ${reviews.length} new proof(s) to check</p>`;
         }
+    };
 
-        document.addEventListener('DOMContentLoaded', renderNotifications);
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => {
+        renderNotifications();
+        updatePendingPreview();
+        updateReviewPreview();
+    });
 
-        document.querySelectorAll('.preview-card').forEach(card => {
-            card.style.cursor = 'pointer';
-            card.onclick = () => {
-                const title = card.querySelector('h5').innerText;
-                if(title.includes('Pending')) window.location.href = 'pending.html';
-                if(title.includes('Review')) window.location.href = 'review.html';
-            };
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const updatePendingPreview = () => {
-                const pendingBox = document.getElementById('pending-preview');
-                if (!pendingBox) return;
-
-                const pending = JSON.parse(localStorage.getItem('user_claims')) || [];
-                if (pending.length === 0) {
-                    pendingBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">No pending claims.</p>';
-                } else {
-                    pendingBox.innerHTML = pending.slice(0, 2).map(p => `
-                        <p style="font-size:13px; color:var(--onyx);">• ${p.itemName || 'Item Claim'}</p>
-                    `).join('');
-                }
-            };
-
-            const updateReviewPreview = () => {
-                const reviewBox = document.getElementById('review-preview');
-                if (!reviewBox) return;
-
-                const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-                const reviews = logs.filter(n => n.type === 'email_proof' || n.type === 'claim_attempt');
-
-                if (reviews.length === 0) {
-                    reviewBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">Nothing to review.</p>';
-                } else {
-                    reviewBox.innerHTML = `<p style="font-size:13px; color:var(--onyx); font-weight:bold;">• ${reviews.length} new proof(s) to check</p>`;
-                }
-            };
-
-            updatePendingPreview();
-            updateReviewPreview(); 
-        });
-    </script>
+    // Navigation for cards
+    document.querySelectorAll('.preview-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.onclick = () => {
+            const title = card.querySelector('h5').innerText;
+            if(title.includes('Pending')) window.location.href = '/FRONTEND/pending.html';
+            if(title.includes('Review')) window.location.href = '/FRONTEND/review.html';
+        };
+    });
+</script>
+    <script type="module" src="/FRONTEND/secret.js"></script>
 </body>
 </html>

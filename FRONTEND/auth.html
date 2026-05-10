@@ -1,240 +1,432 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>Authentication</title>
-    <style>
-        :root {
-            --white: #ffffff;
-            --baby-blue: #a3b8ed;
-            --bg-white: #f0f0f0;
-            --night: #1e3a6a;
-            --onyx: #1b1b1b;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — CEAS FIND</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <style>
+    :root {
+        --white: #ffffff;
+        --baby-blue: #a3b8ed;
+        --night: #1e3a6a;
+        --night-mid: #2c5090;
+        --bg: #f0f4fb;
+        --border: #dde4f0;
+        --onyx: #1b1b1b;
+        --muted: #b9bccd;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    body {
+        background: var(--night);
+        font-family: 'Roboto Condensed', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
 
-        body {
-            background: var(--night);
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            font-family: 'Roboto Condensed', sans-serif;
-        }
+    .bg-waves {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    .bg-wave {
+        position: absolute;
+        bottom: 0;
+        left: -10%;
+        width: 120%;
+        opacity: 0.18;
+        will-change: transform;
+    }
+    .bg-wave svg path { fill: var(--baby-blue); }
+    .bg-wave:nth-child(1) { animation: wv1 12s ease-in-out infinite; bottom: -10px; }
+    .bg-wave:nth-child(2) { animation: wv2 9s ease-in-out infinite; bottom: 20px; opacity: 0.12; }
+    .bg-wave:nth-child(3) { animation: wv3 15s ease-in-out infinite; bottom: 40px; opacity: 0.08; }
+    @keyframes wv1 { 0%,100%{transform:translateX(0) scaleY(1)} 50%{transform:translateX(-5%) scaleY(1.08)} }
+    @keyframes wv2 { 0%,100%{transform:translateX(0) scaleY(1)} 50%{transform:translateX(5%) scaleY(0.95)} }
+    @keyframes wv3 { 0%,100%{transform:translateX(0) scaleY(1)} 50%{transform:translateX(-3%) scaleY(1.04)} }
 
-        .main-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    .header {
+        position: absolute;
+        top: 40px;
+        left: 5%;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        z-index: 20;
+    }
         
-        .header {
-            position: absolute;
-            top: 40px;
-            left: 5%;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 20;;
-        }
-        
-        .app-logo {
-            position: relative;
-            width: 25px;
-            height: auto;
-            transform: scaleX(-1);
-        }
+    .app-logo {
+        position: relative;
+        width: 25px;
+        height: auto;
+        transform: scaleX(-1);
+    }
 
-        h4 {
-            position: relative;
-            font-size: 20px;
-            font-family: 'Poetsen One', sans-serif;
-            color: var(--white);
-            margin: 0;
-        }
+    h4 {
+        position: relative;
+        font-size: 20px;
+        font-family: 'Poetsen One', sans-serif;
+        color: var(--white);
+        margin: 0;
+    }
 
-        .auth-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            width: 500px;
-            margin-top: 130px;
-        }
+    .auth-center {
+        position: relative;
+        z-index: 10;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px 60px;
+    }
 
-        .wave-container {
-            position: absolute;
-            bottom: 0px;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            pointer-events: none;
-        }
+    .auth-card {
+        position: relative;
+        z-index: 10;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(163,184,237,0.2);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 24px;
+        padding: 40px 36px;
+        width: min(460px, 94vw);
+        text-align: center;
+        animation: card-in 0.5s cubic-bezier(0.34,1.2,0.64,1) both;
+    }
 
-        .wave1, .wave2, .wave3, .wave4, .wave5, .wave6 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 110%; 
-            height: auto;
-            animation: move-wave linear infinite;
-        }
+    @keyframes card-in {
+        from { opacity:0; transform:translateY(20px); }
+        to   { opacity:1; transform:translateY(0); }
+    }
 
-        .wave1 { animation-duration: 28s; z-index: 1; }
-        .wave2 { animation-duration: 14s; z-index: 2; }
-        .wave3 { animation-duration: 7s; z-index: 3; }
-        .wave4 { animation-duration: 21s; z-index: 4; }
-        .wave5 { animation-duration: 14s; z-index: 5; }
-        .wave6 { animation-duration: 7s; z-index: 6; }
+    .auth-logo {
+        font-family: 'Poetsen One', sans-serif;
+        font-size: 42px;
+        color: var(--white);
+        text-align: center;
+        line-height: 1;
+        margin-bottom: 6px;
+    }
 
-        @keyframes move-wave {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(-5%); }
-            100% { transform: translateX(0); }
-        }
+    .auth-tagline {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 32px;
+    }
 
-        h1 {
-            text-align: center;
-            font-family: 'Poetsen One', sans-serif; 
-            font-weight: 180;
-            color: var(--white); 
-            margin-bottom: 50px; 
-            font-size: 100px; 
-        }
+    .notice-box {
+        background: rgba(163,184,237,0.15);
+        border: 1px solid rgba(163,184,237,0.4);
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 13px;
+        color: var(--white);
+        line-height: 1.5;
+        margin-bottom: 24px;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+    }
 
-        label { 
-            display: block; 
-            color: var(--baby-blue); 
-            font-size: 14px; 
-            margin-bottom: 10px; 
-            text-align: center;
-        }
+    .notice-box .material-symbols-outlined { font-size: 17px; color: var(--white); flex-shrink: 0; margin-top: 1px; }
 
-        .p-notice {
-            text-align: center;
-            color: var(--white);
-            margin-bottom: 60px;
-        }
+    .btn-google {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 11px 20px;
+        background: var(--white);
+        color: var(--night);
+        border: none;
+        border-radius: 100px;
+        font-family: 'Poetsen One', sans-serif;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        margin-bottom: 20px;
+    }
 
-        .p-con {
-            text-align: center;
-            color: var(--night);
-            margin-bottom: 60px;
-        }
+    .btn-google:hover { background: var(--night); transform: translateY(-1px); color: var(--white) }
 
-        a {
-            color: var(--white);
-            text-decoration: none;
-        }
+    .google-icon { width: 20px; height: 20px; }
 
-        a:hover {
-            color: var(--night);
-            text-decoration: underline;
-        }
-    
-        button { 
-            width: 100%; 
-            padding: 12px; 
-            background: var(--white); 
-            color: var(--night); 
-            border: none; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            font-family: 'Poetsen One', sans-serif;
-            margin-bottom: 150px;
-        }
+    .tac-link {
+        text-align: center;
+        font-size: 12px;
+        color: var(--muted);
+    }
+    .tac-link a { color: var(--white); font-weight: 600; cursor: pointer; text-decoration: underline; }
 
-        button:hover {
-            transform: scale(1.05);
-            background: rgb(30,58,106,0.3);
-            color: var(--white);
-        }
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 20px;
-            border: none;
-            text-align: center;
-        }
+    .modal-box {
+        background: var(--white);
+        border-radius: 18px;
+        padding: 32px;
+        width: min(500px, 92vw);
+        box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+        transform: translateY(24px) scale(0.98);
+        transition: transform 0.25s;
+        max-height: 88vh;
+        overflow-y: auto;
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
 
-        @keyframes move-wave {
-            0%, 100% { transform: translateX(0%); }
-            50% { transform: translateX(-5%); }
-        }
+    .modal-title {
+        font-family: 'Poetsen One', sans-serif;
+        font-size: 22px;
+        color: var(--night);
+        margin-bottom: 4px;
+    }
+    .modal-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
 
-        @keyframes floating {
-            0%, 100% { transform: translateY(0%); }
-            50% { transform: translateY(-3%); }
-        }
+    .tac-scroll {
+        height: 260px;
+        overflow-y: auto;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--onyx);
+        background: var(--bg);
+        margin-bottom: 18px;
+        scrollbar-width: thin;
+    }
 
-        @keyframes movement {
-            0%, 100% { transform: translateX(0%); }
-            50% { transform: translateX(2%); }
-        }
+    .tac-scroll h3 { color: var(--night); font-size: 14px; margin: 10px 0 4px; }
+    .tac-scroll p  { margin-bottom: 8px; }
 
-        @media (max-width: 1100px) {
-            .glass { transform: scale(0.7); right: -10%; }
-        }
+    .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--onyx);
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+    .checkbox-row input { width:16px; height:16px; accent-color:var(--night); cursor:pointer; }
 
-        @media (max-width: 768px) {
-            body { justify-content: center; }
-            .main-container { padding-left: 0; justify-content: center; }
-            .glass { display: none; }
-            .auth-container { width: 95%; }
-        }
-    </style>
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; }
+
+    .btn-primary {
+        background: var(--night);
+        color: var(--white);
+        border: none;
+        border-radius: 10px;
+        padding: 10px 24px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .btn-primary:hover { background: var(--night-mid); }
+    .btn-primary:disabled { opacity:0.4; cursor:not-allowed; }
+
+    .btn-ghost {
+        background: transparent;
+        color: var(--night);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .btn-ghost:hover { background: var(--bg); }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+    .form-field label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+    .form-field input {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--onyx);
+        outline: none;
+        transition: border-color 0.2s;
+        background: var(--bg);
+    }
+    .form-field input:focus { border-color: var(--night); background: var(--white); }
+  </style>
 </head>
 <body>
-    <div class="main-container">   
-        <div class="header">
-            <img class="app-logo" src="/elements/user icon white.png">
-            <h4>CEAS FIND</h4>
+    <div class="bg-waves">
+        <div class="bg-wave">
+            <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,80 C240,130 480,30 720,80 C960,130 1200,30 1440,80 L1440,160 L0,160 Z"/>
+            </svg>
         </div>
-        
-        <div class="wave-container">
-            <img class="wave1" src="/elements/wave 1.png">
-            <img class="wave2" src="/elements/wave 2.png">
-            <img class="wave3" src="/elements/wave 3.png">
-            <img class="wave4" src="/elements/wave 4.png">
-            <img class="wave5" src="/elements/wave 5.png">
-            <img class="wave6" src="/elements/wave 6.png">
+        <div class="bg-wave">
+            <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,60 C360,120 720,20 1080,80 C1200,100 1350,50 1440,70 L1440,160 L0,160 Z"/>
+            </svg>
         </div>
+        <div class="bg-wave">
+            <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,100 C180,50 360,120 540,90 C720,60 900,110 1080,80 C1260,50 1380,100 1440,90 L1440,160 L0,160 Z"/>
+            </svg>
+        </div>
+    </div>
 
-        <div class="auth-container">
-            <section id="login-section" class="active">
-                <h1>CEAS FIND</h1>
-                <label>IMPORTANT:</label>
-                <p class="p-notice">Sign in with your Gordon College domain account to access the platform. Only CEAS accounts are to be accepted.</p>
-                <button type="button" id="google-login-btn">Sign Up with Google</button>
-                <p class="p-con">By signing in, you agree to our <a class="conditions" href="/tac.html">Terms and Conditions</a>.</p>
-            </section> 
-        <section id="google-registration" style="display: none;">
-                <h1>Complete Registration</h1>
-                <label>Enter CEAS Course Code:</label>
-                <input type="text" id="google-course-code" placeholder="e.g. 123">
-                <button type="button" id="submit-google-reg">Finish Registration</button>
-            </section>
+    <div class="header">
+        <img class="app-logo" src="/elements/user icon white.png">
+        <h4>CEAS FIND</h4>
+    </div>
+
+    <div class="auth-center">
+        <div class="auth-card">
+            <div class="auth-logo">CEAS FIND</div>
+            <p class="auth-tagline">Gordon College Lost & Found Platform</p>
+            <div class="notice-box">
+                <span class="material-symbols-outlined">info</span>
+                <span>Sign in with your <strong>Gordon College Google account</strong>. Only CEAS domain accounts are accepted.</span>
+            </div>
+            <button class="btn-google" id="google-login-btn">
+                <svg class="google-icon" viewBox="0 0 48 48">
+                    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.3 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 20-9 20-20 0-1.2-.1-2.4-.4-3.5z"/>
+                    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.3 6.5 29.4 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/>
+                    <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.4C29.4 35 26.8 36 24 36c-5.2 0-9.6-3.4-11.2-8H6.1C9.4 35.5 16.2 44 24 44z"/>
+                    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.8l6.3 5.4C40.8 36.3 44 30.6 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+                </svg>
+                Sign In with Google
+            </button>
+            <p class="tac-link">By signing in, you agree to our <a id="open-tac">Terms and Conditions</a>.</p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="tac-modal">
+        <div class="modal-box">
+            <div class="modal-title">Terms & Conditions</div>
+            <p class="modal-subtitle">Please read and accept before continuing.</p>
+            <div class="tac-scroll">
+                <h3>1. Eligibility</h3>
+                <p>CEAS FIND is exclusively for students, faculty, and staff of Gordon College's College of Engineering, Architecture, and Sciences (CEAS). Access requires a valid Gordon College Google account ending in the institution's domain.</p>
+                <h3>2. Acceptable Use</h3>
+                <p>You agree to use CEAS FIND only for reporting and recovering genuinely lost or found items within the Gordon College campus. Posting false, misleading, or fabricated item reports is strictly prohibited and may result in permanent account suspension.</p>
+                <h3>3. Content Responsibility</h3>
+                <p>You are solely responsible for all content you post, including item descriptions, photos, and messages. Do not post private information of others without consent. Content that is offensive, discriminatory, or harmful is not permitted.</p>
+                <h3>4. Claiming Items</h3>
+                <p>Claiming an item requires submitting proof of ownership via the platform. False claims are a violation of these terms and may be reported to Gordon College administration. The platform administrator reserves the right to verify claims and take appropriate action.</p>
+                <h3>5. Admin Privileges</h3>
+                <p>Designated administrators have the authority to remove any post that violates these terms, is flagged as fraudulent, or is otherwise inappropriate. Admin decisions are final.</p>
+                <h3>6. Privacy</h3>
+                <p>Your Google account name and email will be visible to other signed-in users when you post an item. Do not share sensitive personal information beyond what is necessary to identify a lost item.</p>
+                <h3>7. Limitation of Liability</h3>
+                <p>CEAS FIND facilitates communication between users but does not guarantee the recovery of lost items. The platform and its administrators are not liable for any loss, damage, or dispute arising from item transactions between users.</p>
+                <h3>8. Amendments</h3>
+                <p>These terms may be updated at any time. Continued use of the platform constitutes acceptance of the updated terms.</p>
+            </div>
+            <label class="checkbox-row">
+                <input type="checkbox" id="tac-check">
+                I have read and agree to the Terms and Conditions
+            </label>
+            <div class="modal-actions">
+                <button class="btn-ghost" id="tac-cancel">Cancel</button>
+                <button class="btn-primary" id="tac-accept" disabled>Accept & Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="course-modal">
+        <div class="modal-box">
+            <div class="modal-title">Complete Registration</div>
+            <p class="modal-subtitle">One last step — enter your CEAS course code to finish setting up your account.</p>
+            <div class="form-field">
+                <label>CEAS Course Code</label>
+                <input type="text" id="course-code-input" placeholder="e.g. BSCS-101" autocomplete="off">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-ghost" id="course-cancel">Back</button>
+                <button class="btn-primary" id="course-submit">Finish Registration</button>
+            </div>
         </div>
     </div>
 
     <script type="module" src="../BACKEND/auth.js"></script>
+    <script>
+    const tacModal = document.getElementById('tac-modal');
+    const courseModal = document.getElementById('course-modal');
+    const tacCheck = document.getElementById('tac-check');
+    const tacAccept = document.getElementById('tac-accept');
+    const googleBtn = document.getElementById('google-login-btn');
+    
+    const checkboxRow = document.querySelector('.checkbox-row');
+    const tacAcceptBtn = document.getElementById('tac-accept');
+
+    document.getElementById('open-tac').addEventListener('click', () => {
+        checkboxRow.style.display = 'none';
+        tacAcceptBtn.style.display = 'none';
+        openModal(tacModal);
+    });
+
+    googleBtn.addEventListener('click', () => {
+        const hasAccepted = localStorage.getItem('ceas_tac_accepted');
+        
+        if (!hasAccepted) {
+            checkboxRow.style.display = 'flex';
+            tacAcceptBtn.style.display = 'block';
+            openModal(tacModal);
+        } else {
+            if (window._ceasSignIn) window._ceasSignIn();
+        }
+    });
+
+    tacCheck.addEventListener('change', () => { 
+        tacAccept.disabled = !tacCheck.checked; 
+    });
+
+    document.getElementById('tac-cancel').addEventListener('click', () => closeModal(tacModal));
+
+    tacAccept.addEventListener('click', () => {
+        localStorage.setItem('ceas_tac_accepted', '1');
+        closeModal(tacModal);
+        if (window._ceasSignIn) window._ceasSignIn();
+    });
+
+    document.getElementById('course-cancel').addEventListener('click', () => closeModal(courseModal));
+    document.getElementById('course-submit').addEventListener('click', () => {
+        const code = document.getElementById('course-code-input').value.trim();
+        if (window._ceasFinishReg) window._ceasFinishReg(code);
+    });
+
+    window._openCourseModal = () => openModal(courseModal);
+    window._closeCourseModal = () => closeModal(courseModal);
+
+    function openModal(el) { el.classList.add('open'); }
+    function closeModal(el) { el.classList.remove('open'); }
+</script>
 </body>
 </html>

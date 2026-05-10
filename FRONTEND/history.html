@@ -41,7 +41,7 @@
         }
 
         .side-bar {
-            width: 220px;
+            width: 250px;
             height: 100vh;
             background-color: var(--night);
             color: var(--white);
@@ -59,7 +59,7 @@
             align-items: center;
             margin-bottom: 20px;
             padding: 10px;
-            padding-left: 10px;
+            padding-left: 20px;
             padding-right: 10px;
             width: 100%;
             flex-shrink: 0;
@@ -82,15 +82,6 @@
             overflow: hidden;
         }
 
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto; 
-            margin-right: -13px;
-        }
-
         .account {
             display: flex;
             align-items: center;
@@ -102,45 +93,6 @@
         .logout-btn {
             cursor: pointer;
             margin-left: 15px;
-        }
-
-        #sidebar-check {
-            display: none;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar {
-            width: 61.5px; 
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account {
-            justify-content: center;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account .logout-btn {
-            margin-right: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .sidebar-header {
-            justify-content: center;
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .menu-toggle {
-            margin-left: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .nav-text,
-        #sidebar-check:checked ~ .main-container h4,
-        #sidebar-check:checked ~ .main-container .category-label,
-        #sidebar-check:checked ~ .main-container .account h3,
-        #sidebar-check:checked ~ .main-container .user-welcome,
-        #sidebar-check:checked ~ .main-container .app-logo {
-            display: none;
-        }
-
-        #others-check { 
-            display: none; 
         }
 
         .nav-list { 
@@ -155,7 +107,7 @@
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 5px 12px;
+            padding: 5px 20px;
             text-decoration: none;
             color: var(--white);
             border-radius: 8px; 
@@ -180,9 +132,9 @@
 
         .category-label {
             font-family: 'Poetsen One', sans-serif;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
-            margin: 5px 0 10px 12px;
+            margin: 5px 0 10px 20px;
             text-transform: uppercase;
             white-space: nowrap;
         }
@@ -417,49 +369,87 @@
             border: 1px solid var(--bg-white);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
+
+        .account-name {
+            font-size: 13px;
+            font-family: 'Roboto Condensed';
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px;
+        }
+        .admin-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: rgba(163,184,237,0.3);
+            color: #a3b8ed;
+            border-radius: 20px;
+            padding: 1px 7px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        /* Status badge colors */
+        .status-badge-unclaimed { background: #3730a3 !important; }
+        .status-badge-claimed   { background: #075985 !important; }
+        .status-badge-pending   { background: #b45309 !important; }
+        .status-badge-synced    { background: #166534 !important; }
+        /* Delete button (shown only to owner / admin) */
+        .delete-post-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #b91c1c;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 8px;
+            font-family: 'Roboto Condensed';
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .delete-post-btn:hover { opacity: 0.7; }
+        .delete-post-btn .material-symbols-outlined { font-size: 16px; }
     </style>
 </head>
 <body>
-
-    <input type="checkbox" id="sidebar-check">
-
     <div class="main-container">
         <div class="side-bar">
             <div class="sidebar-header">
                 <img class="app-logo" src="/elements/user icon white.png">
                 <h4>CEAS FIND</h4>
-                <label for="sidebar-check" class="menu-toggle">
-                    <span class="material-symbols-outlined">menu</span>
-                </label>
             </div>
 
             <nav class="nav-list">
-                <a href="/homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="/saved.html" class="nav-item">
+                <a href="/FRONTEND/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="/history.html" class="nav-item">
+                <a href="/FRONTEND/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="/notif.html" class="nav-item">
+                <a href="/FRONTEND/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="/pending.html" class="nav-item">
+                <a href="/FRONTEND/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="/review.html" class="nav-item">
+                <a href="/FRONTEND/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
 
-                <hr style="opacity: 0.2; margin: 10px 0;">
+                <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
                 <p class="category-label">Categories</p>
 
                 <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
@@ -492,11 +482,9 @@
                 </a>
             </nav>
 
-            <div class="account">
-                <h3 style="font-size: 14px;">
-                    <?php echo $successLogin ? "User LOGGED OUT" : "Welcome, " . $user; ?>
-                </h3>
-                <span class="logout-btn material-symbols-outlined">logout</span>
+            <div class="account" style="font-size: 13px; font-weight: bold; color: white; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+                <span class="account-name" id="sidebar-username">Loading…</span>
+                <span class="logout-btn material-symbols-outlined" id="logout-icon">logout</span>
             </div>
         </div>
 
@@ -509,7 +497,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="/posting-page.html">
+                    <a href="/FRONTEND/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -539,83 +527,115 @@
             </div>
         </div>
     </div>
-
+     
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-                const sidebarCheck = document.getElementById('sidebar-check');
 
-                const savedState = localStorage.getItem('sidebarCollapsed');
-                const isCollapsed = (savedState !== 'false'); 
+        const initSidebar = () => {
+        const footer = document.getElementById('sidebar-user-footer');
+        const logoutBtn = document.getElementById('logout-trigger');
 
-                sidebarCheck.checked = isCollapsed;
+        // Function to update Sidebar UI
+        const updateSidebarUI = (user) => {
+            if (!footer) return;
+            const isAdmin = user.role === 'admin';
+            
+            footer.querySelector('div').innerHTML = `
+                <span title="${user.name}" style="font-size: 14px; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; display: block;">
+                    ${user.name}
+                </span>
+                ${isAdmin ? `
+                <span style="font-size: 9px; background: #FFD700; color: #000; padding: 1px 6px; border-radius: 4px; width: fit-content; font-weight: 800; letter-spacing: 0.5px; margin-top: 2px;">
+                    ADMIN
+                </span>` : ''}
+            `;
+        };
 
-                sidebarCheck.addEventListener('change', () => {
-                    localStorage.setItem('sidebarCollapsed', sidebarCheck.checked);
-                });
-            });
+        // Logout functionality
+        if (logoutBtn) {
+            logoutBtn.onclick = () => {
+                localStorage.removeItem('ceas_user_session'); // Or your specific session key
+                sessionStorage.clear();
+                window.location.href = '/FRONTEND/auth.html'; 
+            };
+        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('history-container');
-            const allPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
-            const masterPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
-            const currentUser = "<?php echo $user; ?>"; 
-            const historyPosts = allPosts.filter(p => {
-                const isClaimed = p.status === 'Claimed';
-                const isOwner = p.user === currentUser;
-                const isClaimant = p.claimant === currentUser;
-                return isClaimed && (isOwner || isClaimant);
-            });
-
-            if (historyPosts.length === 0) {
-                container.innerHTML = '<p class="empty-msg">No history records found.</p>';
-                return;
+        // Wait for secret.js to load the global user object
+        let attempts = 0;
+        const checkUser = setInterval(() => {
+            if (window.CEAS_USER) {
+                updateSidebarUI(window.CEAS_USER);
+                clearInterval(checkUser);
             }
+            if (attempts > 50) clearInterval(checkUser); 
+            attempts++;
+        }, 100);
+    };
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkUser = setInterval(() => {
+                if (window.CEAS_USER && window.CEAS_USER.name !== '') {
+                    clearInterval(checkUser);
+                    renderHistory();
+                }
+            }, 100);
 
-            historyPosts.forEach(post => {
-                const livePost = masterPosts.find(p => Number(p.id) === Number(post.id)) || post;
-                const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${livePost.id}`) === 'true';
-                const currentStatus = isPermanentlyClaimed ? 'Synced' : livePost.status;
-                const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e' , 'Synced': '#1e3a6a' };
-                const sColor = statusColors[currentStatus] || '#8e8e8e';
+            function renderHistory() {
+                const container = document.getElementById('history-container');
+                const allPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
+                const currentUser = window.CEAS_USER.name; 
 
-                const card = document.createElement('div');
-                card.className = 'history-card';
-                card.innerHTML = `
-                    <div style="width: 60px; height: 60px; flex-shrink: 0;">
-                        ${post.image ? 
-                            `<img src="${post.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` : 
-                            `<div style="width: 100%; height: 100%; background: var(--bg-white); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="font-size: 20px; color: #ccc;">image</span></div>`
-                        }
-                    </div>
+                const historyPosts = allPosts.filter(p => {
+                    const isClaimed = p.status === 'Claimed' || p.status === 'Synced';
+                    const isOwner = p.user === currentUser;
+                    const isClaimant = p.claimant === currentUser;
+                    return isClaimed && (isOwner || isClaimant);
+                });
 
-                    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
-                        <a href="pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 15px; text-decoration: none;">
-                            <strong>${post.user}</strong>
-                        </a>
-                        <p style="font-size: 13px; color: #333; margin: 0;">
-                            <strong>Lost:</strong> ${post.lostItem || 'Unknown'} 
-                            <span style="color: #8e8e8e; margin-left: 1px;">|| Found: ${post.foundItem || 'Unknown'}</span>
-                        </p>
-                        <p style="font-size: 12px; color: #8e8e8e; display: flex; align-items: center; gap: 2px; margin-top: 2px;">
-                            <span class="material-symbols-outlined" style="font-size: 13px; margin-right: -15px;">schedule</span> ${post.timestamp || ''}
-                        </p>
-                    </div>
+                if (historyPosts.length === 0) {
+                    container.innerHTML = '<p class="empty-msg">No history records found.</p>';
+                    return;
+                }
 
-                    <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 120px;">
-                        <span style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
-                            ${currentStatus}
-                        </span>
-                        
-                        <button onclick="window.location.href='homepage.html?id=${post.id}'" 
-                            onmouseover="this.style.background='var(--night)'; this.style.color='var(--white)';" 
-                            onmouseout="this.style.background='var(--bg-white)'; this.style.color='var(--night)';" 
-                            style="background:var(--bg-white); color: var(--night); width: 100%; border: none; padding: 6px 15px; border-radius: 8px; cursor: pointer; font-family: 'Roboto Condensed'; font-size: 13px; font-weight: bold;">
-                            Go to post
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+                container.innerHTML = '';
+                historyPosts.forEach(post => {
+                    const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${post.id}`) === 'true';
+                    const currentStatus = isPermanentlyClaimed ? 'Synced' : post.status;
+                    
+                    const card = document.createElement('div');
+                    card.className = 'history-card';
+                    card.innerHTML = `
+                        <div style="width: 60px; height: 60px; flex-shrink: 0;">
+                            ${post.image ? 
+                                `<img src="${post.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` : 
+                                `<div style="width: 100%; height: 100%; background: var(--bg-white); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="font-size: 20px; color: #ccc;">image</span></div>`
+                            }
+                        </div>
+
+                        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
+                            <a href="/FRONTEND/pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 15px; text-decoration: none;">
+                                <strong>${post.user}</strong>
+                            </a>
+                            <p style="font-size: 13px; color: #333; margin: 0;">
+                                <strong>Item:</strong> ${post.lostItem || post.foundItem || 'Unknown'}
+                            </p>
+                            <p style="font-size: 12px; color: #8e8e8e; display: flex; align-items: center; gap: 2px; margin-top: 2px;">
+                                <span class="material-symbols-outlined" style="font-size: 13px;">schedule</span> ${post.timestamp || ''}
+                            </p>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 120px;">
+                            <span id="status-${post.id}" class="status-badge" style="color: white; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
+                                ${currentStatus}
+                            </span>
+                            
+                            <button onclick="window.location.href='/FRONTEND/homepage.html?id=${post.id}'" 
+                                style="background:var(--bg-white); color: var(--night); width: 100%; border: none; padding: 6px 15px; border-radius: 8px; cursor: pointer; font-family: 'Roboto Condensed'; font-size: 13px; font-weight: bold;">
+                                Go to post
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
         });
 
         document.querySelectorAll('.preview-card').forEach(card => {
@@ -681,5 +701,7 @@
             updateReviewPreview();
         });
     </script>
+
+    <script type="module" src="/FRONTEND/secret.js"></script>
 </body>
 </html>

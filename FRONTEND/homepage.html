@@ -41,7 +41,7 @@
         }
 
         .side-bar {
-            width: 220px;
+            width: 250px;
             height: 100vh;
             background-color: var(--night);
             color: var(--white);
@@ -59,7 +59,7 @@
             align-items: center;
             margin-bottom: 20px;
             padding: 10px;
-            padding-left: 10px;
+            padding-left: 20px;
             padding-right: 10px;
             width: 100%;
             flex-shrink: 0;
@@ -82,15 +82,6 @@
             overflow: hidden;
         }
 
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto; 
-            margin-right: -13px;
-        }
-
         .account {
             display: flex;
             align-items: center;
@@ -102,45 +93,6 @@
         .logout-btn {
             cursor: pointer;
             margin-left: 15px;
-        }
-
-        #sidebar-check {
-            display: none;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar {
-            width: 61.5px; 
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account {
-            justify-content: center;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account .logout-btn {
-            margin-right: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .sidebar-header {
-            justify-content: center;
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .menu-toggle {
-            margin-left: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .nav-text,
-        #sidebar-check:checked ~ .main-container h4,
-        #sidebar-check:checked ~ .main-container .category-label,
-        #sidebar-check:checked ~ .main-container .account h3,
-        #sidebar-check:checked ~ .main-container .user-welcome,
-        #sidebar-check:checked ~ .main-container .app-logo {
-            display: none;
-        }
-
-        #others-check { 
-            display: none; 
         }
 
         .nav-list { 
@@ -155,7 +107,7 @@
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 5px 12px;
+            padding: 5px 20px;
             text-decoration: none;
             color: var(--white);
             border-radius: 8px; 
@@ -180,9 +132,9 @@
 
         .category-label {
             font-family: 'Poetsen One', sans-serif;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
-            margin: 5px 0 10px 12px;
+            margin: 5px 0 10px 20px;
             text-transform: uppercase;
             white-space: nowrap;
         }
@@ -498,45 +450,40 @@
     </style>
 </head>
 <body>
-    <input type="checkbox" id="sidebar-check">
-
     <div class="main-container">
         <div class="side-bar">
             <div class="sidebar-header">
                 <img class="app-logo" src="/elements/user icon white.png">
                 <h4>CEAS FIND</h4>
-                <label for="sidebar-check" class="menu-toggle">
-                    <span class="material-symbols-outlined">menu</span>
-                </label>
             </div>
 
             <nav class="nav-list">
-                <a href="homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="saved.html" class="nav-item">
+                <a href="/FRONTEND/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="history.html" class="nav-item">
+                <a href="/FRONTEND/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="notif.html" class="nav-item">
+                <a href="/FRONTEND/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="pending.html" class="nav-item">
+                <a href="/FRONTEND/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="review.html" class="nav-item">
+                <a href="/FRONTEND/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
 
-                <hr style="opacity: 0.2; margin: 10px 0;">
+                <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
                 <p class="category-label">Categories</p>
 
                 <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
@@ -587,7 +534,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="posting-page.html">
+                    <a href="/FRONTEND/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -610,6 +557,7 @@
                         <img class="wave6" src="/elements/wave 6.png">
                     </div>
                 </div>
+                
                 <div id="feed-container">
                     <p class="empty-msg">No posts yet. Reported items will appear here.</p>
                 </div>
@@ -632,21 +580,32 @@
         </div>
     </div>
 
+    <script type="module" src="/BACKEND/server.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const sidebarCheck = document.getElementById('sidebar-check');
+            const checkUser = setInterval(() => {
+                if (window.CEAS_USER && window.CEAS_USER.name) {
+                    clearInterval(checkUser);
+                    
+                    const accountDiv = document.querySelector('.account');
+                    const isAdmin = window.CEAS_USER.role === 'admin';
+                    
+                    accountDiv.innerHTML = `
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 13px; font-weight: bold;">${window.CEAS_USER.name}</span>
+                            ${isAdmin ? '<span style="font-size: 10px; background: #FFD700; color: #000; padding: 2px 6px; border-radius: 4px; width: fit-content; margin-top: 2px;">ADMIN</span>' : ''}
+                        </div>
+                        <span class="logout-btn material-symbols-outlined" id="logout-trigger">logout</span>
+                    `;
 
-            const savedState = localStorage.getItem('sidebarCollapsed');
-            const isCollapsed = (savedState !== 'false'); 
+                    document.getElementById('logout-trigger').addEventListener('click', () => {
+                        if(confirm("Logout?")) window.location.href = "/FRONTEND/auth.html";
+                    });
 
-            sidebarCheck.checked = isCollapsed;
+                    renderFeed();
+                }
+            }, 100);
 
-            sidebarCheck.addEventListener('change', () => {
-                localStorage.setItem('sidebarCollapsed', sidebarCheck.checked);
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
             const posts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
 
             window.renderFeed = (filterCriteria = 'all', isOtherSearch = false) => {
@@ -655,15 +614,9 @@
 
                 const filteredPosts = posts.filter(post => {
                     if (filterCriteria === 'all') return true;
-
                     const cleanPostCat = post.category.replace(/#/g, '').toLowerCase().trim();
                     const cleanFilter = filterCriteria.replace(/#/g, '').toLowerCase().trim();
-
-                    if (isOtherSearch) {
-                        return cleanPostCat.includes(cleanFilter);
-                    }
-
-                    return cleanPostCat === cleanFilter;
+                    return isOtherSearch ? cleanPostCat.includes(cleanFilter) : cleanPostCat === cleanFilter;
                 });
 
                 filteredPosts.forEach(post => {
@@ -674,20 +627,31 @@
                     const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${post.id}`) === 'true';
                     const isSaved = localStorage.getItem(`saved_status_${post.id}`) === 'true';
                     const displayStatus = isPermanentlyClaimed ? 'Synced' : post.status;
-                    const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e' };
+                    
+                    const statusColors = { 
+                        'Unclaimed': '#3f51b5',
+                        'Claimed': '#0ea5e9',
+                        'Pending': '#f59e0b',
+                        'Synced': '#22c55e'
+                    };
                     const sColor = statusColors[displayStatus] || '#8e8e8e';
+                    const isOwner = window.CEAS_USER && window.CEAS_USER.name === post.user;
+                    const isAdmin = window.CEAS_USER && window.CEAS_USER.role === 'admin';
 
                     postCard.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
                             <div>
-                                <a href="pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 20px; text-decoration: none;">
+                                <a href="/FRONTEND/pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 20px; text-decoration: none;">
                                     <strong>${post.user}</strong>
                                 </a>
                                 <p style="font-size: 13px; color: var(--onyx);">${post.timestamp} | ${post.category}</p>
                             </div>
-                            <span id="status-${post.id}" style="background: ${sColor}; color: white; padding: 10px 30px; border-radius: 10px; font-size: 15px; font-weight: 600;">
-                                ${displayStatus}
-                            </span>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                ${(isAdmin || isOwner) ? `<button onclick="deletePost(${post.id})" style="background:none; border:none; color:#ff4444; cursor:pointer;" class="material-symbols-outlined">delete</button>` : ''}
+                                <span id="status-${post.id}" style="background: ${sColor}; color: white; padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;">
+                                    ${displayStatus}
+                                </span>
+                            </div>
                         </div>
                         <div style="margin-bottom: 10px; font-size: 15px;">
                             <p><strong>Lost:</strong> ${post.lostItem}</p>
@@ -699,11 +663,9 @@
                             `<img src="${post.image}" style="width: 100%; height: auto; object-fit: contain; border-radius: 10px;">` : ''}
                         </div> 
                         <div class="post-actions">
-                            <button class="action-btn ${isPermanentlyClaimed ? 'active' : ''}" 
-                                    onclick="handleClaim(${post.id})" 
-                                    ${isPermanentlyClaimed ? 'disabled style="cursor: default; opacity: 0.7;"' : ''}>
+                            <button class="action-btn" onclick="handleClaim(${post.id})" ${isPermanentlyClaimed ? 'disabled' : ''}>
                                 <span class="material-symbols-outlined">front_hand</span>
-                                <span class="btn-text">${isPermanentlyClaimed ? 'Synced' : 'Sync'}</span>
+                                <span>${displayStatus === 'Unclaimed' ? 'Claim' : 'Sync'}</span>
                             </button>
                             <button class="action-btn ${isSaved ? 'active' : ''}" onclick="toggleSave(this, ${post.id})">
                                 <span class="material-symbols-outlined">bookmark</span>
@@ -718,9 +680,16 @@
                     feedContainer.appendChild(postCard);
                 });
             };
-
-            renderFeed();
         });
+
+        window.deletePost = (id) => {
+            if(confirm("Delete this post permanently?")) {
+                let allPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
+                allPosts = allPosts.filter(p => p.id != id);
+                localStorage.setItem('ceas_posts', JSON.stringify(allPosts));
+                location.reload(); 
+            }
+        };
 
         window.filterCategory = (categoryName) => {
             document.querySelector('.page-title').innerText = (categoryName === 'all') ? 'Home' : categoryName;
@@ -758,7 +727,7 @@
 
             sessionStorage.setItem(`claiming_${id}`, 'true');
             
-            window.location.href = `proof-page.html?postId=${id}`;
+            window.location.href = `/FRONTEND/proof-page.html?postId=${id}`;
         };
 
         window.toggleSave = (btn, id) => {
@@ -814,11 +783,11 @@
         const title = card.querySelector('h5').innerText.toLowerCase();
         
         if (title.includes('notifications')) {
-            window.location.href = 'notif.html';
+            window.location.href = '/FRONTEND/notif.html';
         } else if (title.includes('pending')) {
-            window.location.href = 'pending.html';
+            window.location.href = '/FRONTEND/pending.html';
         } else if (title.includes('review')) {
-            window.location.href = 'review.html';
+            window.location.href = '/FRONTEND/review.html';
         }
     });
 });
@@ -876,5 +845,6 @@
             updateReviewPreview();
         });
     </script>
+    <script type="module" src="/FRONTEND/secret.js"></script>
 </body>
 </html>

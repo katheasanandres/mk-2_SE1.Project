@@ -41,7 +41,7 @@
         }
 
         .side-bar {
-            width: 220px;
+            width: 250px;
             height: 100vh;
             background-color: var(--night);
             color: var(--white);
@@ -59,7 +59,7 @@
             align-items: center;
             margin-bottom: 20px;
             padding: 10px;
-            padding-left: 10px;
+            padding-left: 20px;
             padding-right: 10px;
             width: 100%;
             flex-shrink: 0;
@@ -82,15 +82,6 @@
             overflow: hidden;
         }
 
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto; 
-            margin-right: -13px;
-        }
-
         .account {
             display: flex;
             align-items: center;
@@ -102,45 +93,6 @@
         .logout-btn {
             cursor: pointer;
             margin-left: 15px;
-        }
-
-        #sidebar-check {
-            display: none;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar {
-            width: 61.5px; 
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account {
-            justify-content: center;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .account .logout-btn {
-            margin-right: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .sidebar-header {
-            justify-content: center;
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        #sidebar-check:checked ~ .main-container .side-bar .menu-toggle {
-            margin-left: 0;
-        }
-
-        #sidebar-check:checked ~ .main-container .nav-text,
-        #sidebar-check:checked ~ .main-container h4,
-        #sidebar-check:checked ~ .main-container .category-label,
-        #sidebar-check:checked ~ .main-container .account h3,
-        #sidebar-check:checked ~ .main-container .user-welcome,
-        #sidebar-check:checked ~ .main-container .app-logo {
-            display: none;
-        }
-
-        #others-check { 
-            display: none; 
         }
 
         .nav-list { 
@@ -155,7 +107,7 @@
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 5px 12px;
+            padding: 5px 20px;
             text-decoration: none;
             color: var(--white);
             border-radius: 8px; 
@@ -180,9 +132,9 @@
 
         .category-label {
             font-family: 'Poetsen One', sans-serif;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
-            margin: 5px 0 10px 12px;
+            margin: 5px 0 10px 20px;
             text-transform: uppercase;
             white-space: nowrap;
         }
@@ -423,45 +375,40 @@
 </head>
 <body>
 
-    <input type="checkbox" id="sidebar-check">
-
     <div class="main-container">
         <div class="side-bar">
             <div class="sidebar-header">
                 <img class="app-logo" src="/elements/user icon white.png">
                 <h4>CEAS FIND</h4>
-                <label for="sidebar-check" class="menu-toggle">
-                    <span class="material-symbols-outlined">menu</span>
-                </label>
             </div>
 
             <nav class="nav-list">
-                <a href="homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="saved.html" class="nav-item">
+                <a href="/FRONTEND/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="history.html" class="nav-item">
+                <a href="/FRONTEND/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="notif.html" class="nav-item">
+                <a href="/FRONTEND/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="pending.html" class="nav-item">
+                <a href="/FRONTEND/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="review.html" class="nav-item">
+                <a href="/FRONTEND/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
 
-                <hr style="opacity: 0.2; margin: 10px 0;">
+                <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
                 <p class="category-label">Categories</p>
 
                 <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
@@ -494,11 +441,15 @@
                 </a>
             </nav>
 
-            <div class="account">
-                <h3 style="font-size: 14px;">
-                    <?php echo $successLogin ? "User LOGGED OUT" : "Welcome, " . $user; ?>
-                </h3>
-                <span class="logout-btn material-symbols-outlined">logout</span>
+            <div class="account" id="sidebar-user-footer">
+                <div style="display: flex; flex-direction: column; overflow: hidden;">
+                    <!-- secret.js injects the name here -->
+                    <span id="sidebar-username" style="font-size: 13px; font-weight: bold; color: white; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+                        Loading...
+                    </span>
+                </div>
+                <!-- secret.js attaches the logout click event here -->
+                <span class="material-symbols-outlined logout-btn" id="logout-icon">logout</span>
             </div>
         </div>
 
@@ -512,7 +463,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="posting-page.html">
+                    <a href="/FRONTEND/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -543,19 +494,76 @@
     </div>
 
    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-            const sidebarCheck = document.getElementById('sidebar-check');
+    // --- 1. CONFIGURATION & HELPERS ---
+    const STATUS_COLORS = {
+        'Unclaimed': '#4f46e5', // Indigo
+        'Claimed': '#0ea5e9',   // Sky Blue
+        'Pending': '#f59e0b',   // Amber
+        'Synced': '#10b981'     // Green
+    };
 
-            const savedState = localStorage.getItem('sidebarCollapsed');
-            const isCollapsed = (savedState !== 'false'); 
+    // --- 2. SIDEBAR USER & LOGOUT LOGIC ---
+    const initSidebar = () => {
+        const footer = document.getElementById('sidebar-user-footer');
+        const logoutBtn = document.getElementById('logout-trigger');
 
-            sidebarCheck.checked = isCollapsed;
+        // Function to update Sidebar UI
+        const updateSidebarUI = (user) => {
+            if (!footer || !user) return;
+            const isAdmin = user.role === 'admin' || user.isAdmin === true;
+            
+            // Selecting the wrapper div inside the footer
+            const infoWrapper = footer.querySelector('div');
+            
+            infoWrapper.innerHTML = `
+                <span title="${user.name}" style="font-size: 14px; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; display: block;">
+                    ${user.name}
+                </span>
+                ${isAdmin ? `
+                <span style="font-size: 9px; background: #FFD700; color: #000; padding: 1px 6px; border-radius: 4px; width: fit-content; font-weight: 800; letter-spacing: 0.5px; margin-top: 2px; text-transform: uppercase;">
+                    ADMIN
+                </span>` : `
+                `}
+            `;
+        };
 
-            sidebarCheck.addEventListener('change', () => {
-                localStorage.setItem('sidebarCollapsed', sidebarCheck.checked);
-            });
-        });
+        // Logout functionality
+        if (logoutBtn) {
+            logoutBtn.onclick = (e) => {
+                e.preventDefault();
+                // Clear all possible session keys
+                localStorage.removeItem('ceas_user_session');
+                localStorage.removeItem('active_user'); 
+                sessionStorage.clear();
+                
+                // Redirect to login
+                window.location.replace('/FRONTEND/auth.html'); 
+            };
+        }
 
+        // POLLING LOGIC: Modules take time to load. We check every 100ms for the user object.
+        let attempts = 0;
+        const checkUser = setInterval(() => {
+            // Try both common keys just in case
+            const sessionData = localStorage.getItem('ceas_user_session') || localStorage.getItem('active_user');
+            const user = window.CEAS_USER || (sessionData ? JSON.parse(sessionData) : null);
+            
+            if (user) {
+                console.log("User found:", user); // Debugging line
+                updateSidebarUI(user);
+                clearInterval(checkUser);
+            }
+            
+            attempts++;
+            if (attempts > 50) {
+                // Fallback: If no session found, show "Guest"
+                infoWrapper.innerHTML = `<span style="color: white; opacity: 0.7;">Guest User</span>`;
+                clearInterval(checkUser);
+            }
+        }, 100);
+    };
+
+    // --- 3. SAVED FEED RENDERING ---
     function renderSavedFeed() {
         const container = document.getElementById('saved-feed-container');
         const savedPosts = JSON.parse(localStorage.getItem('saved_posts_data')) || [];
@@ -571,22 +579,16 @@
         savedPosts.forEach(post => {
             const livePost = masterPosts.find(p => Number(p.id) === Number(post.id)) || post;
             const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${livePost.id}`) === 'true';
-            const currentStatus = isPermanentlyClaimed ? 'Synced' : livePost.status;
-            const statusColors = { 'Unclaimed': '#1e3a6a', 'Claimed': '#a3b8ed', 'Pending': '#8a853e' , 'Synced': '#1e3a6a' };
-            const sColor = statusColors[currentStatus] || '#8e8e8e';
+            
+            const currentStatus = isPermanentlyClaimed ? 'Synced' : (livePost.status || 'Unclaimed');
+            const sColor = STATUS_COLORS[currentStatus] || '#8e8e8e';
 
             const card = document.createElement('div');
             card.className = 'saved-card'; 
             card.style.cssText = `
-                background: white; 
-                padding: 15px; 
-                border-radius: 12px; 
-                margin-bottom: 0px; 
-                display: flex; 
-                align-items: center; 
-                gap: 15px; 
-                border: 1px solid var(--bg-white);
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                background: white; padding: 15px; border-radius: 12px; display: flex; 
+                align-items: center; gap: 15px; border: 1px solid var(--bg-white);
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-top: 15px;
             `;
 
             card.innerHTML = `
@@ -598,32 +600,22 @@
                 </div>
 
                 <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
-                    <a href="pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 15px; text-decoration: none;">
+                    <a href="/FRONTEND/pfp.html?user=${post.user}" style="color: var(--night); font-size: 15px; text-decoration: none;">
                         <strong>${post.user}</strong>
                     </a>
                     <p style="font-size: 13px; color: #333; margin: 0;">
                         <strong>Lost:</strong> ${livePost.lostItem || 'Unknown'} 
                         <span style="color: #8e8e8e; margin-left: 1px;">|| Found: ${livePost.foundItem || 'Unknown'}</span>
                     </p>
-                    <p style="font-size: 12px; color: #8e8e8e; display: flex; align-items: center; gap: 2px; margin-top: 2px;">
-                        <span class="material-symbols-outlined" style="font-size: 13px; margin-right: -15px;">schedule</span> ${livePost.timestamp || ''}
-                    </p>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 120px;">
-                    <span id="status-${livePost.id}" style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
+                    <span style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; width: 100%; text-align: center; text-transform: uppercase;">
                         ${currentStatus}
                     </span>
-                    
                     <div style="display: flex; gap: 5px; width: 100%;">
-                        <button onclick="window.location.href='homepage.html?id=${livePost.id}'" onmouseover="this.style.background='var(--night)'; this.style.color='var(--white)';" 
-            onmouseout="this.style.background='var(--bg-white)'; this.style.color='var(--night)';" style="background:var(--bg-white); color: var(--night); flex: 1; border: none; padding: 6px 15px; border-radius: 8px; cursor: pointer; font-family: 'Roboto Condensed'; font-size: 13px; font-weight: bold;">
-                            Go to post
-                        </button>
-                        <button onclick="removeSave(${livePost.id})" onmouseover="this.style.background='var(--night)'; this.style.color='var(--white)';" 
-           onmouseout="this.style.background='var(--bg-white)'; this.style.color='var(--night)';" style="background:var(--bg-white); color: var(--night); border: none; padding: 6px 9px 6px 9px; border-radius: 8px; cursor: pointer; display: flex;">
-                            <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
-                        </button>
+                        <button onclick="window.location.href='/FRONTEND/homepage.html?id=${livePost.id}'" style="background:var(--bg-white); color: var(--night); flex: 1; border: none; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold;">VIEW</button>
+                        <button onclick="removeSave(${livePost.id})" style="background:var(--bg-white); color: var(--night); border: none; padding: 6px; border-radius: 6px; cursor: pointer;"><span class="material-symbols-outlined" style="font-size: 16px;">delete</span></button>
                     </div>
                 </div>
             `;
@@ -631,80 +623,46 @@
         });
     }
 
-    window.removeSave = (id) => {
-        let list = JSON.parse(localStorage.getItem('saved_posts_data')) || [];
-        list = list.filter(p => Number(p.id) !== Number(id));
-        
-        localStorage.setItem('saved_posts_data', JSON.stringify(list));
-        localStorage.removeItem(`saved_status_${id}`);
-        
-        renderSavedFeed();
-    };
-
-    document.addEventListener('DOMContentLoaded', renderSavedFeed);
-
-    document.querySelectorAll('.preview-card').forEach(card => {
-        card.style.cursor = 'pointer';
-        card.onclick = () => {
-            const title = card.querySelector('h5').innerText;
-            if(title.includes('Notifications')) window.location.href = 'notif.html';
-            if(title.includes('Pending')) window.location.href = 'pending.html';
-            if(title.includes('Review')) window.location.href = 'review.html';
-        };
-    });
-
+    // --- 4. INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', () => {
+        // We no longer call initSidebar() because secret.js handles it now.
+        renderSavedFeed();
+        updateNotificationPreview();
+        updatePendingPreview();
+        updateReviewPreview();
+    }); updateReviewPreview();
+    
+
+    // Helper functions for previews
     const updateNotificationPreview = () => {
         const notifBox = document.getElementById('notif-preview');
         if (!notifBox) return;
-
         const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-        
-        if (logs.length === 0) {
-            notifBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">No new notifications.</p>';
-        } else {
-            const latest = logs.slice(0, 3);
-            notifBox.innerHTML = latest.map(n => `
-                <div style="font-size:13px; margin-bottom:8px; border-left:3px solid var(--onyx); padding-left:8px;">
-                    <p style="margin:0; color:var(--onyx); font-weight:500;">${n.message}</p>
-                    <small style="color:var(--onyx); font-size:13px;">${n.time || 'Just now'}</small>
-                </div>
-            `).join('');
-        }
+        notifBox.innerHTML = logs.length ? logs.slice(0, 3).map(n => `<p style="font-size:12px; margin-bottom:5px;">• ${n.message}</p>`).join('') : '<p>No notifications.</p>';
     };
 
     const updatePendingPreview = () => {
-        const pendingBox = document.getElementById('pending-preview');
-        if (!pendingBox) return;
-
+        const box = document.getElementById('pending-preview');
+        if (!box) return;
         const pending = JSON.parse(localStorage.getItem('user_claims')) || [];
-        if (pending.length === 0) {
-            pendingBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">No pending claims.</p>';
-        } else {
-            pendingBox.innerHTML = pending.slice(0, 2).map(p => `
-                <p style="font-size:13px; color:var(--onyx);">• ${p.itemName || 'Item Claim'}</p>
-            `).join('');
-        }
+        box.innerHTML = pending.length ? pending.slice(0, 2).map(p => `<p style="font-size:12px;">• ${p.itemName}</p>`).join('') : '<p>No pending claims.</p>';
     };
 
     const updateReviewPreview = () => {
-        const reviewBox = document.getElementById('review-preview');
-        if (!reviewBox) return;
-
+        const box = document.getElementById('review-preview');
+        if (!box) return;
         const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
         const reviews = logs.filter(n => n.type === 'email_proof' || n.type === 'claim_attempt');
-
-        if (reviews.length === 0) {
-            reviewBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">Nothing to review.</p>';
-        } else {
-            reviewBox.innerHTML = `<p style="font-size:13px; color:var(--onyx); font-weight:bold;">• ${reviews.length} new proof(s) to check</p>`;
-        }
+        box.innerHTML = reviews.length ? `<p style="font-size:12px; font-weight:bold;">${reviews.length} items to check</p>` : '<p>Nothing to review.</p>';
     };
 
-    updateNotificationPreview();
-    updatePendingPreview();
-    updateReviewPreview();
-});
+    window.removeSave = (id) => {
+        let list = JSON.parse(localStorage.getItem('saved_posts_data')) || [];
+        list = list.filter(p => Number(p.id) !== Number(id));
+        localStorage.setItem('saved_posts_data', JSON.stringify(list));
+        renderSavedFeed();
+    };
 </script>
+<script type="module" src="/FRONTEND/secret.js"></script>
 </body>
 </html>
