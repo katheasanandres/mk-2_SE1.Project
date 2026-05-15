@@ -206,3 +206,72 @@ export async function getNotifications(uid) {
     throw error;
   }
 }
+
+export async function submitClaim(postId, { claimantName, claimantEmail, claimantContact, secretDetail }) {
+  try {
+    const docSnap = await db.collection("items").doc(postId).get();
+    if (!docSnap.exists) throw new Error("Item not found.");
+
+    const item = docSnap.data();
+
+    // 1. Write to claims collection
+    await db.collection("claims").add({
+      itemID:          postId,
+      itemName:        item.itemName || "",
+      claimantName:    claimantName || "",
+      claimantEmail:   claimantEmail || "",
+      claimantContact: claimantContact || null,
+      proofDescription: secretDetail,
+      status:          "pending",
+      timestamp:       FieldValue.serverTimestamp(),
+    });
+
+    // 2. Update item status to pending
+    await db.collection("items").doc(postId).update({
+      status: "pending",
+    });
+
+    // 3. Send email to reporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from:    `"CEASFind" <${process.env.SMTP_USER}>`,
+      to:      item.reporterEmail,
+      subject: `Claim Request: ${item.itemName}`,
+      html: `
+        <h2>Someone wants to claim "${item.itemName}"</h2>
+        <p><strong>Name:</strong> ${claimantName}</p>
+        <p><strong>Email:</strong> ${claimantEmail}</p>
+        <p><strong>Contact:</strong> ${claimantContact || "Not provided"}</p>
+        <hr/>
+        <p><strong>Proof/Secret Detail:</strong></p>
+        <blockquote>${secretDetail}</blockquote>
+        <p>Go to your <strong>Review</strong> page on CEASFind to approve or ignore this claim.</p>
+      `,
+    });
+
+    // 4. Save notification to reporter
+    if (item.reporterUid) {
+      await db.collection("users").doc(item.reporterUid).collection("notifications").add({
+        type:            "claim_request",
+        postId,
+        itemName:        item.itemName || "",
+        claimantName,
+        claimantEmail,
+        claimantContact: claimantContact || null,
+        secretDetail,
+        read:            false,
+        createdAt:       FieldValue.serverTimestamp(),
+      });
+    }
+  } catch (error) {
+    console.error("submitClaim error:", error.message);
+    throw error;
+  }
+}

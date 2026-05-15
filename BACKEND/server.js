@@ -8,6 +8,10 @@ import { fileURLToPath } from "url";
 import itemRouter from "./routes/itemRoutes.js";
 import savedRouter from "./routes/savedRoutes.js";
 import { getNotifications } from "./controllers/itemController.js";
+import { db } from "./config/firebase.js";
+import claimRouter from "./routes/claimRoutes.js";
+
+// Add this in server.js instead — see below
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -32,6 +36,7 @@ app.use("/elements", express.static(path.join(__dirname, "../elements")));
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use("/item", itemRouter);
 app.use("/saved", savedRouter);
+app.use("/claims", claimRouter);
 
 // ── GET /notifications?uid=xxx ────────────────────────────────────────────────
 app.get("/notifications", async (req, res) => {

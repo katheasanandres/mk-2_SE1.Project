@@ -487,121 +487,131 @@
         </div>
     </div>
 
-    <script type="module">
-        import { auth, db } from "./db.js";
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-        import { getDocs, collection } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+<script type="module">
+  import { auth } from "./db.js";
+  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = "auth.html";
-                return;
-            }
-            await loadReviews(user.email);
-        });
+  let currentUserEmail = null;
 
-        async function loadReviews(userEmail) {
-            const container = document.getElementById("review-container");
-            container.innerHTML = "<p class='empty-msg'>Loading…</p>";
-            try {
-                const res = await fetch(
-                    `http://localhost:3000/item/history?userEmail=${encodeURIComponent(userEmail)}`
-                );
-                if (!res.ok) throw new Error(await res.text());
-                const items = await res.json();
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = "auth.html"; return; }
+    currentUserEmail = user.email;
+    document.getElementById("sidebar-username").textContent =
+      user.displayName || user.email || "User";
+    await loadReviews(user.email);
+  });
 
-                const pendingItems = items.filter(
-                    item => (item.status || "").toLowerCase() === "pending"
-                );
+  document.getElementById("logout-icon")?.addEventListener("click", async () => {
+    const { signOut: so } = await import("https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js");
+    await so(auth);
+    window.location.href = "auth.html";
+  });
 
-                if (pendingItems.length === 0) {
-                    container.innerHTML = "<p class='empty-msg'>No pending claims to review.</p>";
-                    return;
-                }
+  async function loadReviews(userEmail) {
+    const container = document.getElementById("review-container");
+    container.innerHTML = "<p class='empty-msg'>Loading…</p>";
+    try {
+      // 1. Get all items belonging to this reporter that are pending
+      const res = await fetch(
+        `http://localhost:3000/item/history?userEmail=${encodeURIComponent(userEmail)}`
+      );
+      if (!res.ok) throw new Error(await res.text());
+      const items = await res.json();
+      const pendingItems = items.filter(
+        item => (item.status || "").toLowerCase() === "pending"
+      );
 
-                const claimsSnap = await getDocs(collection(db, "claims"));
-                const allClaims = claimsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (pendingItems.length === 0) {
+        container.innerHTML = "<p class='empty-msg'>No pending claims to review.</p>";
+        return;
+      }
 
-                container.innerHTML = "";
-                for (const item of pendingItems) {
-                    const itemClaims = allClaims.filter(
-                        c => c.itemID === item.id && (c.status || "").toLowerCase() === "pending"
-                    );
-                    renderReviewCard(container, item, itemClaims);
-                }
-            } catch (err) {
-                console.error(err);
-                container.innerHTML = `<p class='empty-msg'>Could not load reviews: ${err.message}</p>`;
-            }
-        }
+      // 2. Get claims from backend
+      const claimsRes = await fetch("http://localhost:3000/claims");
+      const allClaims = claimsRes.ok ? await claimsRes.json() : [];
 
-        function renderReviewCard(container, item, claims) {
-            const claimsHtml = claims.length > 0
-                ? claims.map(c => `
-                    <div style="background:#f9f9f9;border-radius:8px;padding:10px 14px;margin-top:10px;border:1px solid var(--bg-white);">
-                        <p style="font-size:14px;font-weight:700;color:var(--night);">${c.claimantName || "GC Student"}</p>
-                        <p style="font-size:12px;color:#666;">${c.claimantEmail || ""}</p>
-                        <p style="font-size:13px;color:#444;margin-top:6px;">${c.proofDescription || ""}</p>
-                    </div>
-                `).join("")
-                : `<p style="font-size:13px;color:#999;margin-top:8px;font-style:italic;">No claim details on file.</p>`;
+      container.innerHTML = "";
+      for (const item of pendingItems) {
+        const itemClaims = allClaims.filter(
+          c => c.itemID === item.id && (c.status || "").toLowerCase() === "pending"
+        );
+        renderReviewCard(container, item, itemClaims);
+      }
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = `<p class='empty-msg'>Could not load reviews: ${err.message}</p>`;
+    }
+  }
 
-            const card = document.createElement("div");
-            card.className = "review-post-card";
-            card.innerHTML = `
-                <div style="display:flex;gap:14px;align-items:flex-start;">
-                    <div style="width:65px;height:65px;flex-shrink:0;">
-                        ${item.img_url
-                            ? `<img src="${item.img_url}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`
-                            : `<div style="width:100%;height:100%;background:var(--bg-white);border-radius:8px;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="font-size:22px;color:#ccc;">image</span></div>`}
-                    </div>
-                    <div style="flex-grow:1;">
-                        <strong style="color:var(--night);font-size:16px;">${item.itemName || "Item"}</strong>
-                        <p style="font-size:13px;color:#666;margin-top:2px;">${item.postType === "lost" ? "Lost Item" : "Found Item"} · ${item.category || ""}</p>
-                        ${claimsHtml}
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:8px;min-width:130px;align-items:flex-end;">
-                        <span style="background:#b45309;color:white;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-align:center;width:100%;">PENDING</span>
-                        <button onclick="markAsClaimed('${item.id}', this)"
-                          style="background:var(--night);color:white;border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;font-family:'Roboto Condensed';width:100%;">
-                          Mark as Claimed
-                        </button>
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
-        }
+  function renderReviewCard(container, item, claims) {
+    const claimsHtml = claims.length > 0
+      ? claims.map(c => `
+          <div style="background:#f9f9f9;border-radius:8px;padding:10px 14px;
+                      margin-top:10px;border:1px solid var(--bg-white);">
+            <p style="font-size:14px;font-weight:700;color:var(--night);">
+              ${c.claimantName || "GC Student"}
+            </p>
+            <p style="font-size:12px;color:#666;">${c.claimantEmail || ""}</p>
+            <p style="font-size:13px;color:#444;margin-top:6px;">
+              ${c.proofDescription || ""}
+            </p>
+          </div>`).join("")
+      : `<p style="font-size:13px;color:#999;margin-top:8px;font-style:italic;">
+           No claim details on file.</p>`;
 
-        window.markAsClaimed = async function(itemId, btn) {
-            btn.disabled = true;
-            btn.innerText = "Updating…";
-            try {
-                const res = await fetch(`http://localhost:3000/item/${itemId}/claim`, {
-                    method: "PUT",
-                });
-                if (!res.ok) throw new Error(await res.text());
-                const card = btn.closest(".review-post-card");
-                card.remove();
-                const container = document.getElementById("review-container");
-                if (!container.querySelector(".review-post-card")) {
-                    container.innerHTML = "<p class='empty-msg'>All claims have been processed.</p>";
-                }
-            } catch (err) {
-                btn.disabled = false;
-                btn.innerText = "Mark as Claimed";
-                alert("Error: " + err.message);
-            }
-        };
+    const card = document.createElement("div");
+    card.className = "review-post-card";
+    card.innerHTML = `
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:65px;height:65px;flex-shrink:0;">
+          ${item.img_url
+            ? `<img src="${item.img_url}"
+                 style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`
+            : `<div style="width:100%;height:100%;background:var(--bg-white);border-radius:8px;
+                           display:flex;align-items:center;justify-content:center;">
+                 <span class="material-symbols-outlined" style="font-size:22px;color:#ccc;">image</span>
+               </div>`}
+        </div>
+        <div style="flex-grow:1;">
+          <strong style="color:var(--night);font-size:16px;">${item.itemName || "Item"}</strong>
+          <p style="font-size:13px;color:#666;margin-top:2px;">
+            ${item.postType === "lost" ? "Lost Item" : "Found Item"} · ${item.category || ""}
+          </p>
+          ${claimsHtml}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:130px;align-items:flex-end;">
+          <span style="background:#b45309;color:white;padding:6px 12px;border-radius:8px;
+                       font-size:12px;font-weight:700;text-align:center;width:100%;">PENDING</span>
+          <button onclick="markAsClaimed('${item.id}', this)"
+            style="background:var(--night);color:white;border:none;cursor:pointer;
+                   padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;
+                   font-family:'Roboto Condensed';width:100%;">
+            Mark as Claimed
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  }
 
-        document.querySelectorAll(".preview-card").forEach(card => {
-            card.style.cursor = "pointer";
-            card.onclick = () => {
-                const title = card.querySelector("h5").innerText;
-                if (title.includes("Notifications")) window.location.href = "notif.html";
-                if (title.includes("Pending")) window.location.href = "pending.html";
-            };
-        });
-    </script>
-    <script type="module" src="./secret.js"></script>
+  window.markAsClaimed = async function(itemId, btn) {
+    btn.disabled = true;
+    btn.innerText = "Updating…";
+    try {
+      const res = await fetch(`http://localhost:3000/item/${itemId}/claim`, { method: "PUT" });
+      if (!res.ok) throw new Error(await res.text());
+      const card = btn.closest(".review-post-card");
+      card.remove();
+      const container = document.getElementById("review-container");
+      if (!container.querySelector(".review-post-card")) {
+        container.innerHTML = "<p class='empty-msg'>All claims have been processed.</p>";
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerText = "Mark as Claimed";
+      alert("Error: " + err.message);
+    }
+  };
+</script>
 </body>
 </html>

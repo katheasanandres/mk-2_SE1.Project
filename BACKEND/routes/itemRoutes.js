@@ -1,5 +1,6 @@
 import express from "express";
 import { upload } from "../middleware/uploadMiddleware.js";
+import { db } from "../config/firebase.js";
 import {
   claimItem,
   deleteItem,
@@ -8,13 +9,13 @@ import {
   getHistoryItems,
   getNotifications,
   reportItem,
-  sendClaimRequest,
+  submitClaim,
   updateItem,
 } from "../controllers/itemController.js";
 
 const router = express.Router();
 
-// ── POST /item  — Create a new lost/found post ──────────────────────────────
+// ── POST /item  — Create a new lost/found post ────────────────────────────────
 router.post("/", upload.single("img_url"), async (req, res) => {
   try {
     const newId = await reportItem(req.body, req.file);
@@ -25,7 +26,7 @@ router.post("/", upload.single("img_url"), async (req, res) => {
   }
 });
 
-// ── GET /item/history?userEmail=... ─────────────────────────────────────────
+// ── GET /item/history?userEmail=... ──────────────────────────────────────────
 router.get("/history", async (req, res) => {
   try {
     const { userEmail } = req.query;
@@ -37,7 +38,7 @@ router.get("/history", async (req, res) => {
   }
 });
 
-// ── GET /item  — Fetch all items ─────────────────────────────────────────────
+// ── GET /item ─────────────────────────────────────────────────────────────────
 router.get("/", async (req, res) => {
   try {
     const items = await getAllItems();
@@ -48,7 +49,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ── GET /item/:id ────────────────────────────────────────────────────────────
+// ── GET /item/:id ─────────────────────────────────────────────────────────────
 router.get("/:id", async (req, res) => {
   try {
     const item = await getElementByID(req.params.id);
@@ -60,29 +61,19 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// ── POST /item/:id/claim-request  — Send claim email to reporter ─────────────
-router.post("/:id/claim-request", async (req, res) => {
+// ── POST /item/:id/submit-claim ───────────────────────────────────────────────
+router.post("/:id/submit-claim", async (req, res) => {
   try {
     const { claimantName, claimantEmail, claimantContact, secretDetail } = req.body;
-
     if (!claimantName || !claimantEmail || !secretDetail) {
-      return res.status(400).json({
-        error: "claimantName, claimantEmail, and secretDetail are required.",
-      });
+      return res.status(400).json({ error: "claimantName, claimantEmail, and secretDetail are required." });
     }
-
-    await sendClaimRequest(req.params.id, {
-      claimantName,
-      claimantEmail,
-      claimantContact,
-      secretDetail,
-    });
-
-    res.status(200).json({ success: true, message: "Claim request sent to reporter." });
+    await submitClaim(req.params.id, { claimantName, claimantEmail, claimantContact, secretDetail });
+    res.status(200).json({ success: true });
   } catch (error) {
     if (error.message === "Item not found.") return res.status(404).send("Item not found.");
     console.error(error);
-    res.status(500).send("Something went wrong sending the claim request.");
+    res.status(500).send("Something went wrong sending the claim.");
   }
 });
 
