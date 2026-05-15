@@ -383,27 +383,27 @@
             </div>
 
             <nav class="nav-list">
-                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="/FRONTEND/saved.html" class="nav-item">
+                <a href="/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="/FRONTEND/history.html" class="nav-item">
+                <a href="/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="/FRONTEND/notif.html" class="nav-item">
+                <a href="/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="/FRONTEND/pending.html" class="nav-item">
+                <a href="/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="/FRONTEND/review.html" class="nav-item">
+                <a href="/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
@@ -463,7 +463,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="/FRONTEND/posting-page.html">
+                    <a href="/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -537,7 +537,7 @@
                 sessionStorage.clear();
                 
                 // Redirect to login
-                window.location.replace('/FRONTEND/auth.html'); 
+                window.location.replace('/auth.html'); 
             };
         }
 
@@ -600,7 +600,7 @@
                 </div>
 
                 <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
-                    <a href="/FRONTEND/pfp.html?user=${post.user}" style="color: var(--night); font-size: 15px; text-decoration: none;">
+                    <a href="/pfp.html?user=${post.user}" style="color: var(--night); font-size: 15px; text-decoration: none;">
                         <strong>${post.user}</strong>
                     </a>
                     <p style="font-size: 13px; color: #333; margin: 0;">
@@ -614,7 +614,7 @@
                         ${currentStatus}
                     </span>
                     <div style="display: flex; gap: 5px; width: 100%;">
-                        <button onclick="window.location.href='/FRONTEND/homepage.html?id=${livePost.id}'" style="background:var(--bg-white); color: var(--night); flex: 1; border: none; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold;">VIEW</button>
+                        <button onclick="window.location.href='/homepage.html?id=${livePost.id}'" style="background:var(--bg-white); color: var(--night); flex: 1; border: none; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold;">VIEW</button>
                         <button onclick="removeSave(${livePost.id})" style="background:var(--bg-white); color: var(--night); border: none; padding: 6px; border-radius: 6px; cursor: pointer;"><span class="material-symbols-outlined" style="font-size: 16px;">delete</span></button>
                     </div>
                 </div>
@@ -663,6 +663,5 @@
         renderSavedFeed();
     };
 </script>
-<script type="module" src="/FRONTEND/secret.js"></script>
-</body>
+<!-- <script type="module" src="/secret.js"></script> --></body>
 </html>

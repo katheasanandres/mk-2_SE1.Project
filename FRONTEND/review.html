@@ -381,27 +381,27 @@
             </div>
 
             <nav class="nav-list">
-                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="/FRONTEND/saved.html" class="nav-item">
+                <a href="/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="/FRONTEND/history.html" class="nav-item">
+                <a href="/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="/FRONTEND/notif.html" class="nav-item">
+                <a href="/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="/FRONTEND/pending.html" class="nav-item">
+                <a href="/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="/FRONTEND/review.html" class="nav-item">
+                <a href="/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
@@ -460,7 +460,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="/FRONTEND/posting-page.html">
+                    <a href="/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -512,7 +512,7 @@
             logoutBtn.onclick = () => {
                 localStorage.removeItem('ceas_user_session'); 
                 sessionStorage.clear();
-                window.location.href = '/FRONTEND/auth.html';
+                window.location.href = '/auth.html';
             };
         }
 
@@ -598,8 +598,8 @@ const renderReviews = () => {
                 card.style.cursor = 'pointer';
                 card.onclick = () => {
                     const title = card.querySelector('h5').innerText;
-                    if(title.includes('Notifications')) window.location.href = '/FRONTEND/notif.html';
-                    if(title.includes('Pending')) window.location.href = '/FRONTEND/pending.html';
+                    if(title.includes('Notifications')) window.location.href = '/notif.html';
+                    if(title.includes('Pending')) window.location.href = '/pending.html';
                 };
             });
 
@@ -645,6 +645,6 @@ const renderReviews = () => {
         updatePendingPreview();
     });
     </script>
-    <script type="module" src="/FRONTEND/secret.js"></script>
+<!--     <script type="module" src="/secret.js"></script> -->
 </body>
 </html>

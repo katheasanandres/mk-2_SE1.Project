@@ -424,27 +424,27 @@
             </div>
 
             <nav class="nav-list">
-                <a href="/FRONTEND/homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="/homepage.html" class="nav-item" onclick="filterCategory('all')">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="/FRONTEND/saved.html" class="nav-item">
+                <a href="/saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="/FRONTEND/history.html" class="nav-item">
+                <a href="/history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="/FRONTEND/notif.html" class="nav-item">
+                <a href="/notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="/FRONTEND/pending.html" class="nav-item">
+                <a href="/pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="/FRONTEND/review.html" class="nav-item">
+                <a href="/review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
@@ -456,23 +456,23 @@
                     <span class="material-symbols-outlined">checkroom</span>
                     <span class="nav-text">Clothing & Personal Gear</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Documents & Cards')">
+                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Documents & Cards')">
                     <span class="material-symbols-outlined">style</span>
                     <span class="nav-text">Documents & Cards</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Electronics & Gadgets')">
+                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Electronics & Gadgets')">
                     <span class="material-symbols-outlined">devices</span>
                     <span class="nav-text">Electronics & Gadgets</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Keys & Accessories')">
+                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Keys & Accessories')">
                     <span class="material-symbols-outlined">vpn_key</span>
                     <span class="nav-text">Keys & Accessories</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Stationery & Books')">
+                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Stationery & Books')">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="nav-text">Stationery & Books</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Wallets & Bags')">
+                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Wallets & Bags')">
                     <span class="material-symbols-outlined">account_balance_wallet</span>
                     <span class="nav-text">Wallets & Bags</span>
                 </a>
@@ -497,7 +497,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="/FRONTEND/posting-page.html">
+                    <a href="/posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -555,7 +555,7 @@
             logoutBtn.onclick = () => {
                 localStorage.removeItem('ceas_user_session'); // Or your specific session key
                 sessionStorage.clear();
-                window.location.href = '/FRONTEND/auth.html'; 
+                window.location.href = '/auth.html'; 
             };
         }
 
@@ -611,7 +611,7 @@
                         </div>
 
                         <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
-                            <a href="/FRONTEND/pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 15px; text-decoration: none;">
+                            <a href="/pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 15px; text-decoration: none;">
                                 <strong>${post.user}</strong>
                             </a>
                             <p style="font-size: 13px; color: #333; margin: 0;">
@@ -627,7 +627,7 @@
                                 ${currentStatus}
                             </span>
                             
-                            <button onclick="window.location.href='/FRONTEND/homepage.html?id=${post.id}'" 
+                            <button onclick="window.location.href='/homepage.html?id=${post.id}'" 
                                 style="background:var(--bg-white); color: var(--night); width: 100%; border: none; padding: 6px 15px; border-radius: 8px; cursor: pointer; font-family: 'Roboto Condensed'; font-size: 13px; font-weight: bold;">
                                 Go to post
                             </button>
@@ -702,6 +702,6 @@
         });
     </script>
 
-    <script type="module" src="/FRONTEND/secret.js"></script>
+   <!--  <script type="module" src="/secret.js"></script> -->
 </body>
 </html>

@@ -17,9 +17,6 @@ router.post("/", upload.single("img_url"), async (req, res) => {
     const userInput = req.body;
     const userFile = req.file;
 
-    if (!userFile) {
-      return res.status(400).send("Please upload an image.");
-    }
     await reportItem(userInput, userFile);
 
     res.status(200).send("Image and data received successfully");

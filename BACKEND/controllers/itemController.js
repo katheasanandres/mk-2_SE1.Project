@@ -19,7 +19,7 @@ export async function reportItem(inputOne, inputTwo) {
       ...inputOne,
       img_url: prefix + fileToString,
       createdAt: serverTimestamp(),
-      status: "available",
+      status: "unclaimed",
     });
     return uploadItems;
   } catch (error) {
