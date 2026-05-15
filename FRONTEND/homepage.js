@@ -5,10 +5,9 @@ export async function getFirebasePosts() {
     try {
         const q = query(collection(db, "items"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
-        
+
         const posts = [];
         querySnapshot.forEach((doc) => {
-            // Merge the document ID with the data
             posts.push({ id: doc.id, ...doc.data() });
         });
         return posts;

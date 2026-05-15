@@ -424,27 +424,27 @@
             </div>
 
             <nav class="nav-list">
-                <a href="/homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="/saved.html" class="nav-item">
+                <a href="saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="/history.html" class="nav-item">
+                <a href="history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="/notif.html" class="nav-item">
+                <a href="notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="/pending.html" class="nav-item">
+                <a href="pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="/review.html" class="nav-item">
+                <a href="review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
@@ -452,31 +452,31 @@
                 <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
                 <p class="category-label">Categories</p>
 
-                <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">checkroom</span>
                     <span class="nav-text">Clothing & Personal Gear</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Documents & Cards')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">style</span>
                     <span class="nav-text">Documents & Cards</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Electronics & Gadgets')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">devices</span>
                     <span class="nav-text">Electronics & Gadgets</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Keys & Accessories')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">vpn_key</span>
                     <span class="nav-text">Keys & Accessories</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Stationery & Books')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="nav-text">Stationery & Books</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('javascript:void(0)Wallets & Bags')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">account_balance_wallet</span>
                     <span class="nav-text">Wallets & Bags</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('Others')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">more_horiz</span>
                     <span class="nav-text">Others</span>
                 </a>
@@ -497,7 +497,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="/posting-page.html">
+                    <a href="posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -528,180 +528,133 @@
         </div>
     </div>
      
-    <script>
+    <script type="module">
+        import { auth } from "./db.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-        const initSidebar = () => {
-        const footer = document.getElementById('sidebar-user-footer');
-        const logoutBtn = document.getElementById('logout-trigger');
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "auth.html";
+                return;
+            }
+            await loadHistory(user.email);
+        });
 
-        // Function to update Sidebar UI
-        const updateSidebarUI = (user) => {
-            if (!footer) return;
-            const isAdmin = user.role === 'admin';
-            
-            footer.querySelector('div').innerHTML = `
-                <span title="${user.name}" style="font-size: 14px; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; display: block;">
-                    ${user.name}
-                </span>
-                ${isAdmin ? `
-                <span style="font-size: 9px; background: #FFD700; color: #000; padding: 1px 6px; border-radius: 4px; width: fit-content; font-weight: 800; letter-spacing: 0.5px; margin-top: 2px;">
-                    ADMIN
-                </span>` : ''}
-            `;
+        window.deleteHistoryPost = async function(id) {
+            if (!confirm("Delete this post?")) return;
+            try {
+                const email = encodeURIComponent(auth.currentUser?.email || '');
+                const uid   = encodeURIComponent(auth.currentUser?.uid   || '');
+                const res = await fetch(
+                    `http://localhost:3000/item/${id}?requesterEmail=${email}&requesterUid=${uid}`,
+                    { method: 'DELETE' }
+                );
+                if (!res.ok) throw new Error(await res.text());
+                const card = document.querySelector(`[data-item-id="${id}"]`);
+                if (card) {
+                    card.style.transition = 'opacity 0.3s';
+                    card.style.opacity = '0';
+                    setTimeout(() => card.remove(), 300);
+                }
+            } catch (err) {
+                alert("Delete failed: " + err.message);
+            }
         };
 
-        // Logout functionality
-        if (logoutBtn) {
-            logoutBtn.onclick = () => {
-                localStorage.removeItem('ceas_user_session'); // Or your specific session key
-                sessionStorage.clear();
-                window.location.href = '/auth.html'; 
-            };
+        async function loadHistory(userEmail) {
+            const container = document.getElementById("history-container");
+            container.innerHTML = "<p class='empty-msg'>Loading…</p>";
+
+            try {
+                const res = await fetch(
+                    `http://localhost:3000/item/history?userEmail=${encodeURIComponent(userEmail)}`
+                );
+                if (!res.ok) throw new Error(await res.text());
+                const items = await res.json();
+                renderHistory(items);
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<p class='empty-msg'>Could not load history: ${err.message}</p>`;
+            }
         }
 
-        // Wait for secret.js to load the global user object
-        let attempts = 0;
-        const checkUser = setInterval(() => {
-            if (window.CEAS_USER) {
-                updateSidebarUI(window.CEAS_USER);
-                clearInterval(checkUser);
+        function renderHistory(items) {
+            const container = document.getElementById("history-container");
+
+            if (items.length === 0) {
+                container.innerHTML = "<p class='empty-msg'>No activity yet. Go report a lost or found item!</p>";
+                return;
             }
-            if (attempts > 50) clearInterval(checkUser); 
-            attempts++;
-        }, 100);
-    };
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkUser = setInterval(() => {
-                if (window.CEAS_USER && window.CEAS_USER.name !== '') {
-                    clearInterval(checkUser);
-                    renderHistory();
-                }
-            }, 100);
 
-            function renderHistory() {
-                const container = document.getElementById('history-container');
-                const allPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
-                const currentUser = window.CEAS_USER.name; 
+            items.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
-                const historyPosts = allPosts.filter(p => {
-                    const isClaimed = p.status === 'Claimed' || p.status === 'Synced';
-                    const isOwner = p.user === currentUser;
-                    const isClaimant = p.claimant === currentUser;
-                    return isClaimed && (isOwner || isClaimant);
-                });
+            const statusColors = {
+                unclaimed: "#3730a3",
+                claimed:   "#075985",
+                pending:   "#b45309",
+                searching: "#6b7280",
+            };
 
-                if (historyPosts.length === 0) {
-                    container.innerHTML = '<p class="empty-msg">No history records found.</p>';
-                    return;
-                }
+            container.innerHTML = "";
+            items.forEach(item => {
+                const status    = (item.status || "unclaimed").toLowerCase();
+                const sColor    = statusColors[status] || "#8e8e8e";
+                const label     = item.status
+                    ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
+                    : "Unclaimed";
+                const itemTitle = item.itemName || item.foundItem || item.lostItem || "Untitled";
+                const typeLabel = item.postType === "lost" ? "Lost Item" : "Found Item";
+                const dateStr   = item.createdAt?.seconds
+                    ? new Date(item.createdAt.seconds * 1000).toLocaleDateString("en-PH", {
+                        year: "numeric", month: "short", day: "numeric",
+                      })
+                    : "Unknown date";
 
-                container.innerHTML = '';
-                historyPosts.forEach(post => {
-                    const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${post.id}`) === 'true';
-                    const currentStatus = isPermanentlyClaimed ? 'Synced' : post.status;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'history-card';
-                    card.innerHTML = `
-                        <div style="width: 60px; height: 60px; flex-shrink: 0;">
-                            ${post.image ? 
-                                `<img src="${post.image}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` : 
-                                `<div style="width: 100%; height: 100%; background: var(--bg-white); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><span class="material-symbols-outlined" style="font-size: 20px; color: #ccc;">image</span></div>`
-                            }
-                        </div>
+                const card = document.createElement("div");
+                card.className = "history-card";
+                card.dataset.itemId = item.id;
+                card.innerHTML = `
+                    <div style="width:60px;height:60px;flex-shrink:0;">
+                        ${item.img_url
+                            ? `<img src="${item.img_url}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`
+                            : `<div style="width:100%;height:100%;background:var(--bg-white);border-radius:8px;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="font-size:20px;color:#ccc;">image</span></div>`}
+                    </div>
+                    <div style="flex-grow:1;display:flex;flex-direction:column;gap:2px;">
+                        <strong style="color:var(--night);font-size:15px;">${itemTitle}</strong>
+                        <p style="font-size:13px;color:#333;margin:0;"><strong>Type:</strong> ${typeLabel}</p>
+                        <p style="font-size:12px;color:#8e8e8e;display:flex;align-items:center;gap:2px;margin-top:2px;">
+                            <span class="material-symbols-outlined" style="font-size:13px;">schedule</span> ${dateStr}
+                        </p>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:120px;">
+                        <span style="background:${sColor};color:white;padding:6px 12px;border-radius:10px;font-size:13px;font-weight:600;width:100%;text-align:center;">
+                            ${label}
+                        </span>
+                        <button onclick="window.location.href='posting-page.html?edit=${item.id}'"
+                          style="background:var(--night);color:white;border:none;cursor:pointer;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:700;font-family:'Roboto Condensed';width:100%;">
+                          Edit
+                        </button>
+                        <button onclick="deleteHistoryPost('${item.id}')"
+                          style="background:#b91c1c;color:white;border:none;cursor:pointer;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:700;font-family:'Roboto Condensed';width:100%;">
+                          Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-                        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
-                            <a href="/pfp.html?user=${post.user}" class="username-link" style="color: var(--night); font-size: 15px; text-decoration: none;">
-                                <strong>${post.user}</strong>
-                            </a>
-                            <p style="font-size: 13px; color: #333; margin: 0;">
-                                <strong>Item:</strong> ${post.lostItem || post.foundItem || 'Unknown'}
-                            </p>
-                            <p style="font-size: 12px; color: #8e8e8e; display: flex; align-items: center; gap: 2px; margin-top: 2px;">
-                                <span class="material-symbols-outlined" style="font-size: 13px;">schedule</span> ${post.timestamp || ''}
-                            </p>
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end; min-width: 120px;">
-                            <span id="status-${post.id}" class="status-badge" style="color: white; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; width: 100%; text-align: center;">
-                                ${currentStatus}
-                            </span>
-                            
-                            <button onclick="window.location.href='/homepage.html?id=${post.id}'" 
-                                style="background:var(--bg-white); color: var(--night); width: 100%; border: none; padding: 6px 15px; border-radius: 8px; cursor: pointer; font-family: 'Roboto Condensed'; font-size: 13px; font-weight: bold;">
-                                Go to post
-                            </button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            }
-        });
-
-        document.querySelectorAll('.preview-card').forEach(card => {
-            card.style.cursor = 'pointer';
+        document.querySelectorAll(".preview-card").forEach(card => {
+            card.style.cursor = "pointer";
             card.onclick = () => {
-                const title = card.querySelector('h5').innerText;
-                if(title.includes('Notifications')) window.location.href = 'notif.html';
-                if(title.includes('Pending')) window.location.href = 'pending.html';
-                if(title.includes('Review')) window.location.href = 'review.html';
+                const title = card.querySelector("h5").innerText;
+                if (title.includes("Notifications")) window.location.href = "notif.html";
+                if (title.includes("Pending"))       window.location.href = "pending.html";
+                if (title.includes("Review"))        window.location.href = "review.html";
             };
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const updateNotificationPreview = () => {
-                const notifBox = document.getElementById('notif-preview');
-                if (!notifBox) return;
-
-                const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-                
-                if (logs.length === 0) {
-                    notifBox.innerHTML = '<p style="font-size:12px; color:var(--clay);">No new notifications.</p>';
-                } else {
-                    const latest = logs.slice(0, 3);
-                    notifBox.innerHTML = latest.map(n => `
-                        <div style="font-size:12px; margin-bottom:8px; border-left:3px solid var(--night); padding-left:8px;">
-                            <p style="margin:0; color:var(--onyx); font-weight:500;">${n.message}</p>
-                            <small style="color:var(--clay); font-size:10px;">${n.time || 'Just now'}</small>
-                        </div>
-                    `).join('');
-                }
-            };
-
-            const updatePendingPreview = () => {
-                const pendingBox = document.getElementById('pending-preview');
-                if (!pendingBox) return;
-
-                const pending = JSON.parse(localStorage.getItem('user_claims')) || [];
-                if (pending.length === 0) {
-                    pendingBox.innerHTML = '<p style="font-size:12px; color:var(--clay);">No pending claims.</p>';
-                } else {
-                    pendingBox.innerHTML = pending.slice(0, 2).map(p => `
-                        <p style="font-size:12px; color:var(--onyx);">• ${p.itemName || 'Item Claim'}</p>
-                    `).join('');
-                }
-            };
-
-            const updateReviewPreview = () => {
-                const reviewBox = document.getElementById('review-preview');
-                if (!reviewBox) return;
-
-                const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-                const reviews = logs.filter(n => n.type === 'email_proof' || n.type === 'claim_attempt');
-
-                if (reviews.length === 0) {
-                    reviewBox.innerHTML = '<p style="font-size:12px; color:var(--clay);">Nothing to review.</p>';
-                } else {
-                    reviewBox.innerHTML = `<p style="font-size:12px; color:var(--night); font-weight:bold;">• ${reviews.length} new proof(s) to check</p>`;
-                }
-            };
-
-            updateNotificationPreview();
-            updatePendingPreview();
-            updateReviewPreview();
         });
     </script>
 
-   <!--  <script type="module" src="/secret.js"></script> -->
+    <script type="module" src="./secret.js"></script>
 </body>
 </html>

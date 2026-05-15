@@ -656,233 +656,18 @@
     <!-- end post-card -->
 
     <script type="module">
-      /*  import { auth } from "../BACKEND/db.js";
-      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"; */
-      /* import { uploadPost } from "../BACKEND/posting-page.js"; */
-
-      // ── Auth Guard ──
-      /*  onAuthStateChanged(auth, (user) => {
-        if (user) {
-          document.getElementById("displayUserName").innerText =
-            user.displayName || "User";
-        } else {
-          window.location.href = "/auth.html";
-        }
-      }); */
-
-      // ── Mode Switch ──
-      /* window.switchMode = function (mode) {
-        const tabFound = document.getElementById("tab-found");
-        const tabLost = document.getElementById("tab-lost");
-        const panelFound = document.getElementById("panel-found");
-        const panelLost = document.getElementById("panel-lost");
-        const subtitle = document.getElementById("displayUserSubtitle");
-        const statusBadge = document.getElementById("statusDisplay");
-
-        if (mode === "found") {
-          tabFound.className = "type-tab active-found";
-          tabLost.className = "type-tab";
-          panelFound.classList.add("active");
-          panelLost.classList.remove("active");
-          subtitle.innerText = "Reporting a found item";
-          statusBadge.innerText = "Unclaimed";
-          statusBadge.style.backgroundColor = "var(--night)";
-          document.body.classList.remove("mode-lost");
-        } else {
-          tabLost.className = "type-tab active-lost";
-          tabFound.className = "type-tab";
-          panelLost.classList.add("active");
-          panelFound.classList.remove("active");
-          subtitle.innerText = "Posting a lost item lookup";
-          statusBadge.innerText = "Searching";
-          statusBadge.style.backgroundColor = "var(--lost-accent)";
-          document.body.classList.add("mode-lost");
-        }
-      };
-
-      // ── Category Autocomplete (shared logic) ──
-      const categories = [
-        "Clothing & Personal Gear",
-        "Documents & Cards",
-        "Electronics & Gadgets",
-        "Keys & Accessories",
-        "Stationery & Books",
-        "Wallets & Bags",
-      ];
-
-      function attachCategoryAutocomplete(inputId, sugBoxId) {
-        const input = document.getElementById(inputId);
-        const sugBox = document.getElementById(sugBoxId);
-        if (!input || !sugBox) return;
-
-        input.addEventListener("input", (e) => {
-          const val = e.target.value;
-          if (val.includes("#")) {
-            const query = val.split("#").pop().toLowerCase();
-            const matches = categories.filter((c) =>
-              c.toLowerCase().includes(query),
-            );
-            if (matches.length > 0) {
-              sugBox.innerHTML = matches
-                .map((m) => `<div class="sug-item">#${m}</div>`)
-                .join("");
-              sugBox.style.display = "block";
-              sugBox.querySelectorAll(".sug-item").forEach((item) => {
-                item.onclick = () => {
-                  input.value = item.innerText;
-                  sugBox.style.display = "none";
-                };
-              });
-            } else {
-              sugBox.style.display = "none";
-            }
-          } else {
-            sugBox.style.display = "none";
-          }
-        });
-      }
-
-      attachCategoryAutocomplete("foundCategoryInput", "foundSuggestionBox");
-      attachCategoryAutocomplete("lostCategoryInput", "lostSuggestionBox");
-
-      // ── Auto-expanding textareas ──
-      document.querySelectorAll("textarea").forEach((ta) => {
-        ta.addEventListener("input", function () {
-          this.style.height = "auto";
-          this.style.height = this.scrollHeight + "px";
-        });
-      });
-
-      // ── Image Previews ──
-      function attachImagePreview(inputId, previewId, placeholderId) {
-        const input = document.getElementById(inputId);
-        if (!input) return;
-        input.addEventListener("change", function (e) {
-          const file = e.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-              const img = document.getElementById(previewId);
-              img.src = ev.target.result;
-              img.style.display = "block";
-              document.getElementById(placeholderId).style.display = "none";
-            };
-            reader.readAsDataURL(file);
-          }
-        });
-      }
-
-      attachImagePreview(
-        "foundImageInput",
-        "foundPreviewImg",
-        "foundUploadPlaceholder",
-      );
-      attachImagePreview(
-        "lostImageInput",
-        "lostPreviewImg",
-        "lostUploadPlaceholder",
-      );
-
-      async function uploadPost(postData) {
-        const formData = new FormData();
-
-        const file = postData.fileInput?.files?.[0];
-        if (file) {
-          formData.append("img_url", file);
-        }
-
-        formData.append("postType", postData.postType);
-        formData.append("itemName", postData.itemName);
-        formData.append("foundLocation", postData.foundLocation);
-        formData.append("lostLocation", postData.lostLocation);
-        formData.append("lostWhen", postData.lostWhen);
-        formData.append("category", postData.category);
-        formData.append("description", postData.description);
-        formData.append("status", postData.status);
-
-        const res = await fetch("http://localhost:3000/item", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(errText || "Failed to upload post");
-        }
-
-        return await res.text();
-      }
-      // ── Submit Handler ──
-      window.handlePostSubmit = async function (mode) {
-        const isFound = mode === "found";
-        const btnId = isFound ? "foundSubmitBtn" : "lostSubmitBtn";
-        const submitBtn = document.getElementById(btnId);
-
-        try {
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Posting...";
-          }
-
-          // Gather fields based on mode
-          const postData = isFound
-            ? {
-                postType: "found",
-                itemName: document
-                  .getElementById("foundItemInput")
-                  .value.trim(),
-                foundLocation: document.getElementById("foundLocation").value,
-                lostLocation: "",
-                lostWhen: "",
-                category: document
-                  .getElementById("foundCategoryInput")
-                  .value.trim(),
-                description: document
-                  .getElementById("foundDescTextarea")
-                  .value.trim(),
-                fileInput: document.getElementById("foundImageInput"),
-                status: "Unclaimed",
-              }
-            : {
-                postType: "lost",
-                itemName: document.getElementById("lostItemInput").value.trim(),
-                foundLocation: "",
-                lostLocation: document
-                  .getElementById("lostLocation")
-                  .value.trim(),
-                lostWhen: document.getElementById("lostWhen").value.trim(),
-                category: document
-                  .getElementById("lostCategoryInput")
-                  .value.trim(),
-                description: document
-                  .getElementById("lostDescTextarea")
-                  .value.trim(),
-                fileInput: document.getElementById("lostImageInput"),
-                status: "Searching",
-              };
-
-          await uploadPost(postData);
-
-          alert("Post uploaded!");
-        } catch (error) {
-          console.error("Caught error in HTML:", error);
-          alert("Error: " + error.message);
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerText = isFound ? "Add Post" : "Post Lost Item";
-          }
-        }
-      }; */
-
-      import { auth } from "../BACKEND/config/firebase.js";
+      import { auth } from "./db.js";
       import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-      onAuthStateChanged(auth, (user) => {
+      const editId = new URLSearchParams(window.location.search).get("edit");
+
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
           document.getElementById("displayUserName").innerText =
             user.displayName || "User";
+          if (editId) await loadItemForEdit(editId);
         } else {
-          window.location.href = "/auth.html";
+          window.location.href = "auth.html";
         }
       });
 
@@ -984,42 +769,88 @@
         });
       }
 
-      attachImagePreview(
-        "foundImageInput",
-        "foundPreviewImg",
-        "foundUploadPlaceholder",
-      );
-      attachImagePreview(
-        "lostImageInput",
-        "lostPreviewImg",
-        "lostUploadPlaceholder",
-      );
+      attachImagePreview("foundImageInput", "foundPreviewImg", "foundUploadPlaceholder");
+      attachImagePreview("lostImageInput", "lostPreviewImg", "lostUploadPlaceholder");
+
+      async function loadItemForEdit(id) {
+        try {
+          const res = await fetch(`http://localhost:3000/item/${id}`);
+          if (!res.ok) return;
+          const item = await res.json();
+
+          const mode = item.postType || "found";
+          switchMode(mode);
+          document.getElementById("displayUserSubtitle").innerText = "Editing your post";
+
+          if (mode === "found") {
+            document.getElementById("foundItemInput").value = item.itemName || "";
+            const locSel = document.getElementById("foundLocation");
+            if (item.foundLocation) locSel.value = item.foundLocation;
+            document.getElementById("foundCategoryInput").value = item.category || "";
+            document.getElementById("foundDescTextarea").value = item.description || "";
+            document.getElementById("foundSubmitBtn").innerText = "Update Post";
+            if (item.img_url) {
+              const img = document.getElementById("foundPreviewImg");
+              img.src = item.img_url;
+              img.style.display = "block";
+              document.getElementById("foundUploadPlaceholder").style.display = "none";
+            }
+          } else {
+            document.getElementById("lostItemInput").value = item.itemName || "";
+            document.getElementById("lostLocation").value = item.lostLocation || "";
+            document.getElementById("lostWhen").value = item.lostWhen || "";
+            document.getElementById("lostCategoryInput").value = item.category || "";
+            document.getElementById("lostDescTextarea").value = item.description || "";
+            document.getElementById("lostSubmitBtn").innerText = "Update Post";
+            if (item.img_url) {
+              const img = document.getElementById("lostPreviewImg");
+              img.src = item.img_url;
+              img.style.display = "block";
+              document.getElementById("lostUploadPlaceholder").style.display = "none";
+            }
+          }
+        } catch (err) {
+          console.error("Failed to load item for edit:", err);
+        }
+      }
 
       async function uploadPost(postData) {
         const formData = new FormData();
 
         const file = postData.fileInput?.files?.[0];
         if (file) {
-          formData.append("image", file);
+          formData.append("img_url", file);
         }
 
-        Object.keys(postData).forEach((key) => {
-          if (key !== "fileInput") {
-            formData.append(key, postData[key]);
-          }
-        });
+        formData.append("postType", postData.postType);
+        formData.append("itemName", postData.itemName);
+        if (postData.foundLocation) formData.append("foundLocation", postData.foundLocation);
+        if (postData.lostLocation) formData.append("lostLocation", postData.lostLocation);
+        if (postData.lostWhen) formData.append("lostWhen", postData.lostWhen);
+        formData.append("category", postData.category);
+        formData.append("description", postData.description);
 
-        const res = await fetch("http://localhost:3000/item", {
-          method: "POST",
+        if (!editId) {
+          formData.append("status", postData.status);
+          formData.append("reporterName", postData.reporterName || "");
+          formData.append("reporterEmail", postData.reporterEmail || "");
+        }
+
+        const url = editId
+          ? `http://localhost:3000/item/${editId}`
+          : "http://localhost:3000/item";
+
+        const res = await fetch(url, {
+          method: editId ? "PUT" : "POST",
           body: formData,
         });
 
         if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.message || "Failed to upload post");
+          const errText = await res.text();
+          throw new Error(errText || "Failed to upload post");
         }
 
-        return await res.json();
+        return await res.text();
       }
 
       window.handlePostSubmit = async function (mode) {
@@ -1036,6 +867,7 @@
           submitBtn.disabled = true;
           submitBtn.innerText = "Posting...";
 
+          const currentUser = auth.currentUser;
           const postData = isFound
             ? {
                 postType: "found",
@@ -1048,6 +880,8 @@
                   .getElementById("foundDescTextarea")
                   .value.trim(),
                 fileInput: document.getElementById("foundImageInput"),
+                reporterName: currentUser?.displayName || "GC Student",
+                reporterEmail: currentUser?.email || "",
                 status: "Unclaimed",
               }
             : {
@@ -1064,18 +898,20 @@
                   .getElementById("lostDescTextarea")
                   .value.trim(),
                 fileInput: document.getElementById("lostImageInput"),
+                reporterName: currentUser?.displayName || "GC Student",
+                reporterEmail: currentUser?.email || "",
                 status: "Searching",
               };
 
           await uploadPost(postData);
 
-          alert("Success! Your item has been posted.");
-          window.location.href = "/review.html";
+          alert(editId ? "Post updated successfully!" : "Success! Your item has been posted.");
+          window.location.href = editId ? "history.html" : "homepage.html";
         } catch (error) {
           console.error("Post Error:", error);
           alert("Error: " + error.message);
           submitBtn.disabled = false;
-          submitBtn.innerText = isFound ? "Add Post" : "Post Lost Item";
+          submitBtn.innerText = editId ? "Update Post" : (isFound ? "Add Post" : "Post Lost Item");
         }
       };
     </script>
