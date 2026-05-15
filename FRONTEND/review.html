@@ -381,27 +381,27 @@
             </div>
 
             <nav class="nav-list">
-                <a href="/homepage.html" class="nav-item" onclick="filterCategory('all')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">home</span>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="/saved.html" class="nav-item">
+                <a href="saved.html" class="nav-item">
                     <span class="material-symbols-outlined">bookmark</span>
                     <span class="nav-text">Bookmark</span>
                 </a>
-                <a href="/history.html" class="nav-item">
+                <a href="history.html" class="nav-item">
                     <span class="material-symbols-outlined">history</span>
                     <span class="nav-text">History</span>
                 </a>
-                <a href="/notif.html" class="nav-item">
+                <a href="notif.html" class="nav-item">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="nav-text">Notifications</span>
                 </a>
-                <a href="/pending.html" class="nav-item">
+                <a href="pending.html" class="nav-item">
                     <span class="material-symbols-outlined">schedule</span>
                     <span class="nav-text">Pending Sync</span>
                 </a>
-                <a href="/review.html" class="nav-item">
+                <a href="review.html" class="nav-item">
                     <span class="material-symbols-outlined">assignment</span>
                     <span class="nav-text">Review</span>
                 </a>
@@ -409,31 +409,31 @@
                 <hr style="opacity: 0.1; margin: 10px 20px; width: 190px;">
                 <p class="category-label">Categories</p>
 
-                <a href="#" class="nav-item" onclick="filterCategory('#Clothing & Personal Gear')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">checkroom</span>
                     <span class="nav-text">Clothing & Personal Gear</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Documents & Cards')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">style</span>
                     <span class="nav-text">Documents & Cards</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Electronics & Gadgets')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">devices</span>
                     <span class="nav-text">Electronics & Gadgets</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Keys & Accessories')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">vpn_key</span>
                     <span class="nav-text">Keys & Accessories</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Stationery & Books')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="nav-text">Stationery & Books</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('#Wallets & Bags')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">account_balance_wallet</span>
                     <span class="nav-text">Wallets & Bags</span>
                 </a>
-                <a href="#" class="nav-item" onclick="filterCategory('Others')">
+                <a href="homepage.html" class="nav-item">
                     <span class="material-symbols-outlined">more_horiz</span>
                     <span class="nav-text">Others</span>
                 </a>
@@ -460,7 +460,7 @@
                         <button type="submit" class="search-icon-btn"><span class="material-symbols-outlined" id="search-icon">search</span></button>
                     </div>
                     
-                    <a href="/posting-page.html">
+                    <a href="posting-page.html">
                         <div class="report-wrapper">
                             <div class="report-item">
                                 <span class="material-symbols-outlined">post_add</span>
@@ -487,164 +487,121 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 1. SIDEBAR USER & LOGOUT LOGIC ---
-    const initUserSidebar = () => {
-        const footer = document.getElementById('sidebar-user-footer');
-        const logoutBtn = document.getElementById('logout-trigger');
+    <script type="module">
+        import { auth, db } from "./db.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getDocs, collection } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        const updateUI = (user) => {
-            if (footer) {
-                const isAdmin = user.role === 'admin';
-                // Targets the first div inside the footer
-                footer.querySelector('div').innerHTML = `
-                    <span title="${user.name}" style="font-size: 13px; font-weight: bold; color: white; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
-                        ${user.name}
-                    </span>
-                    ${isAdmin ? '<span style="font-size: 9px; background: #FFD700; color: #000; padding: 1px 5px; border-radius: 3px; width: fit-content; margin-top: 2px; font-weight: bold; letter-spacing: 0.5px;">ADMIN</span>' : ''}
-                `;
-            }
-        };
-
-        if (logoutBtn) {
-            logoutBtn.onclick = () => {
-                localStorage.removeItem('ceas_user_session'); 
-                sessionStorage.clear();
-                window.location.href = '/auth.html';
-            };
-        }
-
-        const syncUI = () => {
-        let attempts = 0;
-        const checkUser = setInterval(() => {
-            if (window.CEAS_USER && window.CEAS_USER.name !== '') {
-                // Name is handled by secret.js automatically now
-                clearInterval(checkUser);
-            }
-            if (attempts > 50) clearInterval(checkUser);
-            attempts++;
-        }, 100);
-    };
-    };
-
-// Move renderReviews outside or keep it inside, but ensure it is called.
-const renderReviews = () => {
-    const reviewContainer = document.getElementById('review-container');
-        // --- 2. REVIEW RENDERING ---
-        const renderReviews = () => {
-            const reviewContainer = document.getElementById('review-container');
-            if (!reviewContainer) return;
-
-            const masterPosts = JSON.parse(localStorage.getItem('ceas_posts')) || [];
-            const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-            const reviewsToVerify = logs.filter(n => n.type === 'email_proof' || n.type === 'claim_attempt');
-
-            reviewContainer.innerHTML = '';
-
-            if (reviewsToVerify.length === 0) {
-                reviewContainer.innerHTML = `<p style="text-align:center; color:var(--night); margin-top:50px;">Nothing to review at the moment.</p>`;
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "auth.html";
                 return;
             }
-
-            reviewsToVerify.forEach((item) => {
-                const livePost = masterPosts.find(p => Number(p.id) === Number(item.postId)) || {};
-                const isPermanentlyClaimed = localStorage.getItem(`permanent_claimed_${livePost.id}`) === 'true';
-                
-                let currentStatus = isPermanentlyClaimed ? 'Synced' : (livePost.status || 'Unclaimed');
-                
-                const statusColors = { 
-                    'Unclaimed': '#4f46e5',
-                    'Claimed': '#0ea5e9',   
-                    'Pending': '#f59e0b',   
-                    'Synced': '#10b981'     
-                };
-                const sColor = statusColors[currentStatus] || '#8e8e8e';
-
-                const card = document.createElement('div');
-                card.className = 'review-post-card';
-                card.style.cssText = "display: flex; flex-direction: row; gap: 15px; align-items: center; margin-bottom: 15px; padding: 15px 15px; background: white; border-radius: 12px; border: 1px solid var(--bg-white);";
-
-                card.innerHTML = `
-                    <div style="display: flex; gap: 15px; align-items: flex-start; width: 100%;">
-                        <div style="flex-grow: 1;">
-                            <div style="color: var(--night); font-size: 15px; font-weight: bold; margin-bottom: 8px;">
-                                ${item.username} <span style="font-weight: normal; color: var(--onyx);">sent a proof!</span>
-                            </div>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <img src="${item.itemImage}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #eee;">
-                                <div style="display: flex; flex-direction: column; gap: 2px;">
-                                    <div style="font-size: 14px; color: var(--night); font-weight: 600;">Lost: ${item.itemName}</div>
-                                    <div style="font-size: 13px; color: var(--night);">${item.location}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px; min-width: 140px; justify-content: center;">
-                            <span style="background: ${sColor}; color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; width: 100%; text-align: center; text-transform: uppercase;">
-                                ${currentStatus}
-                            </span>
-                            <a href="mailto:${item.senderEmail || ''}" style="text-decoration: none; background: var(--bg-white); color: var(--night); width: 100%; padding: 6px 10px; border-radius: 8px; text-align:center; font-size: 11px; font-weight: bold;">CONTACT</a>
-                        </div>
-                    </div>
-                `;
-                reviewContainer.appendChild(card);
-            });
-        };
-        initUserSidebar();
-};
-
-        document.querySelectorAll('.preview-card').forEach(card => {
-                card.style.cursor = 'pointer';
-                card.onclick = () => {
-                    const title = card.querySelector('h5').innerText;
-                    if(title.includes('Notifications')) window.location.href = '/notif.html';
-                    if(title.includes('Pending')) window.location.href = '/pending.html';
-                };
-            });
-
-            document.addEventListener('DOMContentLoaded', () => {
-            const updateNotificationPreview = () => {
-                const notifBox = document.getElementById('notif-preview');
-                if (!notifBox) return;
-
-                const logs = JSON.parse(localStorage.getItem('app_notifications')) || [];
-                
-                if (logs.length === 0) {
-                    notifBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">No new notifications.</p>';
-                } else {
-                    const latest = logs.slice(0, 3);
-                    notifBox.innerHTML = latest.map(n => `
-                        <div style="font-size:13px; margin-bottom:8px; border-left:3px solid var(--onyx); padding-left:8px;">
-                            <p style="margin:0; color:var(--onyx); font-weight:500;">${n.message}</p>
-                            <small style="color:var(--onyx); font-size:13px;">${n.time || 'Just now'}</small>
-                        </div>
-                    `).join('');
-                }
-            };
-
-            const updatePendingPreview = () => {
-                const pendingBox = document.getElementById('pending-preview');
-                if (!pendingBox) return;
-
-                const pending = JSON.parse(localStorage.getItem('user_claims')) || [];
-                if (pending.length === 0) {
-                    pendingBox.innerHTML = '<p style="font-size:13px; color:var(--onyx);">No pending claims.</p>';
-                } else {
-                    pendingBox.innerHTML = pending.slice(0, 2).map(p => `
-                        <p style="font-size:13px; color:var(--onyx);">• ${p.itemName || 'Item Claim'}</p>
-                    `).join('');
-                }
-            };
-
+            await loadReviews(user.email);
         });
 
-        syncUI();
-        renderReviews();
-        updateNotificationPreview();
-        updatePendingPreview();
-    });
+        async function loadReviews(userEmail) {
+            const container = document.getElementById("review-container");
+            container.innerHTML = "<p class='empty-msg'>Loading…</p>";
+            try {
+                const res = await fetch(
+                    `http://localhost:3000/item/history?userEmail=${encodeURIComponent(userEmail)}`
+                );
+                if (!res.ok) throw new Error(await res.text());
+                const items = await res.json();
+
+                const pendingItems = items.filter(
+                    item => (item.status || "").toLowerCase() === "pending"
+                );
+
+                if (pendingItems.length === 0) {
+                    container.innerHTML = "<p class='empty-msg'>No pending claims to review.</p>";
+                    return;
+                }
+
+                const claimsSnap = await getDocs(collection(db, "claims"));
+                const allClaims = claimsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+                container.innerHTML = "";
+                for (const item of pendingItems) {
+                    const itemClaims = allClaims.filter(
+                        c => c.itemID === item.id && (c.status || "").toLowerCase() === "pending"
+                    );
+                    renderReviewCard(container, item, itemClaims);
+                }
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<p class='empty-msg'>Could not load reviews: ${err.message}</p>`;
+            }
+        }
+
+        function renderReviewCard(container, item, claims) {
+            const claimsHtml = claims.length > 0
+                ? claims.map(c => `
+                    <div style="background:#f9f9f9;border-radius:8px;padding:10px 14px;margin-top:10px;border:1px solid var(--bg-white);">
+                        <p style="font-size:14px;font-weight:700;color:var(--night);">${c.claimantName || "GC Student"}</p>
+                        <p style="font-size:12px;color:#666;">${c.claimantEmail || ""}</p>
+                        <p style="font-size:13px;color:#444;margin-top:6px;">${c.proofDescription || ""}</p>
+                    </div>
+                `).join("")
+                : `<p style="font-size:13px;color:#999;margin-top:8px;font-style:italic;">No claim details on file.</p>`;
+
+            const card = document.createElement("div");
+            card.className = "review-post-card";
+            card.innerHTML = `
+                <div style="display:flex;gap:14px;align-items:flex-start;">
+                    <div style="width:65px;height:65px;flex-shrink:0;">
+                        ${item.img_url
+                            ? `<img src="${item.img_url}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`
+                            : `<div style="width:100%;height:100%;background:var(--bg-white);border-radius:8px;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="font-size:22px;color:#ccc;">image</span></div>`}
+                    </div>
+                    <div style="flex-grow:1;">
+                        <strong style="color:var(--night);font-size:16px;">${item.itemName || "Item"}</strong>
+                        <p style="font-size:13px;color:#666;margin-top:2px;">${item.postType === "lost" ? "Lost Item" : "Found Item"} · ${item.category || ""}</p>
+                        ${claimsHtml}
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:8px;min-width:130px;align-items:flex-end;">
+                        <span style="background:#b45309;color:white;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-align:center;width:100%;">PENDING</span>
+                        <button onclick="markAsClaimed('${item.id}', this)"
+                          style="background:var(--night);color:white;border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;font-family:'Roboto Condensed';width:100%;">
+                          Mark as Claimed
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+
+        window.markAsClaimed = async function(itemId, btn) {
+            btn.disabled = true;
+            btn.innerText = "Updating…";
+            try {
+                const res = await fetch(`http://localhost:3000/item/${itemId}/claim`, {
+                    method: "PUT",
+                });
+                if (!res.ok) throw new Error(await res.text());
+                const card = btn.closest(".review-post-card");
+                card.remove();
+                const container = document.getElementById("review-container");
+                if (!container.querySelector(".review-post-card")) {
+                    container.innerHTML = "<p class='empty-msg'>All claims have been processed.</p>";
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerText = "Mark as Claimed";
+                alert("Error: " + err.message);
+            }
+        };
+
+        document.querySelectorAll(".preview-card").forEach(card => {
+            card.style.cursor = "pointer";
+            card.onclick = () => {
+                const title = card.querySelector("h5").innerText;
+                if (title.includes("Notifications")) window.location.href = "notif.html";
+                if (title.includes("Pending")) window.location.href = "pending.html";
+            };
+        });
     </script>
-<!--     <script type="module" src="/secret.js"></script> -->
+    <script type="module" src="./secret.js"></script>
 </body>
 </html>

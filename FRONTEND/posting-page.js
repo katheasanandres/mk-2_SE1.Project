@@ -1,6 +1,6 @@
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
-import { db, auth, storage } from "./db.js"; 
+import { db, auth, storage } from "./db.js";
 
 export async function uploadPost() {
     console.log("Function 'uploadPost' triggered!");
@@ -12,7 +12,6 @@ export async function uploadPost() {
     const fileInput = document.getElementById('imageInput');
     const file = fileInput.files[0];
 
-    // Basic validation
     if ((!lostItem && !foundItem) || !category || !file) {
         alert("Please fill in the item names, category, and select an image!");
         return;
@@ -22,21 +21,20 @@ export async function uploadPost() {
         console.log("Starting Storage Upload...");
         const storageRef = ref(storage, 'items/' + Date.now() + '_' + file.name);
         const snapshot = await uploadBytes(storageRef, file);
-        
+
         console.log("Upload successful, getting URL...");
         const imageUrl = await getDownloadURL(snapshot.ref);
 
         console.log("Saving to Firestore...");
         await addDoc(collection(db, "items"), {
-            // SMTP logic
             reporterName: auth.currentUser ? auth.currentUser.displayName : "Anonymous",
-            reporterEmail: auth.currentUser ? auth.currentUser.email : "", 
+            reporterEmail: auth.currentUser ? auth.currentUser.email : "",
             lostItem: lostItem,
             foundItem: foundItem,
             category: category,
             description: description,
             status: "Unclaimed",
-            img_url: imageUrl, 
+            img_url: imageUrl,
             createdAt: serverTimestamp()
         });
 

@@ -28,7 +28,8 @@ router.post("/", upload.single("img_url"), async (req, res) => {
 
 router.get("/history", async (req, res) => {
   try {
-    const response = await getHistoryItems();
+    const { userEmail } = req.query;
+    const response = await getHistoryItems(userEmail);
     res.status(200).json(response);
   } catch (error) {
     res.status(500).send("Something went wrong on our end.");
@@ -91,10 +92,14 @@ router.put("/:id", upload.single("img_url"), async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const itemId = req.params.id;
-    await deleteItem(itemId);
+    const { requesterEmail, requesterUid } = req.query;
 
+    await deleteItem(itemId, requesterEmail, requesterUid);
     res.status(200).send("Successfully Deleted.");
   } catch (error) {
+    if (error.message === "Forbidden") {
+      return res.status(403).send("You do not have permission to delete this post.");
+    }
     res.status(500).send("Something went wrong on our end.");
     console.log(error);
   }

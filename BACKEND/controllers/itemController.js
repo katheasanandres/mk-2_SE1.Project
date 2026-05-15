@@ -83,10 +83,31 @@ export async function updateItem(id, newData, file) {
   }
 }
 
-export async function deleteItem(id) {
+export async function deleteItem(id, requesterEmail, requesterUid) {
   try {
-    const docRef = doc(db, "items", id);
-    await deleteDoc(docRef);
+    const itemRef  = doc(db, "items", id);
+    const itemSnap = await getDoc(itemRef);
+    if (!itemSnap.exists()) throw new Error("Item not found.");
+    const item = itemSnap.data();
+
+    // Owner check
+    if (requesterEmail && item.reporterEmail === requesterEmail) {
+      await deleteDoc(itemRef);
+      return;
+    }
+
+    // Admin check — read the requester's user document
+    if (requesterUid) {
+      const userSnap = await getDoc(doc(db, "users", requesterUid));
+      if (userSnap.exists() && userSnap.data().role === "admin") {
+        await deleteDoc(itemRef);
+        return;
+      }
+    }
+
+    const err = new Error("Forbidden");
+    err.status = 403;
+    throw err;
   } catch (error) {
     console.log("Cannot delete: ", error.message);
     throw error;
@@ -107,18 +128,14 @@ export async function claimItem(id) {
   }
 }
 
-export async function getHistoryItems() {
+export async function getHistoryItems(userEmail) {
   try {
     const snapshot = await getDocs(collection(db, "items"));
     const filteredRes = [];
     for (const doc of snapshot.docs) {
       const data = doc.data();
-
-      if (data.status === "claimed") {
-        filteredRes.push({
-          id: doc.id,
-          ...data,
-        });
+      if (!userEmail || data.reporterEmail === userEmail) {
+        filteredRes.push({ id: doc.id, ...data });
       }
     }
     return filteredRes;
