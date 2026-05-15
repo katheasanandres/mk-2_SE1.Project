@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve the frontend folder statically
 app.use(express.static(path.join(__dirname, "../FRONTEND")));
+app.use("/elements", express.static(path.join(__dirname, "../elements")));
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use("/item", itemRouter);
@@ -49,6 +50,8 @@ app.get("/notifications", async (req, res) => {
 app.get("*splat", (req, res) => {
   res.sendFile(path.join(__dirname, "../FRONTEND/homepage.html"));
 });
+
+console.log("Elements path:", path.join(__dirname, "../elements"));
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {

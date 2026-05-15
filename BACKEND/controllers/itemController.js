@@ -81,24 +81,22 @@ export async function deleteItem(id, requesterEmail, requesterUid) {
     if (!itemSnap.exists) throw new Error("Item not found.");
     const item = itemSnap.data();
 
+    // Admin check (hardcoded via .env)
+    const adminEmails = (process.env.ADMIN_EMAILS || "")
+      .split(",")
+      .map(e => e.trim().toLowerCase());
+    const isAdmin = adminEmails.includes((requesterEmail || "").toLowerCase());
+
     // Owner check
-    if (requesterEmail && item.reporterEmail === requesterEmail) {
-      await db.collection("items").doc(id).delete();
-      return;
+    const isOwner = requesterEmail && item.reporterEmail === requesterEmail;
+
+    if (!isOwner && !isAdmin) {
+      const err = new Error("Forbidden");
+      err.status = 403;
+      throw err;
     }
 
-    // Admin check
-    if (requesterUid) {
-      const userSnap = await db.collection("users").doc(requesterUid).get();
-      if (userSnap.exists && userSnap.data().role === "admin") {
-        await db.collection("items").doc(id).delete();
-        return;
-      }
-    }
-
-    const err = new Error("Forbidden");
-    err.status = 403;
-    throw err;
+    await db.collection("items").doc(id).delete();
   } catch (error) {
     console.error("Cannot Delete:", error.message);
     throw error;
