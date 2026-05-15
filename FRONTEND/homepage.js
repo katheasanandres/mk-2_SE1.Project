@@ -1,18 +1,10 @@
-import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-import { db } from "./db.js";
-
-export async function getFirebasePosts() {
-    try {
-        const q = query(collection(db, "items"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-
-        const posts = [];
-        querySnapshot.forEach((doc) => {
-            posts.push({ id: doc.id, ...doc.data() });
-        });
-        return posts;
-    } catch (err) {
-        console.error("Error fetching posts:", err);
-        return [];
-    }
+export async function getPostsFromBackend() {
+  try {
+    const res = await fetch("http://localhost:3000/item");
+    if (!res.ok) throw new Error(await res.text());
+    return await res.json(); // Array of { id, itemName, category, ... }
+  } catch (err) {
+    console.error("Error fetching posts:", err);
+    return [];
+  }
 }

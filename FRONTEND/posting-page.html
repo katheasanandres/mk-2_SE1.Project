@@ -733,11 +733,11 @@
             sugBox.style.display = "block";
 
             sugBox.querySelectorAll(".sug-item").forEach((item) => {
-              item.onclick = () => {
-                input.value = item.innerText;
-                sugBox.style.display = "none";
-              };
-            });
+  item.onclick = () => {
+    input.value = item.innerText.replace("#", "");
+    sugBox.style.display = "none";
+  };
+});
           } else {
             sugBox.style.display = "none";
           }

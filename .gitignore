@@ -1,4 +1,12 @@
-BACKEND/db.js
-BACKEND/node_modules
+# Node modules
+BACKEND/node_modules/
+
+# Environment variables
 BACKEND/.env
-BACKEND/serviceAccountKey.json
+
+# Firebase service account key
+BACKEND/config/serviceAccountKey.json
+
+# OS junk
+.DS_Store
+Thumbs.db

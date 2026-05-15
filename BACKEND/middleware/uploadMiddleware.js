@@ -1,19 +1,16 @@
 import multer from "multer";
 
+// Memory storage: file is available as req.file.buffer for Firebase Storage upload
 const storage = multer.memoryStorage();
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
-  } else {
-    cb(new Error("Invalid file type. Only JPEG and PNG are allowed!"), false);
-  }
-};
-
 export const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB max
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed."), false);
+    }
   },
-  fileFilter: fileFilter,
 });
